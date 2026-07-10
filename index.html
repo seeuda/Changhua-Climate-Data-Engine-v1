@@ -141,9 +141,9 @@
                         </button>
                     </div>
                     <button class="toggle-btn reference-toggle" id="temp-admin-reference-toggle" type="button" aria-pressed="false">
-                        <i class="fa-solid fa-map-location-dot"></i> 顯示舊版行政區風險參考
+                        <i class="fa-solid fa-map-location-dot"></i> 顯示行政區彙整風險參考
                     </button>
-                    <p class="control-hint">預設以 NCDR AR6 氣候網格判定點位風險；選擇「不呈現網格」時，點位改以行政區風險配對，行政區圖層也會作為主要參考顯示。</p>
+                    <p class="control-hint">預設以 NCDR AR6 氣候網格判定點位風險；選擇「不呈現網格」時，點位改以行政區彙整風險配對，行政區圖層也會作為主要參考顯示。</p>
                     <p class="control-hint">情境時間軸保留易讀的升溫標籤；實際讀取對應 AR6 SSP 模擬資料，單一網格/年份可能受模式內部變異影響而不逐格遞增。</p>
                 </div>
 
@@ -153,12 +153,20 @@
                     <p class="control-hint">點位外框會依目前氣候風險區等級自動加深，便於辨識高風險據點。</p>
                 </div>
 
+                <div class="control-group" id="grid-opacity-group">
+                    <label class="group-label opacity-control-label" for="slider-grid-opacity">
+                        <span>氣候網格透明度</span>
+                        <span id="val-grid-opacity">70%</span>
+                    </label>
+                    <input type="range" id="slider-grid-opacity" class="control-range" min="0.05" max="1" step="0.05" value="0.7" aria-label="氣候網格透明度">
+                </div>
+
                 <div class="control-group" id="risk-opacity-group">
                     <label class="group-label opacity-control-label" for="slider-risk-opacity">
-                        <span id="risk-opacity-label">高溫風險圖透明度</span>
-                        <span id="val-risk-opacity">70%</span>
+                        <span id="risk-opacity-label">行政區彙整風險透明度</span>
+                        <span id="val-risk-opacity">45%</span>
                     </label>
-                    <input type="range" id="slider-risk-opacity" class="control-range" min="0.1" max="1" step="0.05" value="0.7" aria-label="風險圖透明度">
+                    <input type="range" id="slider-risk-opacity" class="control-range" min="0.05" max="1" step="0.05" value="0.45" aria-label="行政區彙整風險透明度">
                 </div>
 
 

@@ -23,7 +23,9 @@ let activeFloodLayers = { ncdr: true, wra: false }; // flood overlays can be com
 let activeTempAdminReference = false; // optional township reference overlay for temp mode
 let activeTempRiskMode = 'grid'; // 'grid' = NCDR AR6 climate grid; 'admin' = township fallback without grid display
 let activeWraScenario = 'gwl15'; // 'gwl15' = 350mm/24HR, 'gwl20' = 650mm/24HR
-let riskMapOpacity = 0.7;
+let tempAdminOpacity = 0.45;
+let ncdrRiskOpacity = 0.7;
+let climateGridOpacity = 0.7;
 let activeClimateIndicator = '日夜溫差';
 let activeClimateYear = '2050';
 let activeClimateGridDataState = null;
@@ -71,11 +73,11 @@ function getWraScenarioName() {
 }
 
 function getTownRiskFillOpacity() {
-    return riskMapOpacity;
+    return activeTheme === 'temp' ? tempAdminOpacity : ncdrRiskOpacity;
 }
 
 function getTownRiskHighlightOpacity() {
-    return Math.min(riskMapOpacity + 0.1, 1);
+    return Math.min(getTownRiskFillOpacity() + 0.1, 1);
 }
 
 
@@ -487,8 +489,8 @@ function getActiveRiskField() {
         // Flood supports current and gwl15 (which maps to flood_risk_future)
         return activeScenario === 'current' ? 'flood_risk_current' : 'flood_risk_future';
     } else {
-        // Temp township values are retained only as a legacy administrative reference/fallback.
-        return `temp_risk_mean_${activeScenario}`;
+        // Temp township values are derived administrative summaries retained only as reference/fallback; the original NCDR layer is the AR6 grid.
+        return `temp_risk_${activeScenario}`;
     }
 }
 
@@ -863,7 +865,7 @@ function getFeatureRiskAssessment(feature, config) {
                 risk: ncdrRisk || 1,
                 ncdrRisk: ncdrRisk || 1,
                 climateGridRisk: null,
-                source: '行政區風險（未呈現網格）',
+                source: '行政區彙整風險（未呈現網格）',
                 mode: 'ncdr_manual'
             };
         }
@@ -883,7 +885,7 @@ function getFeatureRiskAssessment(feature, config) {
             risk: ncdrRisk || 1,
             ncdrRisk: ncdrRisk || 1,
             climateGridRisk: null,
-            source: '鄉鎮市風險（無網格資料）',
+            source: '行政區彙整風險（無網格資料）',
             mode: 'ncdr_fallback'
         };
     }
@@ -899,7 +901,7 @@ function getFeatureRiskAssessment(feature, config) {
     }
 
     if (hasWra) return { risk: wraRisk || 1, ncdrRisk: null, wraRisk: wraRisk || 1, source: '水利署潛勢', mode: 'wra' };
-    return { risk: ncdrRisk || 1, ncdrRisk: ncdrRisk || 1, wraRisk: null, source: '鄉鎮市潛勢', mode: 'ncdr' };
+    return { risk: ncdrRisk || 1, ncdrRisk: ncdrRisk || 1, wraRisk: null, source: 'NCDR 鄉鎮市潛勢', mode: 'ncdr' };
 }
 
 function getFeatureRisk(feature, config) {
@@ -1062,7 +1064,7 @@ async function updateLayers() {
         if (renderRequestId !== layerRenderRequestId) return;
         if (dataState) {
             activeClimateGridDataState = dataState;
-            climateGridManager.renderToLeaflet(map, layerManager, dataState, { fillOpacity: riskMapOpacity });
+            climateGridManager.renderToLeaflet(map, layerManager, dataState, { fillOpacity: climateGridOpacity });
         }
     } else if (climateGridManager && climateGridManager.currentLayer) {
         map.removeLayer(climateGridManager.currentLayer);
@@ -1703,19 +1705,40 @@ function renderTimelineUI() {
 
 function updateRiskOpacityControl() {
     const opacityGroup = document.getElementById('risk-opacity-group');
+    const gridOpacityGroup = document.getElementById('grid-opacity-group');
+    const gridOpacityValue = document.getElementById('val-grid-opacity');
     const opacityLabel = document.getElementById('risk-opacity-label');
     const opacityValue = document.getElementById('val-risk-opacity');
+    const opacitySlider = document.getElementById('slider-risk-opacity');
+    const gridOpacitySlider = document.getElementById('slider-grid-opacity');
+    const activeRiskOpacity = activeTheme === 'temp' ? tempAdminOpacity : ncdrRiskOpacity;
 
     if (opacityGroup) {
-        opacityGroup.style.display = (activeTheme === 'temp' || isNcdrLayerEnabled()) ? 'flex' : 'none';
+        opacityGroup.style.display = isNcdrLayerEnabled() ? 'flex' : 'none';
     }
 
     if (opacityLabel) {
-        opacityLabel.innerText = activeTheme === 'temp' ? '高溫風險圖透明度' : 'NCDR 風險圖透明度';
+        opacityLabel.innerText = activeTheme === 'temp' ? '行政區彙整風險透明度' : 'NCDR 風險圖透明度';
     }
 
     if (opacityValue) {
-        opacityValue.innerText = `${Math.round(riskMapOpacity * 100)}%`;
+        opacityValue.innerText = `${Math.round(activeRiskOpacity * 100)}%`;
+    }
+
+    if (opacitySlider) {
+        opacitySlider.value = String(activeRiskOpacity);
+    }
+
+    if (gridOpacityGroup) {
+        gridOpacityGroup.style.display = isClimateGridRiskMode() ? 'flex' : 'none';
+    }
+
+    if (gridOpacityValue) {
+        gridOpacityValue.innerText = `${Math.round(climateGridOpacity * 100)}%`;
+    }
+
+    if (gridOpacitySlider) {
+        gridOpacitySlider.value = String(climateGridOpacity);
     }
 }
 
@@ -2004,11 +2027,24 @@ function setupUIControls() {
         });
     }
 
-    // 4. Risk-map opacity slider (shared by NCDR flood risk and high-temperature risk overlays)
+    // 4. Separate opacity sliders for administrative polygons, NCDR flood polygons, and AR6 climate grids
     const riskOpacitySlider = document.getElementById('slider-risk-opacity');
     if (riskOpacitySlider) {
         riskOpacitySlider.addEventListener('input', (e) => {
-            riskMapOpacity = parseFloat(e.target.value);
+            if (activeTheme === 'temp') {
+                tempAdminOpacity = parseFloat(e.target.value);
+            } else {
+                ncdrRiskOpacity = parseFloat(e.target.value);
+            }
+            updateRiskOpacityControl();
+            updateLayers();
+        });
+    }
+
+    const gridOpacitySlider = document.getElementById('slider-grid-opacity');
+    if (gridOpacitySlider) {
+        gridOpacitySlider.addEventListener('input', (e) => {
+            climateGridOpacity = parseFloat(e.target.value);
             updateRiskOpacityControl();
             updateLayers();
         });
