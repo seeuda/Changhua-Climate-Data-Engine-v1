@@ -23,7 +23,6 @@ let activeFloodLayers = { ncdr: true, wra: false }; // flood overlays can be com
 let activeTempAdminReference = false; // optional township reference overlay for temp mode
 let activeWraScenario = 'gwl15'; // 'gwl15' = 350mm/24HR, 'gwl20' = 650mm/24HR
 let riskMapOpacity = 0.7;
-let activeTempRiskMode = 'mean'; // 'mean' or 'max'
 let activeClimateIndicator = '日夜溫差';
 let activeClimateYear = '2050';
 let activeClimateGridDataState = null;
@@ -483,9 +482,8 @@ function getActiveRiskField() {
         // Flood supports current and gwl15 (which maps to flood_risk_future)
         return activeScenario === 'current' ? 'flood_risk_current' : 'flood_risk_future';
     } else {
-        // Temp supports current, gwl15, gwl20, and gwl40 for both mean and max
-        const mode = activeTempRiskMode === 'max' ? 'max' : 'mean';
-        return `temp_risk_${mode}_${activeScenario}`;
+        // Temp township values are retained only as a legacy administrative reference/fallback.
+        return `temp_risk_mean_${activeScenario}`;
     }
 }
 
@@ -1666,9 +1664,9 @@ function renderTimelineUI() {
     } else {
         const steps = [
             { id: 'current', label: '現況基準', left: '0%' },
-            { id: 'gwl15', label: '升溫 1.5°C', left: '33.33%' },
-            { id: 'gwl20', label: '升溫 2.0°C', left: '66.67%' },
-            { id: 'gwl40', label: '升溫 4.0°C', left: '100%' }
+            { id: 'gwl15', label: '升溫 1.5°C（SSP1-2.6）', left: '33.33%' },
+            { id: 'gwl20', label: '升溫 2.0°C（SSP2-4.5）', left: '66.67%' },
+            { id: 'gwl40', label: '升溫 4.0°C（SSP5-8.5）', left: '100%' }
         ];
         steps.forEach(step => {
             const isActive = activeScenario === step.id ? 'active' : '';
@@ -1785,6 +1783,7 @@ function setupColorThemeControl() {
 
 
 function getClimateScenarioCode(scenarioId) {
+    // User-facing warming labels map to AR6 SSP folders used by the grid dataset.
     if (scenarioId === 'current') return 'historical';
     if (scenarioId === 'gwl20') return 'ssp245';
     if (scenarioId === 'gwl40') return 'ssp585';
@@ -1927,20 +1926,6 @@ function setupUIControls() {
         });
     });
 
-    // 2b. High Temp Risk Mode Selector
-    const tempModeButtons = document.querySelectorAll('#temp-mode-selector .toggle-btn');
-    tempModeButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const targetBtn = e.currentTarget;
-            tempModeButtons.forEach(b => b.classList.remove('active'));
-            targetBtn.classList.add('active');
-            activeTempRiskMode = targetBtn.dataset.mode;
-            
-            refreshStandardizedData();
-        });
-    });
-
-
     // 3. Timeline Step Switcher via Event Delegation
     const selector = document.getElementById('scenario-selector');
     if (selector) {
@@ -2009,17 +1994,19 @@ function updateHeaderIndicator() {
         : '高溫風險等級';
 
     let scenarioName = '現況基準';
-    if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
+    if (activeTheme === 'temp') {
+        if (activeScenario === 'gwl15') {
+            scenarioName = '升溫 1.5°C（SSP1-2.6）情境推估';
+        } else if (activeScenario === 'gwl20') {
+            scenarioName = '升溫 2.0°C（SSP2-4.5）情境推估';
+        } else if (activeScenario === 'gwl40') {
+            scenarioName = '升溫 4.0°C（SSP5-8.5）情境推估';
+        }
+    } else if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
         scenarioName = getWraScenarioName();
     } else {
-        if (activeScenario === 'gwl15') {
-            scenarioName = '升溫 1.5°C 情境推估';
-        } else if (activeScenario === 'gwl20') {
-            scenarioName = '升溫 2.0°C 情境推估';
-        } else if (activeScenario === 'gwl40') {
-            scenarioName = '升溫 4.0°C 情境推估';
-        } else if (activeScenario === 'future') {
-            scenarioName = '升溫 1.5°C 情境推估';
+        if (activeScenario === 'gwl15' || activeScenario === 'future') {
+            scenarioName = '未來情境推估';
         }
 
         if (isWraLayerEnabled()) {

@@ -131,19 +131,12 @@
                 </div>
 
                 <div class="control-group" id="temp-mode-group">
-                    <label class="group-label">高溫風險計算模式</label>
-                    <div class="toggle-buttons" id="temp-mode-selector">
-                        <button class="toggle-btn active" data-mode="mean">
-                            <i class="fa-solid fa-calculator"></i> 均權平均風險
-                        </button>
-                        <button class="toggle-btn" data-mode="max">
-                            <i class="fa-solid fa-triangle-exclamation"></i> 最大值風險
-                        </button>
-                    </div>
+                    <label class="group-label">高溫風險資料來源</label>
                     <button class="toggle-btn reference-toggle" id="temp-admin-reference-toggle" type="button" aria-pressed="false">
-                        <i class="fa-solid fa-map-location-dot"></i> 顯示行政區風險參考
+                        <i class="fa-solid fa-map-location-dot"></i> 顯示舊版行政區風險參考
                     </button>
-                    <p class="control-hint">點位風險優先使用氣候網格；只有無網格值時才回退行政區配對。</p>
+                    <p class="control-hint">點位風險直接依完整氣候網格資料判定；行政區風險僅作舊版方法參考或無網格資料時回退。</p>
+                    <p class="control-hint">情境時間軸保留易讀的升溫標籤；實際讀取對應 AR6 SSP 模擬資料，單一網格/年份可能受模式內部變異影響而不逐格遞增。</p>
                 </div>
 
                 <div class="control-group">
@@ -191,7 +184,7 @@
                         </div>
                         <div class="timeline-step active" data-scenario="gwl40" style="left: 100%;">
                             <span class="step-dot"></span>
-                            <span class="step-label">升溫 4.0°C 情境</span>
+                            <span class="step-label">升溫 4.0°C（SSP5-8.5）</span>
                         </div>
                     </div>
                 </div>
@@ -231,7 +224,7 @@
             <header class="map-overlay-header">
                 <div class="header-pill">
                     <span class="indicator-dot active"></span>
-                    <span class="header-title" id="active-scenario-indicator">高溫風險等級套疊 - 升溫 4.0°C 情境推估</span>
+                    <span class="header-title" id="active-scenario-indicator">高溫風險等級套疊 - 升溫 4.0°C（SSP5-8.5）情境推估</span>
                 </div>
             </header>
         </main>
