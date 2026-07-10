@@ -451,7 +451,7 @@ function loadData() {
 // ==========================================================================
 let activeWraData = null;
 
-function refreshStandardizedData() {
+async function refreshStandardizedData() {
     if (!originalTownGeoJson) return;
 
     townGeoJsonData = JSON.parse(JSON.stringify(originalTownGeoJson));
@@ -470,7 +470,7 @@ function refreshStandardizedData() {
         }
     }
 
-    updateLayers();
+    await updateLayers();
     updateStatsAndChart();
     populatePointList();
 }
@@ -1309,7 +1309,11 @@ function updateStatsAndChart() {
     updateLegendUI();
     updateTotalPointCard();
 
-    if (isNcdrLayerEnabled()) {
+    if (activeTheme === 'temp') {
+        const { totalHighRisk, riskDistribution } = getRiskDistribution();
+        updateHighRiskCard(totalHighRisk, `網格高溫警戒${getActivePointSummaryLabel()} (Lv.4-5)`);
+        renderChart(riskDistribution);
+    } else if (isNcdrLayerEnabled()) {
         const { totalHighRisk, riskDistribution } = getRiskDistribution();
         const sourceLabel = isWraLayerEnabled() ? '綜合套疊' : '第 4-5 級';
         updateHighRiskCard(totalHighRisk, `${sourceLabel}警戒${getActivePointSummaryLabel()} (Lv.4-5)`);
@@ -1744,7 +1748,7 @@ function setupPointLayerSelector() {
     const selector = document.getElementById('point-layer-selector');
     if (!selector) return;
 
-    selector.addEventListener('click', event => {
+    selector.addEventListener('click', async event => {
         const button = event.target.closest('[data-point-layer]');
         if (!button) return;
 
@@ -1760,7 +1764,7 @@ function setupPointLayerSelector() {
         }
 
         renderPointLayerSelector();
-        updateLayers();
+        await updateLayers();
         updateStatsAndChart();
         populatePointList();
     });
