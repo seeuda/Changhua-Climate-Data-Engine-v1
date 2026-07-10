@@ -1315,6 +1315,10 @@ function getWraDepthDistribution() {
     return { totalFlooded, depthDistribution };
 }
 
+function getTempRiskSummaryPrefix() {
+    return isClimateGridRiskMode() ? '網格高溫警戒' : '行政區高溫警戒';
+}
+
 function updateStatsAndChart() {
     if (!townGeoJsonData) return;
 
@@ -1324,7 +1328,7 @@ function updateStatsAndChart() {
 
     if (activeTheme === 'temp') {
         const { totalHighRisk, riskDistribution } = getRiskDistribution();
-        updateHighRiskCard(totalHighRisk, `網格高溫警戒${getActivePointSummaryLabel()} (Lv.4-5)`);
+        updateHighRiskCard(totalHighRisk, `${getTempRiskSummaryPrefix()}${getActivePointSummaryLabel()} (Lv.4-5)`);
         renderChart(riskDistribution);
     } else if (isNcdrLayerEnabled()) {
         const { totalHighRisk, riskDistribution } = getRiskDistribution();
@@ -1805,9 +1809,17 @@ function getClimateScenarioCode(scenarioId) {
     return 'ssp126';
 }
 
+function updateClimateGridControlVisibility() {
+    const controlGroup = document.getElementById('climate-grid-control-group');
+    if (controlGroup) {
+        controlGroup.style.display = isClimateGridRiskMode() ? 'flex' : 'none';
+    }
+}
+
 function setupClimateGridControls() {
     const indicatorSelect = document.getElementById('climate-indicator-select');
     const yearSelect = document.getElementById('climate-year-select');
+    updateClimateGridControlVisibility();
 
     if (indicatorSelect) {
         indicatorSelect.value = activeClimateIndicator;
@@ -1854,6 +1866,7 @@ function setupUIControls() {
                  tempModeGroup.style.display = activeTheme === 'temp' ? 'block' : 'none';
              }
              updateRiskOpacityControl();
+             updateClimateGridControlVisibility();
 
             // Safety scenario shift
             if (activeTheme === 'flood') {
@@ -1896,6 +1909,7 @@ function setupUIControls() {
             activeTempRiskMode = nextMode;
             syncTempRiskModeButtons();
             updateRiskOpacityControl();
+            updateClimateGridControlVisibility();
             refreshStandardizedData();
         });
     });
@@ -1910,6 +1924,7 @@ function setupUIControls() {
             tempAdminReferenceToggle.classList.toggle('active', activeTempAdminReference);
             tempAdminReferenceToggle.setAttribute('aria-pressed', String(activeTempAdminReference));
             updateRiskOpacityControl();
+            updateClimateGridControlVisibility();
             refreshStandardizedData();
         });
     }
@@ -2058,7 +2073,7 @@ function formatClimateLegendNumber(value) {
 }
 
 function getClimateGridLegendHtml() {
-    if (activeTheme !== 'temp' || !climateGridManager) return '';
+    if (!isClimateGridRiskMode() || !climateGridManager) return '';
     const config = climateGridManager.colorScaleConfig && climateGridManager.colorScaleConfig[activeClimateIndicator];
     if (!config || config.mode !== 'absolute' || !Array.isArray(config.breaks) || !Array.isArray(config.colors)) return '';
 
