@@ -35,6 +35,24 @@ class ClimateGridManager {
         return colors[colors.length - 1]; // 超過最大值
     }
 
+
+    isValidGridValue(value) {
+        return value !== null && value !== undefined && value !== -99.9 && Number.isFinite(Number(value));
+    }
+
+    getNoDataGridStyle(fillOpacity) {
+        const opacity = Math.min(fillOpacity, 0.28);
+        return {
+            fillColor: '#94a3b8',
+            color: '#94a3b8',
+            weight: 1,
+            opacity,
+            fillOpacity: opacity,
+            dashArray: '3, 3',
+            className: 'climate-grid-no-data'
+        };
+    }
+
     async loadGridData(datasetVersion, indicator, scenario, model, year) {
         // 確認幾何檔已註冊
         let geojson = this.registry.getGrids(datasetVersion);
@@ -61,7 +79,7 @@ class ClimateGridManager {
             }
         }
 
-        // 建立快取映射 (GridID -> Value)
+        // 建立快取映射 (GridID -> Value)。缺值格保留為 no-data，不補值避免誤導風險判定。
         const yearValues = attrData.values[year] || {};
 
         return {
@@ -90,20 +108,26 @@ class ClimateGridManager {
             style: (feature) => {
                 const gridId = feature.properties.GridID;
                 const val = values[gridId];
+                if (!this.isValidGridValue(val)) {
+                    return this.getNoDataGridStyle(fillOpacity);
+                }
+
                 const color = this.getColor(indicator, val);
                 
                 return {
                     fillColor: color,
-                    weight: 0, // 移除網格間的白色邊框，解決間隙問題
-                    opacity: 0,
-                    color: 'transparent', 
-                    fillOpacity
+                    weight: 1,
+                    opacity: fillOpacity,
+                    color,
+                    fillOpacity,
+                    lineCap: 'square',
+                    lineJoin: 'miter'
                 };
             },
             onEachFeature: (feature, layer) => {
                 const gridId = feature.properties.GridID;
                 const val = values[gridId];
-                if (val !== undefined && val !== -99.9) {
+                if (this.isValidGridValue(val)) {
                     const popupContent = `
                         <div class="climate-popup">
                             <h4>氣候網格資訊</h4>
@@ -112,12 +136,26 @@ class ClimateGridManager {
                             <p><b>指標:</b> ${indicator}</p>
                             <p><b>情境與模型:</b> ${scenario} (${model})</p>
                             <p><b>年份:</b> ${year}</p>
-                            <p><b>數值:</b> <span style="color: red; font-weight: bold;">${val.toFixed(2)}</span></p>
+                            <p><b>數值:</b> <span style="color: red; font-weight: bold;">${Number(val).toFixed(2)}</span></p>
                             <hr>
                             <small>解析度: ${resolution} | 來源: ${source} | 版號: ${datasetVersion}</small>
                         </div>
                     `;
                     layer.bindPopup(popupContent);
+                } else {
+                    layer.bindPopup(`
+                        <div class="climate-popup">
+                            <h4>氣候網格資訊</h4>
+                            <p><b>Grid ID:</b> ${gridId}</p>
+                            <p><b>經緯度:</b> ${feature.properties.lon.toFixed(3)}, ${feature.properties.lat.toFixed(3)}</p>
+                            <p><b>指標:</b> ${indicator}</p>
+                            <p><b>情境與模型:</b> ${scenario} (${model})</p>
+                            <p><b>年份:</b> ${year}</p>
+                            <p><b>數值:</b> 無來源網格資料；不納入風險判定</p>
+                            <hr>
+                            <small>解析度: ${resolution} | 來源: ${source} | 版號: ${datasetVersion}</small>
+                        </div>
+                    `);
                 }
             }
         });
