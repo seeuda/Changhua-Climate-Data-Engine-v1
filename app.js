@@ -20,11 +20,13 @@ let activePointLayerIds = new Set();
 let activeTheme = 'temp'; // 'flood' or 'temp'
 let activeScenario = 'gwl40'; // 'current', 'gwl15', 'gwl20', 'gwl40'
 let activeFloodLayers = { ncdr: true, wra: false }; // flood overlays can be combined
+let activeTempAdminReference = false; // optional township reference overlay for temp mode
 let activeWraScenario = 'gwl15'; // 'gwl15' = 350mm/24HR, 'gwl20' = 650mm/24HR
 let riskMapOpacity = 0.7;
 let activeTempRiskMode = 'mean'; // 'mean' or 'max'
 let activeClimateIndicator = '日夜溫差';
 let activeClimateYear = '2050';
+let activeClimateGridDataState = null;
 let selectedTown = null; // Filter daycare list
 let layerRenderRequestId = 0;
 
@@ -46,7 +48,7 @@ function isWraLayerEnabled() {
 }
 
 function isNcdrLayerEnabled() {
-    return activeTheme === 'temp' || (activeTheme === 'flood' && activeFloodLayers.ncdr);
+    return activeTheme === 'temp' ? activeTempAdminReference : activeFloodLayers.ncdr;
 }
 
 function getActiveFloodLayerNames() {
@@ -791,6 +793,44 @@ function getTownRiskMap() {
 }
 
 
+
+function getClimateGridRiskLevel(value) {
+    const config = climateGridManager?.colorScaleConfig?.[activeClimateIndicator];
+    if (value === null || value === undefined || value === -99.9 || !config?.breaks || !config?.colors) return null;
+
+    let binIndex = config.breaks.findIndex(breakValue => value <= breakValue);
+    if (binIndex === -1) binIndex = config.colors.length - 1;
+
+    return Math.min(5, Math.max(1, Math.ceil(((binIndex + 1) / config.colors.length) * 5)));
+}
+
+function getClimateGridFeatureRisk(feature) {
+    if (activeTheme !== 'temp' || !activeClimateGridDataState) return null;
+
+    const coords = getFeatureCoordinates(feature);
+    if (!coords) return null;
+
+    const [x, y] = coords;
+    const { geojson, values, indicator, scenario, model, year } = activeClimateGridDataState;
+    for (const gridFeature of geojson?.features || []) {
+        const geometry = gridFeature.geometry;
+        if (!geometry) continue;
+
+        const coordinates = geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.coordinates;
+        if (geometry.type !== 'Polygon' && geometry.type !== 'MultiPolygon') continue;
+        if (!isPointInMultiPolygon(x, y, coordinates)) continue;
+
+        const gridId = gridFeature.properties?.GridID;
+        const value = values?.[gridId];
+        const risk = getClimateGridRiskLevel(value);
+        if (!risk) return null;
+
+        return { risk, value, gridId, indicator, scenario, model, year };
+    }
+
+    return null;
+}
+
 function getNcdrFeatureRisk(feature, config) {
     const town = getFeatureTown(feature, config);
     return getTownRiskMap()[town] || 1;
@@ -813,6 +853,28 @@ function getWraFeatureRisk(feature, config) {
 }
 
 function getFeatureRiskAssessment(feature, config) {
+    if (activeTheme === 'temp') {
+        const climateGridRisk = getClimateGridFeatureRisk(feature);
+        const ncdrRisk = getNcdrFeatureRisk(feature, config);
+        if (climateGridRisk) {
+            return {
+                risk: climateGridRisk.risk,
+                ncdrRisk,
+                climateGridRisk,
+                source: '氣候網格',
+                mode: 'climate_grid'
+            };
+        }
+
+        return {
+            risk: ncdrRisk || 1,
+            ncdrRisk: ncdrRisk || 1,
+            climateGridRisk: null,
+            source: '鄉鎮市風險（無網格資料）',
+            mode: 'ncdr_fallback'
+        };
+    }
+
     const hasNcdr = isNcdrLayerEnabled();
     const hasWra = isWraLayerEnabled();
     const ncdrRisk = hasNcdr ? getNcdrFeatureRisk(feature, config) : null;
@@ -824,7 +886,7 @@ function getFeatureRiskAssessment(feature, config) {
     }
 
     if (hasWra) return { risk: wraRisk || 1, ncdrRisk: null, wraRisk: wraRisk || 1, source: '水利署潛勢', mode: 'wra' };
-    return { risk: ncdrRisk || 1, ncdrRisk: ncdrRisk || 1, wraRisk: null, source: activeTheme === 'temp' ? '高溫風險' : '鄉鎮市潛勢', mode: 'ncdr' };
+    return { risk: ncdrRisk || 1, ncdrRisk: ncdrRisk || 1, wraRisk: null, source: '鄉鎮市潛勢', mode: 'ncdr' };
 }
 
 function getFeatureRisk(feature, config) {
@@ -952,7 +1014,7 @@ async function updateLayers() {
     townLayer = L.geoJSON(townGeoJsonData, {
         pane: layerManager ? layerManager.getPane('administrative') : 'towns',
         style: (feature) => {
-            if (!isNcdrVisible || activeTheme === 'temp') {
+            if (!isNcdrVisible) {
                 return {
                     fillColor: 'transparent',
                     fillOpacity: 0,
@@ -973,8 +1035,11 @@ async function updateLayers() {
                 };
             }
         },
-        onEachFeature: onEachTownFeature
+        interactive: isNcdrVisible,
+        onEachFeature: isNcdrVisible ? onEachTownFeature : undefined
     }).addTo(map);
+
+    activeClimateGridDataState = null;
 
     // 3.5. Render New Climate Grid if temp theme is active
     if (activeTheme === 'temp' && climateGridManager) {
@@ -983,6 +1048,7 @@ async function updateLayers() {
         const dataState = await climateGridManager.loadGridData("AR6_v112", activeClimateIndicator, scenarioStr, "TaiESM1", year);
         if (renderRequestId !== layerRenderRequestId) return;
         if (dataState) {
+            activeClimateGridDataState = dataState;
             climateGridManager.renderToLeaflet(map, layerManager, dataState, { fillOpacity: riskMapOpacity });
         }
     } else if (climateGridManager && climateGridManager.currentLayer) {
@@ -1139,6 +1205,8 @@ function onEachPointFeature(feature, layer, config) {
             <span class="popup-val risk-badge badge-${riskVal}">第 ${riskVal} 級（${riskAssessment.source}）</span>
         </div>
         ${riskAssessment.mode === 'combined' ? `<div class="popup-row"><span class="popup-label">套疊明細</span><span class="popup-val">鄉鎮市第 ${riskAssessment.ncdrRisk} 級；水利署第 ${riskAssessment.wraRisk} 級，取較高者</span></div>` : ''}
+        ${riskAssessment.mode === 'climate_grid' ? `<div class="popup-row"><span class="popup-label">網格明細</span><span class="popup-val">${riskAssessment.climateGridRisk.indicator} ${riskAssessment.climateGridRisk.value.toFixed(2)}；Grid ${riskAssessment.climateGridRisk.gridId}</span></div>` : ''}
+        ${riskAssessment.mode === 'ncdr_fallback' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位無可用網格值，改用行政區風險配對</span></div>` : ''}
         ${townMismatch ? `<div class="popup-row"><span class="popup-label">資料鄉鎮註記</span><span class="popup-val">${townMismatch.declaredTown}（依座標改以 ${townMismatch.spatialTown} 判定風險）</span></div>` : ''}
     `;
 
@@ -1618,7 +1686,7 @@ function updateRiskOpacityControl() {
     const opacityValue = document.getElementById('val-risk-opacity');
 
     if (opacityGroup) {
-        opacityGroup.style.display = isNcdrLayerEnabled() ? 'flex' : 'none';
+        opacityGroup.style.display = (activeTheme === 'temp' || isNcdrLayerEnabled()) ? 'flex' : 'none';
     }
 
     if (opacityLabel) {
@@ -1794,6 +1862,20 @@ function setupUIControls() {
         });
     });
 
+
+    const tempAdminReferenceToggle = document.getElementById('temp-admin-reference-toggle');
+    if (tempAdminReferenceToggle) {
+        tempAdminReferenceToggle.classList.toggle('active', activeTempAdminReference);
+        tempAdminReferenceToggle.setAttribute('aria-pressed', String(activeTempAdminReference));
+        tempAdminReferenceToggle.addEventListener('click', () => {
+            activeTempAdminReference = !activeTempAdminReference;
+            tempAdminReferenceToggle.classList.toggle('active', activeTempAdminReference);
+            tempAdminReferenceToggle.setAttribute('aria-pressed', String(activeTempAdminReference));
+            updateRiskOpacityControl();
+            refreshStandardizedData();
+        });
+    }
+
     // 2. Flood Layer Selector (multi-select overlay)
     const modeButtons = document.querySelectorAll('#flood-mode-selector .toggle-btn');
     const syncFloodLayerButtons = () => {
@@ -1944,6 +2026,37 @@ function updateHeaderIndicator() {
     indicator.innerText = `${themeName}套疊 - ${scenarioName}`;
 }
 
+
+function formatClimateLegendNumber(value) {
+    return Number.isInteger(value) ? String(value) : String(value);
+}
+
+function getClimateGridLegendHtml() {
+    if (activeTheme !== 'temp' || !climateGridManager) return '';
+    const config = climateGridManager.colorScaleConfig && climateGridManager.colorScaleConfig[activeClimateIndicator];
+    if (!config || config.mode !== 'absolute' || !Array.isArray(config.breaks) || !Array.isArray(config.colors)) return '';
+
+    const unit = config.unit ? ` ${config.unit}` : '';
+    const items = config.colors.map((color, index) => {
+        let label;
+        if (index === 0) {
+            label = `≤ ${formatClimateLegendNumber(config.breaks[0])}${unit}`;
+        } else if (index >= config.colors.length - 1) {
+            label = `> ${formatClimateLegendNumber(config.breaks[config.breaks.length - 1])}${unit}`;
+        } else {
+            label = `${formatClimateLegendNumber(config.breaks[index - 1])}–${formatClimateLegendNumber(config.breaks[index])}${unit}`;
+        }
+        return `<div class="legend-item"><span class="legend-color-box" style="background:${color}"></span> <span>${label}</span></div>`;
+    }).join('');
+
+    return `
+        <div class="legend-title">氣候網格固定色階｜${activeClimateIndicator}</div>
+        <div class="legend-scale">${items}</div>
+        <div class="legend-note">使用全域固定斷點，不會隨情境、年份或模型重新正規化；因此不同情境可直接以同一色階比較。</div>
+        <div class="legend-note">目前時間軸為 SSP 資料代理：升溫 1.5°C→SSP126、2.0°C→SSP245、4.0°C→SSP585；單一網格在同一年份可能受模式內部變異而非單調增加。</div>
+    `;
+}
+
 // Dynamic Legend UI Widget
 function updateLegendUI() {
     const legendDiv = document.getElementById('map-legend-widget');
@@ -1990,7 +2103,7 @@ function updateLegendUI() {
         </div>
     `;
 
-    legendDiv.innerHTML = `${isNcdrLayerEnabled() ? riskLegend : ''}${isWraLayerEnabled() ? wraLegend : ''}${pointLegend}`;
+    legendDiv.innerHTML = `${getClimateGridLegendHtml()}${isNcdrLayerEnabled() ? riskLegend : ''}${isWraLayerEnabled() ? wraLegend : ''}${pointLegend}`;
 }
 
 // Legend Widget Initialization

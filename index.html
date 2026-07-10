@@ -140,6 +140,10 @@
                             <i class="fa-solid fa-triangle-exclamation"></i> 最大值風險
                         </button>
                     </div>
+                    <button class="toggle-btn reference-toggle" id="temp-admin-reference-toggle" type="button" aria-pressed="false">
+                        <i class="fa-solid fa-map-location-dot"></i> 顯示行政區風險參考
+                    </button>
+                    <p class="control-hint">點位風險優先使用氣候網格；只有無網格值時才回退行政區配對。</p>
                 </div>
 
                 <div class="control-group">
@@ -174,7 +178,7 @@
                         <option value="2070">2070</option>
                         <option value="2100">2100</option>
                     </select>
-                    <p class="control-hint">情境時間軸會自動對應 SSP 資料；現況基準會使用 historical 的 2014 年切片。</p>
+                    <p class="control-hint">網格採固定色階；情境時間軸以 SSP 資料代理升溫情境，現況基準使用 historical 的 2014 年切片。</p>
                 </div>
 
                 <div class="control-group">
