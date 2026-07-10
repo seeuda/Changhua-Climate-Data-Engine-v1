@@ -1664,9 +1664,9 @@ function renderTimelineUI() {
     } else {
         const steps = [
             { id: 'current', label: '現況基準', left: '0%' },
-            { id: 'gwl15', label: 'SSP1-2.6', left: '33.33%' },
-            { id: 'gwl20', label: 'SSP2-4.5', left: '66.67%' },
-            { id: 'gwl40', label: 'SSP5-8.5', left: '100%' }
+            { id: 'gwl15', label: '升溫 1.5°C（SSP1-2.6）', left: '33.33%' },
+            { id: 'gwl20', label: '升溫 2.0°C（SSP2-4.5）', left: '66.67%' },
+            { id: 'gwl40', label: '升溫 4.0°C（SSP5-8.5）', left: '100%' }
         ];
         steps.forEach(step => {
             const isActive = activeScenario === step.id ? 'active' : '';
@@ -1783,7 +1783,7 @@ function setupColorThemeControl() {
 
 
 function getClimateScenarioCode(scenarioId) {
-    // UI scenario IDs are legacy names; climate grid data is stored by AR6 SSP folders.
+    // User-facing warming labels map to AR6 SSP folders used by the grid dataset.
     if (scenarioId === 'current') return 'historical';
     if (scenarioId === 'gwl20') return 'ssp245';
     if (scenarioId === 'gwl40') return 'ssp585';
@@ -1998,11 +1998,11 @@ function updateHeaderIndicator() {
         scenarioName = getWraScenarioName();
     } else {
         if (activeScenario === 'gwl15') {
-            scenarioName = 'SSP1-2.6 低排放情境';
+            scenarioName = '升溫 1.5°C（SSP1-2.6）情境推估';
         } else if (activeScenario === 'gwl20') {
-            scenarioName = 'SSP2-4.5 中排放情境';
+            scenarioName = '升溫 2.0°C（SSP2-4.5）情境推估';
         } else if (activeScenario === 'gwl40') {
-            scenarioName = 'SSP5-8.5 高排放情境';
+            scenarioName = '升溫 4.0°C（SSP5-8.5）情境推估';
         } else if (activeScenario === 'future') {
             scenarioName = '升溫 1.5°C 情境推估';
         }
