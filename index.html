@@ -156,6 +156,27 @@
                     <input type="range" id="slider-risk-opacity" class="control-range" min="0.1" max="1" step="0.05" value="0.7" aria-label="風險圖透明度">
                 </div>
 
+
+                <div class="control-group" id="climate-grid-control-group">
+                    <label class="group-label" for="climate-indicator-select">氣候網格指標</label>
+                    <select id="climate-indicator-select" class="theme-select" aria-label="選擇氣候網格指標">
+                        <option value="日夜溫差">日夜溫差</option>
+                        <option value="日高溫最大值">日高溫最大值</option>
+                        <option value="日低溫最大值">日低溫最大值</option>
+                        <option value="暖晝天數">暖晝天數</option>
+                        <option value="暖夜天數">暖夜天數</option>
+                        <option value="極端高溫持續指數">極端高溫持續指數</option>
+                    </select>
+                    <label class="group-label" for="climate-year-select">目標年份</label>
+                    <select id="climate-year-select" class="theme-select" aria-label="選擇氣候網格目標年份">
+                        <option value="2030">2030</option>
+                        <option value="2050" selected>2050</option>
+                        <option value="2070">2070</option>
+                        <option value="2100">2100</option>
+                    </select>
+                    <p class="control-hint">情境時間軸會自動對應 SSP 資料；現況基準會使用 historical 的 2014 年切片。</p>
+                </div>
+
                 <div class="control-group">
                     <label class="group-label">氣候情境時間軸</label>
                     <div class="timeline" id="scenario-selector">
