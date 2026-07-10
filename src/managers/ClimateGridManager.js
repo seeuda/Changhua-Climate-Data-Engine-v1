@@ -77,12 +77,13 @@ class ClimateGridManager {
         };
     }
 
-    renderToLeaflet(map, layerManager, dataState) {
+    renderToLeaflet(map, layerManager, dataState, options = {}) {
         if (this.currentLayer) {
             map.removeLayer(this.currentLayer);
         }
 
         const { geojson, values, indicator, scenario, model, year, datasetVersion, source, resolution } = dataState;
+        const fillOpacity = Number.isFinite(options.fillOpacity) ? options.fillOpacity : 0.6;
 
         this.currentLayer = L.geoJSON(geojson, {
             pane: layerManager.getPane('climate_grid'),
@@ -96,7 +97,7 @@ class ClimateGridManager {
                     weight: 0, // 移除網格間的白色邊框，解決間隙問題
                     opacity: 0,
                     color: 'transparent', 
-                    fillOpacity: 0.6
+                    fillOpacity
                 };
             },
             onEachFeature: (feature, layer) => {
