@@ -419,6 +419,12 @@ body, html {
     background: rgba(255, 255, 255, 0.05);
 }
 
+.reference-toggle {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    background: var(--control-track-bg);
+}
+
 .control-hint {
     margin: 8px 0 0;
     color: var(--text-muted);
@@ -954,6 +960,16 @@ body, html {
     border-radius: 3px;
 }
 
+.legend-note {
+    max-width: 240px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border-color);
+    color: var(--text-muted);
+    font-size: 10px;
+    line-height: 1.5;
+}
+
 /* Leaflet Custom Popups Style */
 .leaflet-popup-content-wrapper {
     background: var(--bg-sidebar) !important;
@@ -1256,6 +1272,14 @@ body, html {
     .legend-item {
         font-size: 9px !important;
         gap: 6px !important;
+    }
+
+    .legend-note {
+        max-width: 150px !important;
+        margin-top: 5px !important;
+        padding-top: 5px !important;
+        font-size: 8px !important;
+        line-height: 1.35 !important;
     }
 
     .legend-color-box {
