@@ -1,4 +1,46 @@
 {
+  "日夜溫差": {
+    "mode": "absolute",
+    "unit": "°C",
+    "description": "日最高溫與日最低溫差，使用較細固定色階凸顯彰化縣內差異",
+    "breaks": [7, 7.5, 8, 8.5, 9],
+    "colors": ["#4575b4", "#91bfdb", "#ffffbf", "#fdae61", "#f46d43", "#d73027"]
+  },
+  "日高溫最大值": {
+    "mode": "absolute",
+    "unit": "°C",
+    "description": "日最高溫最大值，固定色階便於跨情境比較",
+    "breaks": [34, 35, 36, 37, 38],
+    "colors": ["#4575b4", "#91bfdb", "#ffffbf", "#fdae61", "#f46d43", "#d73027"]
+  },
+  "日低溫最大值": {
+    "mode": "absolute",
+    "unit": "°C",
+    "description": "日最低溫最大值，固定色階便於跨情境比較",
+    "breaks": [27, 28, 29, 30, 31],
+    "colors": ["#4575b4", "#91bfdb", "#ffffbf", "#fdae61", "#f46d43", "#d73027"]
+  },
+  "暖晝天數": {
+    "mode": "absolute",
+    "unit": "days",
+    "description": "暖晝天數，固定色階呈現天數級距",
+    "breaks": [100, 115, 130, 145, 160],
+    "colors": ["#4575b4", "#91bfdb", "#ffffbf", "#fdae61", "#f46d43", "#d73027"]
+  },
+  "暖夜天數": {
+    "mode": "absolute",
+    "unit": "days",
+    "description": "暖夜天數，固定色階呈現天數級距",
+    "breaks": [120, 145, 170, 195, 220],
+    "colors": ["#4575b4", "#91bfdb", "#ffffbf", "#fdae61", "#f46d43", "#d73027"]
+  },
+  "極端高溫持續指數": {
+    "mode": "absolute",
+    "unit": "days",
+    "description": "極端高溫持續指數，固定色階確保多情境比較不失真",
+    "breaks": [30, 40, 50, 60, 70],
+    "colors": ["#4575b4", "#91bfdb", "#ffffbf", "#fdae61", "#f46d43", "#d73027"]
+  },
   "extreme_heat": {
     "mode": "absolute",
     "unit": "°C",

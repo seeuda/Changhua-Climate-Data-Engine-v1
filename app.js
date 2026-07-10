@@ -23,6 +23,8 @@ let activeFloodLayers = { ncdr: true, wra: false }; // flood overlays can be com
 let activeWraScenario = 'gwl15'; // 'gwl15' = 350mm/24HR, 'gwl20' = 650mm/24HR
 let riskMapOpacity = 0.7;
 let activeTempRiskMode = 'mean'; // 'mean' or 'max'
+let activeClimateIndicator = '日夜溫差';
+let activeClimateYear = '2050';
 let selectedTown = null; // Filter daycare list
 let isCalibrationLocked = false;
 
@@ -1052,13 +1054,9 @@ async function updateLayers() {
 
     // 3.5. Render New Climate Grid if temp theme is active
     if (activeTheme === 'temp' && climateGridManager) {
-        // Map the old scenario UI state to the new SSP format
-        let scenarioStr = 'ssp126';
-        if (activeScenario === 'gwl20') scenarioStr = 'ssp245';
-        else if (activeScenario === 'gwl40') scenarioStr = 'ssp585';
-
-        // 預設年份為 2050，若未來有時間軸 UI 可替換此參數
-        const dataState = await climateGridManager.loadGridData("AR6_v112", "日夜溫差", scenarioStr, "TaiESM1", "2050");
+        const scenarioStr = getClimateScenarioCode(activeScenario);
+        const year = scenarioStr === 'historical' && Number(activeClimateYear) > 2014 ? '2014' : activeClimateYear;
+        const dataState = await climateGridManager.loadGridData("AR6_v112", activeClimateIndicator, scenarioStr, "TaiESM1", year);
         if (dataState) {
             climateGridManager.renderToLeaflet(map, layerManager, dataState);
         }
@@ -1788,9 +1786,39 @@ function setupColorThemeControl() {
     }
 }
 
+
+function getClimateScenarioCode(scenarioId) {
+    if (scenarioId === 'current') return 'historical';
+    if (scenarioId === 'gwl20') return 'ssp245';
+    if (scenarioId === 'gwl40') return 'ssp585';
+    return 'ssp126';
+}
+
+function setupClimateGridControls() {
+    const indicatorSelect = document.getElementById('climate-indicator-select');
+    const yearSelect = document.getElementById('climate-year-select');
+
+    if (indicatorSelect) {
+        indicatorSelect.value = activeClimateIndicator;
+        indicatorSelect.addEventListener('change', (event) => {
+            activeClimateIndicator = event.target.value;
+            applyCalibration();
+        });
+    }
+
+    if (yearSelect) {
+        yearSelect.value = activeClimateYear;
+        yearSelect.addEventListener('change', (event) => {
+            activeClimateYear = event.target.value;
+            applyCalibration();
+        });
+    }
+}
+
 function setupUIControls() {
     setupColorThemeControl();
     setupPointLayerSelector();
+    setupClimateGridControls();
     renderTimelineUI();
 
     // 1. Theme Switcher
