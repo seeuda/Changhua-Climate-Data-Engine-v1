@@ -40,45 +40,17 @@ class ClimateGridManager {
         return value !== null && value !== undefined && value !== -99.9 && Number.isFinite(Number(value));
     }
 
-    fillMissingGridValues(geojson, rawValues) {
-        const features = geojson?.features || [];
-        const values = { ...rawValues };
-        const validFeatures = features.filter(feature => {
-            const gridId = feature.properties?.GridID;
-            return this.isValidGridValue(rawValues[gridId]);
-        });
-        const imputedGridIds = new Set();
-
-        if (!validFeatures.length) {
-            return { values, imputedGridIds };
-        }
-
-        features.forEach(feature => {
-            const props = feature.properties || {};
-            const gridId = props.GridID;
-            if (!gridId || this.isValidGridValue(values[gridId])) return;
-
-            let nearestFeature = null;
-            let nearestDistance = Infinity;
-            validFeatures.forEach(candidate => {
-                const candidateProps = candidate.properties || {};
-                const distance = Math.hypot(
-                    Number(candidateProps.lon) - Number(props.lon),
-                    Number(candidateProps.lat) - Number(props.lat)
-                );
-                if (distance < nearestDistance) {
-                    nearestDistance = distance;
-                    nearestFeature = candidate;
-                }
-            });
-
-            if (nearestFeature) {
-                values[gridId] = rawValues[nearestFeature.properties.GridID];
-                imputedGridIds.add(gridId);
-            }
-        });
-
-        return { values, imputedGridIds };
+    getNoDataGridStyle(fillOpacity) {
+        const opacity = Math.min(fillOpacity, 0.28);
+        return {
+            fillColor: '#94a3b8',
+            color: '#94a3b8',
+            weight: 1,
+            opacity,
+            fillOpacity: opacity,
+            dashArray: '3, 3',
+            className: 'climate-grid-no-data'
+        };
     }
 
     async loadGridData(datasetVersion, indicator, scenario, model, year) {
@@ -107,15 +79,12 @@ class ClimateGridManager {
             }
         }
 
-        // 建立快取映射 (GridID -> Value)，並補齊零散缺值，避免風險套疊出現透明缺口。
-        const rawYearValues = attrData.values[year] || {};
-        const { values: displayValues, imputedGridIds } = this.fillMissingGridValues(geojson, rawYearValues);
+        // 建立快取映射 (GridID -> Value)。缺值格保留為 no-data，不補值避免誤導風險判定。
+        const yearValues = attrData.values[year] || {};
 
         return {
             geojson: geojson,
-            values: displayValues,
-            rawValues: rawYearValues,
-            imputedGridIds,
+            values: yearValues,
             indicator: indicator,
             scenario: scenario,
             model: model,
@@ -131,7 +100,7 @@ class ClimateGridManager {
             map.removeLayer(this.currentLayer);
         }
 
-        const { geojson, values, indicator, scenario, model, year, datasetVersion, source, resolution, imputedGridIds } = dataState;
+        const { geojson, values, indicator, scenario, model, year, datasetVersion, source, resolution } = dataState;
         const fillOpacity = Number.isFinite(options.fillOpacity) ? options.fillOpacity : 0.6;
 
         this.currentLayer = L.geoJSON(geojson, {
@@ -139,23 +108,26 @@ class ClimateGridManager {
             style: (feature) => {
                 const gridId = feature.properties.GridID;
                 const val = values[gridId];
+                if (!this.isValidGridValue(val)) {
+                    return this.getNoDataGridStyle(fillOpacity);
+                }
+
                 const color = this.getColor(indicator, val);
                 
                 return {
                     fillColor: color,
-                    weight: color === 'transparent' ? 0 : 1,
-                    opacity: color === 'transparent' ? 0 : fillOpacity,
+                    weight: 1,
+                    opacity: fillOpacity,
                     color,
                     fillOpacity,
+                    lineCap: 'square',
+                    lineJoin: 'miter'
                 };
             },
             onEachFeature: (feature, layer) => {
                 const gridId = feature.properties.GridID;
                 const val = values[gridId];
                 if (this.isValidGridValue(val)) {
-                    const imputedNote = imputedGridIds?.has(gridId)
-                        ? '<p><b>資料補齊:</b> 以鄰近有效網格補值，避免套疊缺口</p>'
-                        : '';
                     const popupContent = `
                         <div class="climate-popup">
                             <h4>氣候網格資訊</h4>
@@ -165,12 +137,25 @@ class ClimateGridManager {
                             <p><b>情境與模型:</b> ${scenario} (${model})</p>
                             <p><b>年份:</b> ${year}</p>
                             <p><b>數值:</b> <span style="color: red; font-weight: bold;">${Number(val).toFixed(2)}</span></p>
-                            ${imputedNote}
                             <hr>
                             <small>解析度: ${resolution} | 來源: ${source} | 版號: ${datasetVersion}</small>
                         </div>
                     `;
                     layer.bindPopup(popupContent);
+                } else {
+                    layer.bindPopup(`
+                        <div class="climate-popup">
+                            <h4>氣候網格資訊</h4>
+                            <p><b>Grid ID:</b> ${gridId}</p>
+                            <p><b>經緯度:</b> ${feature.properties.lon.toFixed(3)}, ${feature.properties.lat.toFixed(3)}</p>
+                            <p><b>指標:</b> ${indicator}</p>
+                            <p><b>情境與模型:</b> ${scenario} (${model})</p>
+                            <p><b>年份:</b> ${year}</p>
+                            <p><b>數值:</b> 無來源網格資料；不納入風險判定</p>
+                            <hr>
+                            <small>解析度: ${resolution} | 來源: ${source} | 版號: ${datasetVersion}</small>
+                        </div>
+                    `);
                 }
             }
         });
