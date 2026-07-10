@@ -26,7 +26,7 @@ let activeTempRiskMode = 'mean'; // 'mean' or 'max'
 let activeClimateIndicator = '日夜溫差';
 let activeClimateYear = '2050';
 let selectedTown = null; // Filter daycare list
-let isCalibrationLocked = false;
+let layerRenderRequestId = 0;
 
 // 新增: Climate Data Engine 全域實例
 const datasetRegistry = new DatasetRegistry();
@@ -437,75 +437,21 @@ function loadData() {
         originalDaycarePoints = originalPointDatasets.daycare || null;
         renderPointLayerSelector();
 
-        // Apply calibration based on initial slider values (default 0)
-        applyCalibration();
+        // Render the initial, standardized GIS data.
+        refreshStandardizedData();
     }).catch(err => {
         console.error('Error loading GIS data:', err);
     });
 }
 
 // ==========================================================================
-// Coordinate Calibration & Dynamic Shift & Scale
+// Data Refresh
 // ==========================================================================
 let activeWraData = null;
 
-function getCalibrationValues() {
-    return {
-        lonShift: parseFloat(document.getElementById('slider-lon-shift').value),
-        latShift: parseFloat(document.getElementById('slider-lat-shift').value),
-        scaleFactor: parseFloat(document.getElementById('slider-scale').value)
-    };
-}
-
-function formatSignedCalibrationValue(value) {
-    return `${value >= 0 ? '+' : ''}${value.toFixed(5)}`;
-}
-
-function formatCalibrationSummary(values = getCalibrationValues()) {
-    return `經度偏移 ${formatSignedCalibrationValue(values.lonShift)}、緯度偏移 ${formatSignedCalibrationValue(values.latShift)}、縮放比例 ${values.scaleFactor.toFixed(5)}`;
-}
-
-function updateCalibrationValueDisplays(values = getCalibrationValues()) {
-    document.getElementById('val-lon-shift').innerText = formatSignedCalibrationValue(values.lonShift);
-    document.getElementById('val-lat-shift').innerText = formatSignedCalibrationValue(values.latShift);
-    document.getElementById('val-scale').innerText = values.scaleFactor.toFixed(5);
-}
-
-function setCalibrationLocked(locked, showNotice = false) {
-    isCalibrationLocked = locked;
-
-    ['slider-lon-shift', 'slider-lat-shift', 'slider-scale'].forEach(id => {
-        const control = document.getElementById(id);
-        if (control) control.disabled = locked;
-    });
-
-    const lockButton = document.getElementById('btn-calibration-lock');
-    if (lockButton) {
-        lockButton.classList.toggle('active', locked);
-        lockButton.setAttribute('aria-pressed', String(locked));
-        lockButton.innerHTML = locked
-            ? '<i class="fa-solid fa-lock"></i> 已鎖定校正值'
-            : '<i class="fa-solid fa-lock-open"></i> 鎖定校正值';
-    }
-
-    const notice = document.getElementById('calibration-lock-notice');
-    if (notice) {
-        notice.hidden = !locked && !showNotice;
-        notice.textContent = locked
-            ? `你本次進行圖層偏移校正，設定值為：${formatCalibrationSummary()}。下次重新載入時可設定相同的偏移校正參數。`
-            : '';
-    }
-}
-
-function applyCalibration() {
+function refreshStandardizedData() {
     if (!originalTownGeoJson) return;
 
-    const { lonShift, latShift, scaleFactor } = getCalibrationValues();
-
-    // Update UI value displays
-    updateCalibrationValueDisplays({ lonShift, latShift, scaleFactor });
-
-    // Deep copy original data
     townGeoJsonData = JSON.parse(JSON.stringify(originalTownGeoJson));
     pointDatasets = {};
     Object.entries(originalPointDatasets).forEach(([id, data]) => {
@@ -513,32 +459,6 @@ function applyCalibration() {
     });
     daycarePointsData = pointDatasets.daycare || null;
 
-    // Define approximate centroid of Changhua for scaling origin
-    const originLon = 120.45;
-    const originLat = 23.95;
-
-    // Shift and Scale coordinates function
-    function transformCoords(coords, dx, dy, scale) {
-        if (typeof coords[0] === 'number') {
-            // Apply scale relative to origin, then apply shift
-            coords[0] = originLon + (coords[0] - originLon) * scale + dx;
-            coords[1] = originLat + (coords[1] - originLat) * scale + dy;
-        } else {
-            coords.forEach(c => transformCoords(c, dx, dy, scale));
-        }
-    }
-
-    // Apply transformation to all shapes
-    townGeoJsonData.features.forEach(f => {
-        if (f.geometry && f.geometry.coordinates) {
-            transformCoords(f.geometry.coordinates, lonShift, latShift, scaleFactor);
-        }
-    });
-
-    // Keep business point datasets and WRA flood-potential layers in their original
-    // coordinates. The developer calibration tool is only for township boundaries
-    // so point-to-town overlay checks can validate the corrected district borders
-    // without moving business points along with them.
     activeWraData = null;
     if (isWraLayerEnabled()) {
         const originalWra = getActiveWraScenario() === 'gwl20' ? wraGeoJson650 : wraGeoJson350;
@@ -548,7 +468,6 @@ function applyCalibration() {
         }
     }
 
-    // Re-render layers and statistics
     updateLayers();
     updateStatsAndChart();
     populatePointList();
@@ -567,7 +486,6 @@ function getActiveRiskField() {
         return `temp_risk_${mode}_${activeScenario}`;
     }
 }
-
 
 function getActiveHazardField() {
     if (activeTheme === 'flood') {
@@ -993,10 +911,16 @@ function computeIntersections() {
 async function updateLayers() {
     if (!townGeoJsonData) return;
 
+    const renderRequestId = ++layerRenderRequestId;
+
     // 1. Remove existing layers
     if (townLayer) map.removeLayer(townLayer);
     if (daycareLayer) map.removeLayer(daycareLayer);
     if (wraLayer) map.removeLayer(wraLayer);
+    if (climateGridManager && climateGridManager.currentLayer) {
+        map.removeLayer(climateGridManager.currentLayer);
+        climateGridManager.currentLayer = null;
+    }
     Object.values(pointLayers).forEach(layer => map.removeLayer(layer));
     pointLayers = {};
 
@@ -1057,8 +981,9 @@ async function updateLayers() {
         const scenarioStr = getClimateScenarioCode(activeScenario);
         const year = scenarioStr === 'historical' && Number(activeClimateYear) > 2014 ? '2014' : activeClimateYear;
         const dataState = await climateGridManager.loadGridData("AR6_v112", activeClimateIndicator, scenarioStr, "TaiESM1", year);
+        if (renderRequestId !== layerRenderRequestId) return;
         if (dataState) {
-            climateGridManager.renderToLeaflet(map, layerManager, dataState);
+            climateGridManager.renderToLeaflet(map, layerManager, dataState, { fillOpacity: riskMapOpacity });
         }
     } else if (climateGridManager && climateGridManager.currentLayer) {
         map.removeLayer(climateGridManager.currentLayer);
@@ -1802,7 +1727,7 @@ function setupClimateGridControls() {
         indicatorSelect.value = activeClimateIndicator;
         indicatorSelect.addEventListener('change', (event) => {
             activeClimateIndicator = event.target.value;
-            applyCalibration();
+            refreshStandardizedData();
         });
     }
 
@@ -1810,7 +1735,7 @@ function setupClimateGridControls() {
         yearSelect.value = activeClimateYear;
         yearSelect.addEventListener('change', (event) => {
             activeClimateYear = event.target.value;
-            applyCalibration();
+            refreshStandardizedData();
         });
     }
 }
@@ -1859,12 +1784,12 @@ function setupUIControls() {
                 loadWraData(getActiveWraScenario(), () => {
                     renderTimelineUI();
                     updateHeaderIndicator();
-                    applyCalibration();
+                    refreshStandardizedData();
                 });
             } else {
                 renderTimelineUI();
                 updateHeaderIndicator();
-                applyCalibration();
+                refreshStandardizedData();
             }
         });
     });
@@ -1906,12 +1831,12 @@ function setupUIControls() {
                 loadWraData(getActiveWraScenario(), () => {
                     renderTimelineUI();
                     updateHeaderIndicator();
-                    applyCalibration();
+                    refreshStandardizedData();
                 });
             } else {
                 renderTimelineUI();
                 updateHeaderIndicator();
-                applyCalibration();
+                refreshStandardizedData();
             }
         });
     });
@@ -1925,7 +1850,7 @@ function setupUIControls() {
             targetBtn.classList.add('active');
             activeTempRiskMode = targetBtn.dataset.mode;
             
-            applyCalibration();
+            refreshStandardizedData();
         });
     });
 
@@ -1947,12 +1872,12 @@ function setupUIControls() {
                     loadWraData(getActiveWraScenario(), () => {
                         renderTimelineUI();
                         updateHeaderIndicator();
-                        applyCalibration();
+                        refreshStandardizedData();
                     });
                 } else {
                     renderTimelineUI();
                     updateHeaderIndicator();
-                    applyCalibration();
+                    refreshStandardizedData();
                 }
             }
         });
@@ -1967,23 +1892,6 @@ function setupUIControls() {
             updateLayers();
         });
     }
-
-    // 5. Calibration Sliders
-    const lonSlider = document.getElementById('slider-lon-shift');
-    const latSlider = document.getElementById('slider-lat-shift');
-    const scaleSlider = document.getElementById('slider-scale');
-
-    lonSlider.addEventListener('input', applyCalibration);
-    latSlider.addEventListener('input', applyCalibration);
-    scaleSlider.addEventListener('input', applyCalibration);
-
-    const lockButton = document.getElementById('btn-calibration-lock');
-    if (lockButton) {
-        lockButton.addEventListener('click', () => {
-            setCalibrationLocked(!isCalibrationLocked, true);
-        });
-    }
-    setCalibrationLocked(false);
 
     // 6. Mobile Sidebar Drawer Toggle
     const brand = document.querySelector('.brand');

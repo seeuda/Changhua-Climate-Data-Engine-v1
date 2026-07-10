@@ -209,42 +209,6 @@
                 </div>
             </section>
 
-            <!-- Calibration Panel -->
-            <section class="chart-section calibration-widget" id="calibration-widget">
-                <input type="checkbox" id="toggle-calibration" class="calibration-toggle" aria-controls="calibration-panel">
-                <label class="section-title calibration-toggle-label" for="toggle-calibration">
-                    <span class="calibration-toggle-title"><i class="fa-solid fa-compass"></i> 開發者圖資校正工具</span>
-                    <span class="calibration-toggle-hint"><i class="fa-solid fa-chevron-down"></i></span>
-                </label>
-                <div class="calibration-panel" id="calibration-panel">
-                    <div class="control-group calibration-control">
-                        <label class="calibration-control-label">
-                            經度偏移 (Lon Shift): <span id="val-lon-shift" class="calibration-value">0.00000</span>
-                        </label>
-                        <input type="range" id="slider-lon-shift" class="calibration-range" min="-0.04" max="0.04" step="0.0001" value="0.0">
-                    </div>
-                    <div class="control-group calibration-control">
-                        <label class="calibration-control-label">
-                            緯度偏移 (Lat Shift): <span id="val-lat-shift" class="calibration-value">0.00000</span>
-                        </label>
-                        <input type="range" id="slider-lat-shift" class="calibration-range" min="-0.04" max="0.04" step="0.0001" value="0.0">
-                    </div>
-                    <div class="control-group calibration-control">
-                        <label class="calibration-control-label">
-                            縮放比例 (Scale): <span id="val-scale" class="calibration-value">1.00000</span>
-                        </label>
-                        <input type="range" id="slider-scale" class="calibration-range" min="0.95" max="1.05" step="0.0001" value="1.0">
-                    </div>
-                    <button type="button" class="calibration-lock-btn" id="btn-calibration-lock" aria-pressed="false">
-                        <i class="fa-solid fa-lock-open"></i> 鎖定校正值
-                    </button>
-                    <div class="calibration-lock-notice" id="calibration-lock-notice" hidden></div>
-                    <div class="calibration-help">
-                        拖曳滑桿只會即時平移／縮放鄉鎮市界圖層，業務點位與水利署潛勢圖不會跟著偏移。<br>
-                        <strong>請協助確認區邊界與道路底圖、業務點位套疊是否正確。</strong>
-                    </div>
-                </div>
-            </section>
         </aside>
 
         <!-- Main Map Area -->
