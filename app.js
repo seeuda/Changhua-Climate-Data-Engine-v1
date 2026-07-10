@@ -21,6 +21,7 @@ let activeTheme = 'temp'; // 'flood' or 'temp'
 let activeScenario = 'gwl40'; // 'current', 'gwl15', 'gwl20', 'gwl40'
 let activeFloodLayers = { ncdr: true, wra: false }; // flood overlays can be combined
 let activeTempAdminReference = false; // optional township reference overlay for temp mode
+let activeTempRiskMode = 'grid'; // 'grid' = NCDR AR6 climate grid; 'admin' = township fallback without grid display
 let activeWraScenario = 'gwl15'; // 'gwl15' = 350mm/24HR, 'gwl20' = 650mm/24HR
 let riskMapOpacity = 0.7;
 let activeClimateIndicator = '日夜溫差';
@@ -47,7 +48,11 @@ function isWraLayerEnabled() {
 }
 
 function isNcdrLayerEnabled() {
-    return activeTheme === 'temp' ? activeTempAdminReference : activeFloodLayers.ncdr;
+    return activeTheme === 'temp' ? (activeTempAdminReference || activeTempRiskMode === 'admin') : activeFloodLayers.ncdr;
+}
+
+function isClimateGridRiskMode() {
+    return activeTheme === 'temp' && activeTempRiskMode === 'grid';
 }
 
 function getActiveFloodLayerNames() {
@@ -803,7 +808,7 @@ function getClimateGridRiskLevel(value) {
 }
 
 function getClimateGridFeatureRisk(feature) {
-    if (activeTheme !== 'temp' || !activeClimateGridDataState) return null;
+    if (!isClimateGridRiskMode() || !activeClimateGridDataState) return null;
 
     const coords = getFeatureCoordinates(feature);
     if (!coords) return null;
@@ -852,8 +857,18 @@ function getWraFeatureRisk(feature, config) {
 
 function getFeatureRiskAssessment(feature, config) {
     if (activeTheme === 'temp') {
-        const climateGridRisk = getClimateGridFeatureRisk(feature);
         const ncdrRisk = getNcdrFeatureRisk(feature, config);
+        if (!isClimateGridRiskMode()) {
+            return {
+                risk: ncdrRisk || 1,
+                ncdrRisk: ncdrRisk || 1,
+                climateGridRisk: null,
+                source: '行政區風險（未呈現網格）',
+                mode: 'ncdr_manual'
+            };
+        }
+
+        const climateGridRisk = getClimateGridFeatureRisk(feature);
         if (climateGridRisk) {
             return {
                 risk: climateGridRisk.risk,
@@ -1040,7 +1055,7 @@ async function updateLayers() {
     activeClimateGridDataState = null;
 
     // 3.5. Render New Climate Grid if temp theme is active
-    if (activeTheme === 'temp' && climateGridManager) {
+    if (isClimateGridRiskMode() && climateGridManager) {
         const scenarioStr = getClimateScenarioCode(activeScenario);
         const year = scenarioStr === 'historical' && Number(activeClimateYear) > 2014 ? '2014' : activeClimateYear;
         const dataState = await climateGridManager.loadGridData("AR6_v112", activeClimateIndicator, scenarioStr, "TaiESM1", year);
@@ -1300,6 +1315,10 @@ function getWraDepthDistribution() {
     return { totalFlooded, depthDistribution };
 }
 
+function getTempRiskSummaryPrefix() {
+    return isClimateGridRiskMode() ? '網格高溫警戒' : '行政區高溫警戒';
+}
+
 function updateStatsAndChart() {
     if (!townGeoJsonData) return;
 
@@ -1309,7 +1328,7 @@ function updateStatsAndChart() {
 
     if (activeTheme === 'temp') {
         const { totalHighRisk, riskDistribution } = getRiskDistribution();
-        updateHighRiskCard(totalHighRisk, `網格高溫警戒${getActivePointSummaryLabel()} (Lv.4-5)`);
+        updateHighRiskCard(totalHighRisk, `${getTempRiskSummaryPrefix()}${getActivePointSummaryLabel()} (Lv.4-5)`);
         renderChart(riskDistribution);
     } else if (isNcdrLayerEnabled()) {
         const { totalHighRisk, riskDistribution } = getRiskDistribution();
@@ -1790,9 +1809,17 @@ function getClimateScenarioCode(scenarioId) {
     return 'ssp126';
 }
 
+function updateClimateGridControlVisibility() {
+    const controlGroup = document.getElementById('climate-grid-control-group');
+    if (controlGroup) {
+        controlGroup.style.display = isClimateGridRiskMode() ? 'flex' : 'none';
+    }
+}
+
 function setupClimateGridControls() {
     const indicatorSelect = document.getElementById('climate-indicator-select');
     const yearSelect = document.getElementById('climate-year-select');
+    updateClimateGridControlVisibility();
 
     if (indicatorSelect) {
         indicatorSelect.value = activeClimateIndicator;
@@ -1839,6 +1866,7 @@ function setupUIControls() {
                  tempModeGroup.style.display = activeTheme === 'temp' ? 'block' : 'none';
              }
              updateRiskOpacityControl();
+             updateClimateGridControlVisibility();
 
             // Safety scenario shift
             if (activeTheme === 'flood') {
@@ -1866,6 +1894,27 @@ function setupUIControls() {
     });
 
 
+    const tempRiskModeButtons = document.querySelectorAll('#temp-risk-mode-selector [data-temp-risk-mode]');
+    const syncTempRiskModeButtons = () => {
+        tempRiskModeButtons.forEach(button => {
+            const isActive = button.dataset.tempRiskMode === activeTempRiskMode;
+            button.classList.toggle('active', isActive);
+            button.setAttribute('aria-pressed', String(isActive));
+        });
+    };
+    tempRiskModeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const nextMode = button.dataset.tempRiskMode === 'admin' ? 'admin' : 'grid';
+            if (activeTempRiskMode === nextMode) return;
+            activeTempRiskMode = nextMode;
+            syncTempRiskModeButtons();
+            updateRiskOpacityControl();
+            updateClimateGridControlVisibility();
+            refreshStandardizedData();
+        });
+    });
+    syncTempRiskModeButtons();
+
     const tempAdminReferenceToggle = document.getElementById('temp-admin-reference-toggle');
     if (tempAdminReferenceToggle) {
         tempAdminReferenceToggle.classList.toggle('active', activeTempAdminReference);
@@ -1875,6 +1924,7 @@ function setupUIControls() {
             tempAdminReferenceToggle.classList.toggle('active', activeTempAdminReference);
             tempAdminReferenceToggle.setAttribute('aria-pressed', String(activeTempAdminReference));
             updateRiskOpacityControl();
+            updateClimateGridControlVisibility();
             refreshStandardizedData();
         });
     }
@@ -2023,7 +2073,7 @@ function formatClimateLegendNumber(value) {
 }
 
 function getClimateGridLegendHtml() {
-    if (activeTheme !== 'temp' || !climateGridManager) return '';
+    if (!isClimateGridRiskMode() || !climateGridManager) return '';
     const config = climateGridManager.colorScaleConfig && climateGridManager.colorScaleConfig[activeClimateIndicator];
     if (!config || config.mode !== 'absolute' || !Array.isArray(config.breaks) || !Array.isArray(config.colors)) return '';
 
