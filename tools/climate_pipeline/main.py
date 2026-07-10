@@ -8,9 +8,9 @@ from collections import OrderedDict
 # Climate Data Pipeline (CDP)
 # ==========================================
 
-# 1 degree lat is approx 111 km. 5km is approx 0.045 degrees.
-# We will use +/- 0.0225 for the bounding box around the center point.
-GRID_SIZE_DEG = 0.045
+# Source grid centers are spaced 0.05 degrees apart. Use the same size so
+# generated polygons tile continuously without visual or query gaps.
+GRID_SIZE_DEG = 0.05
 HALF_GRID = GRID_SIZE_DEG / 2.0
 
 # Base directories
