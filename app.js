@@ -23,7 +23,8 @@ let activeFloodLayers = { ncdr: true, wra: false }; // flood overlays can be com
 let activeTempAdminReference = false; // optional township reference overlay for temp mode
 let activeTempRiskMode = 'grid'; // 'grid' = NCDR AR6 climate grid; 'admin' = township fallback without grid display
 let activeWraScenario = 'gwl15'; // 'gwl15' = 350mm/24HR, 'gwl20' = 650mm/24HR
-let riskMapOpacity = 0.45;
+let tempAdminOpacity = 0.45;
+let ncdrRiskOpacity = 0.7;
 let climateGridOpacity = 0.7;
 let activeClimateIndicator = '日夜溫差';
 let activeClimateYear = '2050';
@@ -72,7 +73,7 @@ function getWraScenarioName() {
 }
 
 function getTownRiskFillOpacity() {
-    return riskMapOpacity;
+    return activeTheme === 'temp' ? tempAdminOpacity : ncdrRiskOpacity;
 }
 
 function getTownRiskHighlightOpacity() {
@@ -1708,6 +1709,9 @@ function updateRiskOpacityControl() {
     const gridOpacityValue = document.getElementById('val-grid-opacity');
     const opacityLabel = document.getElementById('risk-opacity-label');
     const opacityValue = document.getElementById('val-risk-opacity');
+    const opacitySlider = document.getElementById('slider-risk-opacity');
+    const gridOpacitySlider = document.getElementById('slider-grid-opacity');
+    const activeRiskOpacity = activeTheme === 'temp' ? tempAdminOpacity : ncdrRiskOpacity;
 
     if (opacityGroup) {
         opacityGroup.style.display = isNcdrLayerEnabled() ? 'flex' : 'none';
@@ -1718,7 +1722,11 @@ function updateRiskOpacityControl() {
     }
 
     if (opacityValue) {
-        opacityValue.innerText = `${Math.round(riskMapOpacity * 100)}%`;
+        opacityValue.innerText = `${Math.round(activeRiskOpacity * 100)}%`;
+    }
+
+    if (opacitySlider) {
+        opacitySlider.value = String(activeRiskOpacity);
     }
 
     if (gridOpacityGroup) {
@@ -1727,6 +1735,10 @@ function updateRiskOpacityControl() {
 
     if (gridOpacityValue) {
         gridOpacityValue.innerText = `${Math.round(climateGridOpacity * 100)}%`;
+    }
+
+    if (gridOpacitySlider) {
+        gridOpacitySlider.value = String(climateGridOpacity);
     }
 }
 
@@ -2015,11 +2027,15 @@ function setupUIControls() {
         });
     }
 
-    // 4. Separate opacity sliders for NCDR administrative polygons and AR6 climate grids
+    // 4. Separate opacity sliders for administrative polygons, NCDR flood polygons, and AR6 climate grids
     const riskOpacitySlider = document.getElementById('slider-risk-opacity');
     if (riskOpacitySlider) {
         riskOpacitySlider.addEventListener('input', (e) => {
-            riskMapOpacity = parseFloat(e.target.value);
+            if (activeTheme === 'temp') {
+                tempAdminOpacity = parseFloat(e.target.value);
+            } else {
+                ncdrRiskOpacity = parseFloat(e.target.value);
+            }
             updateRiskOpacityControl();
             updateLayers();
         });
