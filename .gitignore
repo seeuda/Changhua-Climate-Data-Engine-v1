@@ -1,0 +1,27 @@
+# Git ignore for Changhua Climate Data Engine
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Large raw data (not needed in repo)
+data/unknown_indicator/
+*.zip
+*.7z
+*.rar
+
+# IDE
+.vscode/
+*.swp

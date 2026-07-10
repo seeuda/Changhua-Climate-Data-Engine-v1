@@ -1,0 +1,1107 @@
+{
+  "type": "FeatureCollection",
+  "name": "彰化縣環保清潔設施",
+  "metadata": {
+    "total": 52,
+    "categories": {
+      "清潔隊部": 26,
+      "資源回收場": 26
+    },
+    "source": "W-06A 氣候風險套疊擴大應用",
+    "generated": "2026-07-02"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_001",
+        "town": "彰化市",
+        "name": "彰化市清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣彰化市仁愛東街17號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5418172,
+          24.0678756
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_002",
+        "town": "芬園鄉",
+        "name": "芬園鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣芬園鄉社口村芬草路300號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.6290193,
+          24.0137189
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_003",
+        "town": "花壇鄉",
+        "name": "花壇鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣花壇鄉彰員路2段487號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5492208,
+          24.0275759
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_004",
+        "town": "秀水鄉",
+        "name": "秀水鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣秀水鄉安東村枋林巷9號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5012371,
+          24.0372269
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_005",
+        "town": "鹿港鎮",
+        "name": "鹿港鎮清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣鹿港鎮東石里鹽埕巷200號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4076653,
+          24.0623612
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_006",
+        "town": "福興鄉",
+        "name": "福興鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣福興鄉廈粘村沿海路三段355號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4152699,
+          24.0316897
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_007",
+        "town": "線西鄉",
+        "name": "線西鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣線西鄉下犁村下塭路449巷168號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.464779,
+          24.1139958
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_008",
+        "town": "和美鎮",
+        "name": "和美鎮清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣和美鎮和善東路57號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4931794,
+          24.1086219
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_009",
+        "town": "伸港鄉",
+        "name": "伸港鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣伸港鄉仁愛路38號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4849266,
+          24.1475167
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_010",
+        "town": "員林市",
+        "name": "員林市清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣員林市大饒路279巷57號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5926487,
+          23.9400204
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_011",
+        "town": "社頭鄉",
+        "name": "社頭鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣社頭鄉山清段13號",
+        "shade_info": "",
+        "phone": "",
+        "note": "approx-cadastral"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5858074,
+          23.8968186
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_012",
+        "town": "永靖鄉",
+        "name": "永靖鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣永靖鄉港新段47地號",
+        "shade_info": "",
+        "phone": "",
+        "note": "approx-cadastral"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5477204,
+          23.9245962
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_013",
+        "town": "埔心鄉",
+        "name": "埔心鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣埔心鄉忠義北路32號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5443774,
+          23.9530768
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_014",
+        "town": "溪湖鎮",
+        "name": "溪湖鎮清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣溪湖鎮湖東里青雅路58號",
+        "shade_info": "",
+        "phone": "",
+        "note": "approx"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4754532,
+          23.9535951
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_015",
+        "town": "大村鄉",
+        "name": "大村鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣大村鄉中正西路338號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.579244,
+          23.9838788
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_016",
+        "town": "埔鹽鄉",
+        "name": "埔鹽鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣埔鹽鄉中正路192號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4632841,
+          24.0005296
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_017",
+        "town": "田中鎮",
+        "name": "田中鎮清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣田中鎮復興路335號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.565435,
+          23.8673658
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_018",
+        "town": "北斗鎮",
+        "name": "北斗鎮清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣北斗鎮地政路2之1號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.524364,
+          23.8746086
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_019",
+        "town": "田尾鄉",
+        "name": "田尾鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣田尾鄉光復路二段575號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.522631,
+          23.8889803
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_020",
+        "town": "埤頭鄉",
+        "name": "埤頭鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣埤頭鄉中和村溪林路767號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4898157,
+          23.8872467
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_021",
+        "town": "溪州鄉",
+        "name": "溪州鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣溪州鄉溪連北路8號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4990309,
+          23.8514095
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_022",
+        "town": "竹塘鄉",
+        "name": "竹塘鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣竹塘鄉竹林路一段305號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4277005,
+          23.8604911
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_023",
+        "town": "二林鎮",
+        "name": "二林鎮清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣二林鎮斗苑路四段636之1號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.3746783,
+          23.8995975
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_024",
+        "town": "大城鄉",
+        "name": "大城鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣大城鄉古山路132號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.3138753,
+          23.8677274
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_025",
+        "town": "芳苑鄉",
+        "name": "芳苑鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣芳苑鄉崙腳村中正路46號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.3203703,
+          23.9245092
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CLEAN_026",
+        "town": "二水鄉",
+        "name": "二水鄉清潔隊",
+        "category": "清潔隊部",
+        "sub_type": "清潔隊隊部",
+        "address": "彰化縣二水鄉南通路二段764號",
+        "shade_info": "",
+        "phone": "",
+        "note": "exact"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.6165157,
+          23.811647
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_001",
+        "town": "二水鄉",
+        "name": "二水鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "二水鄉員集路5段627號(懷恩堂)",
+        "shade_info": "遮蔽物較少，露天居多",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.6008545,
+          23.8348284
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_002",
+        "town": "二林鎮",
+        "name": "二林鎮清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "二林鎮仁愛路722號",
+        "shade_info": "遮蔽物較少，露天居多，預計於明年搭建移動式布棚",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.3643301,
+          23.9014597
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_003",
+        "town": "大村鄉",
+        "name": "大村鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "大村鄉慶安路408巷169弄42之2號",
+        "shade_info": "有設置移動式布棚",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5440769,
+          24.0069911
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_004",
+        "town": "大城鄉",
+        "name": "大城鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "大城鄉山腳村古山路132號",
+        "shade_info": "遮蔽物較少，露天居多",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.3138753,
+          23.8677274
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_005",
+        "town": "北斗鎮",
+        "name": "北斗鎮清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "北斗鎮文昌里地政路2之1號",
+        "shade_info": "主要由社會役人員分類，有羅馬傘遮蔽",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.524364,
+          23.8746086
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_006",
+        "town": "永靖鄉",
+        "name": "永靖鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "浮圳村港新路478巷與大排路口",
+        "shade_info": "太陽能板下分類",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.554291,
+          23.917429
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_007",
+        "town": "田中鎮",
+        "name": "田中鎮清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "田中鎮復興路335號",
+        "shade_info": "隊員於車上執行細分類，少量分類於後方遮蔽空間執行",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.565435,
+          23.8673658
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_008",
+        "town": "田尾鄉",
+        "name": "田尾鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "田尾鄉饒平村光復路二段575號",
+        "shade_info": "在倉庫裡細分類",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.522631,
+          23.8889803
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_009",
+        "town": "竹塘鄉",
+        "name": "竹塘鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "竹塘鄉中央路2段(慈航宮)",
+        "shade_info": "遮蔽物較少，露天居多",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4253148,
+          23.8559613
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_010",
+        "town": "伸港鄉",
+        "name": "伸港鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "伸港鄉中山路77號",
+        "shade_info": "隊部有鐵皮遮蔽",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4848179,
+          24.147219
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_011",
+        "town": "秀水鄉",
+        "name": "秀水鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "秀水鄉枋林巷9號",
+        "shade_info": "在倉庫裡細分類",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5012371,
+          24.0372269
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_012",
+        "town": "和美鎮",
+        "name": "和美鎮清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "和美鎮彰新路三段636巷661號",
+        "shade_info": "於倉庫內細分類",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.526564,
+          24.1283629
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_013",
+        "town": "社頭鄉",
+        "name": "社頭鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "社頭鄉青山段13號",
+        "shade_info": "有設置鐵皮遮蔽物",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.614098,
+          23.893127
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_014",
+        "town": "芬園鄉",
+        "name": "芬園鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "芬園鄉碧園路一段287巷301號",
+        "shade_info": "有設置鐵皮遮蔽物",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.63694,
+          23.978267
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_015",
+        "town": "花壇鄉",
+        "name": "花壇鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "花壇鄉彰員路二段487號",
+        "shade_info": "在鐵皮屋裡分類",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5492208,
+          24.0275759
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_016",
+        "town": "芳苑鄉",
+        "name": "芳苑鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "芳苑鄉新村中正路46號",
+        "shade_info": "橋下空間，整體有遮蔽物",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.3203703,
+          23.9245092
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_017",
+        "town": "員林市",
+        "name": "員林市清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "員林市大饒路279巷57號",
+        "shade_info": "橋下空間，整體有遮蔽物",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5926487,
+          23.9400204
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_018",
+        "town": "埔心鄉",
+        "name": "埔心鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "埔心鄉忠義北路163號",
+        "shade_info": "設置布棚、羅馬傘於細分類區遮蔽",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5415639,
+          23.9571221
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_019",
+        "town": "埔鹽鄉",
+        "name": "埔鹽鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "埔鹽鄉埔港路(第二公墓懷恩堂前)",
+        "shade_info": "有鐵皮遮蔽",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4807037,
+          23.9979021
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_020",
+        "town": "埤頭鄉",
+        "name": "埤頭鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "埤頭鄉溪林路767號",
+        "shade_info": "有設置移動式布棚",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4898157,
+          23.8872467
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_021",
+        "town": "鹿港鎮",
+        "name": "鹿港鎮清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "鹿港鎮鹽埕巷200號",
+        "shade_info": "廠區狹長，部分於倉庫分類、部分於羅馬傘下分類",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4076653,
+          24.0623612
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_022",
+        "town": "溪州鄉",
+        "name": "溪州鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "溪州鄉更新段地號100號",
+        "shade_info": "在倉庫裡細分類",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4858727,
+          23.8516719
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_023",
+        "town": "溪湖鎮",
+        "name": "溪湖鎮清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "彰化縣溪湖鎮河東里濱河街",
+        "shade_info": "隊員於車上分類",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4596397,
+          23.9377489
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_024",
+        "town": "彰化市",
+        "name": "彰化市清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "寶廍路378之38號",
+        "shade_info": "橋下空間，整體有遮蔽物",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5541214,
+          24.1062
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_025",
+        "town": "福興鄉",
+        "name": "福興鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "福興鄉沿海路三段355號",
+        "shade_info": "有設置移動式布棚",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4152699,
+          24.0316897
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "REC_026",
+        "town": "線西鄉",
+        "name": "線西鄉清潔隊資源回收場",
+        "category": "資源回收場",
+        "sub_type": "清潔隊資源回收場",
+        "address": "線西鄉下塭路499巷168號",
+        "shade_info": "隊員於車上細分類",
+        "phone": "",
+        "note": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.464779,
+          24.1139958
+        ]
+      }
+    }
+  ]
+}

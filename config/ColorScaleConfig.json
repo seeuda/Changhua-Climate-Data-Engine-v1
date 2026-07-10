@@ -1,0 +1,22 @@
+{
+  "extreme_heat": {
+    "mode": "absolute",
+    "unit": "°C",
+    "description": "極端高溫指標，固定色階確保多情境比較不失真",
+    "breaks": [20, 25, 30, 35, 40],
+    "colors": ["#4575b4", "#91bfdb", "#ffffbf", "#fc8d59", "#d73027"]
+  },
+  "flood_potential": {
+    "mode": "absolute",
+    "unit": "meters",
+    "description": "淹水潛勢深度",
+    "breaks": [0.5, 1.0, 2.0, 3.0],
+    "colors": ["#e0f3f8", "#91bfdb", "#4575b4", "#313695"]
+  },
+  "svi_index": {
+    "mode": "relative",
+    "unit": "index",
+    "description": "社會脆弱度指數，預設採用相對色階 (Normalize)",
+    "colors": ["#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15"]
+  }
+}
