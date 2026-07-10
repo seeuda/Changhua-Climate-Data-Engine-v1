@@ -72,7 +72,7 @@ function getWraScenarioName() {
 }
 
 function getTownRiskFillOpacity() {
-    return activeTheme === 'temp' && activeTempAdminReference && activeTempRiskMode === 'grid' ? Math.min(riskMapOpacity, 0.45) : riskMapOpacity;
+    return riskMapOpacity;
 }
 
 function getTownRiskHighlightOpacity() {
