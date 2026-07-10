@@ -1994,17 +1994,19 @@ function updateHeaderIndicator() {
         : '高溫風險等級';
 
     let scenarioName = '現況基準';
-    if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
-        scenarioName = getWraScenarioName();
-    } else {
+    if (activeTheme === 'temp') {
         if (activeScenario === 'gwl15') {
             scenarioName = '升溫 1.5°C（SSP1-2.6）情境推估';
         } else if (activeScenario === 'gwl20') {
             scenarioName = '升溫 2.0°C（SSP2-4.5）情境推估';
         } else if (activeScenario === 'gwl40') {
             scenarioName = '升溫 4.0°C（SSP5-8.5）情境推估';
-        } else if (activeScenario === 'future') {
-            scenarioName = '升溫 1.5°C 情境推估';
+        }
+    } else if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
+        scenarioName = getWraScenarioName();
+    } else {
+        if (activeScenario === 'gwl15' || activeScenario === 'future') {
+            scenarioName = '未來情境推估';
         }
 
         if (isWraLayerEnabled()) {
