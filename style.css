@@ -432,6 +432,139 @@ body, html {
     line-height: 1.6;
 }
 
+.concept-guide {
+    display: grid;
+    gap: 12px;
+    margin-top: 10px;
+    padding: 12px;
+    border: 1px solid color-mix(in srgb, var(--primary) 45%, var(--border-color));
+    border-radius: 14px;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 14%, transparent), color-mix(in srgb, var(--control-track-bg) 82%, transparent));
+}
+
+.concept-guide-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.concept-guide-kicker {
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--primary) 18%, transparent);
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+}
+
+.concept-guide h4 {
+    margin: 0;
+    color: var(--text-primary);
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.concept-guide-steps {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.concept-guide-steps li {
+    display: grid;
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 8px;
+    align-items: start;
+    padding: 9px 10px;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--bg-card) 72%, transparent);
+}
+
+.concept-guide-steps strong {
+    color: var(--text-primary);
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.concept-guide-steps span {
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.concept-tip {
+    margin-top: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--control-track-bg) 78%, transparent);
+    overflow: hidden;
+}
+
+.concept-tip summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    color: var(--text-primary);
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+    cursor: pointer;
+    user-select: none;
+}
+
+.concept-tip summary::-webkit-details-marker {
+    display: none;
+}
+
+.concept-tip summary::after {
+    content: "\f078";
+    margin-left: auto;
+    color: var(--text-secondary);
+    font-family: "Font Awesome 6 Free";
+    font-size: 10px;
+    font-weight: 900;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.concept-tip summary i {
+    color: var(--primary);
+}
+
+.concept-tip[open] summary {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.concept-tip[open] summary::after {
+    color: var(--primary);
+    transform: rotate(180deg);
+}
+
+.concept-tip-body {
+    display: grid;
+    gap: 8px;
+    padding: 10px 12px 12px;
+}
+
+.concept-tip-body p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.65;
+}
+
+.concept-tip-compact {
+    margin-top: 0;
+    background: color-mix(in srgb, var(--bg-card) 55%, transparent);
+}
+
 .point-layer-selector {
     display: flex;
     flex-direction: column;
