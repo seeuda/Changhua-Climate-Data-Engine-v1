@@ -119,15 +119,25 @@
                 </div>
 
                 <div class="control-group" id="flood-mode-group" style="display: none;">
-                    <label class="group-label">淹水圖資套疊（可複選）</label>
+                    <label class="group-label">淹水風險資料來源</label>
+                    <div class="toggle-buttons flood-risk-mode-selector" id="flood-risk-mode-selector" aria-label="選擇淹水點位風險判定方式">
+                        <button class="toggle-btn active" data-flood-risk-mode="grid" type="button" aria-pressed="true">
+                            <i class="fa-solid fa-border-all"></i> 使用淹水網格
+                        </button>
+                        <button class="toggle-btn" data-flood-risk-mode="admin" type="button" aria-pressed="false">
+                            <i class="fa-solid fa-map"></i> 使用鄉鎮風險
+                        </button>
+                    </div>
+                    <label class="group-label flood-layer-label">淹水圖資套疊（可複選）</label>
                     <div class="toggle-buttons" id="flood-mode-selector">
-                        <button class="toggle-btn active" data-mode="ncdr">
+                        <button class="toggle-btn" data-mode="ncdr">
                             <i class="fa-solid fa-map"></i> NCDR 鄉鎮風險
                         </button>
-                        <button class="toggle-btn" data-mode="wra">
+                        <button class="toggle-btn active" data-mode="wra">
                             <i class="fa-solid fa-water"></i> 水利署潛勢圖
                         </button>
                     </div>
+                    <p class="control-hint">預設以水利署淹水潛勢網格判定點位風險；若點位未落入網格，會回退使用 NCDR 鄉鎮彙整風險。</p>
                 </div>
 
                 <div class="control-group" id="temp-mode-group">
@@ -155,10 +165,10 @@
 
                 <div class="control-group" id="grid-opacity-group">
                     <label class="group-label opacity-control-label" for="slider-grid-opacity">
-                        <span>氣候網格透明度</span>
+                        <span id="grid-opacity-label">氣候網格透明度</span>
                         <span id="val-grid-opacity">70%</span>
                     </label>
-                    <input type="range" id="slider-grid-opacity" class="control-range" min="0.05" max="1" step="0.05" value="0.7" aria-label="氣候網格透明度">
+                    <input type="range" id="slider-grid-opacity" class="control-range" min="0.05" max="1" step="0.05" value="0.7" aria-label="風險網格透明度">
                 </div>
 
                 <div class="control-group" id="risk-opacity-group">

@@ -19,13 +19,15 @@ let activePointLayerIds = new Set();
 
 let activeTheme = 'temp'; // 'flood' or 'temp'
 let activeScenario = 'gwl40'; // 'current', 'gwl15', 'gwl20', 'gwl40'
-let activeFloodLayers = { ncdr: true, wra: false }; // flood overlays can be combined
+let activeFloodLayers = { ncdr: false, wra: true }; // flood overlays can be combined
 let activeTempAdminReference = false; // optional township reference overlay for temp mode
 let activeTempRiskMode = 'grid'; // 'grid' = NCDR AR6 climate grid; 'admin' = township fallback without grid display
+let activeFloodRiskMode = 'grid'; // 'grid' = WRA inundation grid; 'admin' = NCDR township fallback
 let activeWraScenario = 'gwl15'; // 'gwl15' = 350mm/24HR, 'gwl20' = 650mm/24HR
 let tempAdminOpacity = 0.45;
 let ncdrRiskOpacity = 0.7;
 let climateGridOpacity = 0.7;
+let floodGridOpacity = 0.65;
 let activeClimateIndicator = '日夜溫差';
 let activeClimateYear = '2050';
 let activeClimateGridDataState = null;
@@ -45,12 +47,16 @@ let wraLayer = null;
 let daycareIntersectResults = {}; // point key -> WRA direct/proximity flood risk result
 
 
+function isFloodGridRiskMode() {
+    return activeTheme === 'flood' && activeFloodRiskMode === 'grid';
+}
+
 function isWraLayerEnabled() {
-    return activeTheme === 'flood' && activeFloodLayers.wra;
+    return activeTheme === 'flood' && (activeFloodLayers.wra || isFloodGridRiskMode());
 }
 
 function isNcdrLayerEnabled() {
-    return activeTheme === 'temp' ? (activeTempAdminReference || activeTempRiskMode === 'admin') : activeFloodLayers.ncdr;
+    return activeTheme === 'temp' ? (activeTempAdminReference || activeTempRiskMode === 'admin') : (activeFloodLayers.ncdr || activeFloodRiskMode === 'admin');
 }
 
 function isClimateGridRiskMode() {
@@ -60,12 +66,12 @@ function isClimateGridRiskMode() {
 function getActiveFloodLayerNames() {
     const names = [];
     if (activeFloodLayers.ncdr) names.push('NCDR 鄉鎮風險');
-    if (activeFloodLayers.wra) names.push('水利署潛勢圖');
+    if (isWraLayerEnabled()) names.push('水利署潛勢網格');
     return names;
 }
 
 function getActiveWraScenario() {
-    return activeFloodLayers.wra && !activeFloodLayers.ncdr ? activeScenario : activeWraScenario;
+    return isWraLayerEnabled() && !activeFloodLayers.ncdr ? activeScenario : activeWraScenario;
 }
 
 function getWraScenarioName() {
@@ -892,8 +898,15 @@ function getFeatureRiskAssessment(feature, config) {
 
     const hasNcdr = isNcdrLayerEnabled();
     const hasWra = isWraLayerEnabled();
-    const ncdrRisk = hasNcdr ? getNcdrFeatureRisk(feature, config) : null;
+    const ncdrRisk = getNcdrFeatureRisk(feature, config);
     const wraRisk = hasWra ? getWraFeatureRisk(feature, config) : null;
+
+    if (isFloodGridRiskMode()) {
+        if (wraRisk && wraRisk > 1) {
+            return { risk: wraRisk, ncdrRisk, wraRisk, source: '水利署淹水網格', mode: 'flood_grid' };
+        }
+        return { risk: ncdrRisk || 1, ncdrRisk: ncdrRisk || 1, wraRisk: null, source: '鄉鎮風險（無網格淹水）', mode: 'flood_grid_fallback' };
+    }
 
     if (hasNcdr && hasWra) {
         const risk = Math.max(ncdrRisk || 1, wraRisk || 1);
@@ -937,7 +950,7 @@ function getActivePointFeatures() {
 
 function computeIntersections() {
     daycareIntersectResults = {};
-    if (activeTheme === 'flood' && activeFloodLayers.wra && activeWraData) {
+    if (activeTheme === 'flood' && isWraLayerEnabled() && activeWraData) {
         getActivePointFeatures().forEach(({ config, feature }) => {
             const coords = getFeatureCoordinates(feature);
             if (!coords) return;
@@ -1005,13 +1018,13 @@ async function updateLayers() {
     computeIntersections();
 
     // 2. Renders WRA Layer if active
-    if (activeTheme === 'flood' && activeFloodLayers.wra && activeWraData) {
+    if (activeTheme === 'flood' && isWraLayerEnabled() && activeWraData) {
         wraLayer = L.geoJSON(activeWraData, {
             style: (feature) => {
                 const gridCode = feature.properties.grid_code || 2;
                 return {
                     fillColor: wraColors[gridCode] || '#93c5fd',
-                    fillOpacity: 0.65,
+                    fillOpacity: isFloodGridRiskMode() ? floodGridOpacity : 0.65,
                     color: 'rgba(255,255,255,0.1)',
                     weight: 0.8
                 };
@@ -1197,7 +1210,7 @@ function onEachPointFeature(feature, layer, config) {
 
     let warningHtml = '';
     const wraRisk = getWraPointRisk(feature, config);
-    if (activeTheme === 'flood' && activeFloodLayers.wra && wraRisk) {
+    if (activeTheme === 'flood' && isWraLayerEnabled() && wraRisk) {
         warningHtml = `
             <div class="popup-row" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 4px; padding: 4px 8px; margin-top: 4px; margin-bottom: 8px;">
                 <span class="popup-label" style="color: #ef4444; font-weight: bold;"><i class="fa-solid fa-triangle-exclamation"></i> ${wraRisk.method === 'direct' ? '淹水警戒' : '鄰近淹水潛勢'}</span>
@@ -1220,6 +1233,8 @@ function onEachPointFeature(feature, layer, config) {
             <span class="popup-val risk-badge badge-${riskVal}">第 ${riskVal} 級（${riskAssessment.source}）</span>
         </div>
         ${riskAssessment.mode === 'combined' ? `<div class="popup-row"><span class="popup-label">套疊明細</span><span class="popup-val">鄉鎮市第 ${riskAssessment.ncdrRisk} 級；水利署第 ${riskAssessment.wraRisk} 級，取較高者</span></div>` : ''}
+        ${riskAssessment.mode === 'flood_grid' ? `<div class="popup-row"><span class="popup-label">網格明細</span><span class="popup-val">水利署淹水潛勢網格；第 ${riskAssessment.wraRisk} 級</span></div>` : ''}
+        ${riskAssessment.mode === 'flood_grid_fallback' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位未落入淹水網格，改用行政區風險配對</span></div>` : ''}
         ${riskAssessment.mode === 'climate_grid' ? `<div class="popup-row"><span class="popup-label">網格明細</span><span class="popup-val">${riskAssessment.climateGridRisk.indicator} ${riskAssessment.climateGridRisk.value.toFixed(2)}；Grid ${riskAssessment.climateGridRisk.gridId}</span></div>` : ''}
         ${riskAssessment.mode === 'ncdr_fallback' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位無可用網格值，改用行政區風險配對</span></div>` : ''}
         ${townMismatch ? `<div class="popup-row"><span class="popup-label">資料鄉鎮註記</span><span class="popup-val">${townMismatch.declaredTown}（依座標改以 ${townMismatch.spatialTown} 判定風險）</span></div>` : ''}
@@ -1548,7 +1563,7 @@ function populatePointList() {
 
         let warningTag = '';
         const wraRisk = getWraPointRisk(feat, config);
-        if (activeTheme === 'flood' && activeFloodLayers.wra && wraRisk) {
+        if (activeTheme === 'flood' && isWraLayerEnabled() && wraRisk) {
             warningTag = `<span class="item-tag tag-warning"><i class="fa-solid fa-triangle-exclamation"></i> ${wraRisk.method === 'direct' ? '淹水警戒' : '鄰近潛勢'}: ${formatWraRiskLabel(wraRisk)}</span>`;
         }
 
@@ -1653,7 +1668,7 @@ function renderTimelineUI() {
     let html = '<div class="timeline-track"></div>';
 
     if (activeTheme === 'flood') {
-        if (activeFloodLayers.wra && !activeFloodLayers.ncdr) {
+        if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
             const steps = [
                 { id: 'gwl15', label: '350mm / 24HR 暴雨', left: '0%' },
                 { id: 'gwl20', label: '650mm / 24HR 極端降雨', left: '100%' }
@@ -1707,6 +1722,7 @@ function updateRiskOpacityControl() {
     const opacityGroup = document.getElementById('risk-opacity-group');
     const gridOpacityGroup = document.getElementById('grid-opacity-group');
     const gridOpacityValue = document.getElementById('val-grid-opacity');
+    const gridOpacityLabel = document.getElementById('grid-opacity-label');
     const opacityLabel = document.getElementById('risk-opacity-label');
     const opacityValue = document.getElementById('val-risk-opacity');
     const opacitySlider = document.getElementById('slider-risk-opacity');
@@ -1730,15 +1746,19 @@ function updateRiskOpacityControl() {
     }
 
     if (gridOpacityGroup) {
-        gridOpacityGroup.style.display = isClimateGridRiskMode() ? 'flex' : 'none';
+        gridOpacityGroup.style.display = (isClimateGridRiskMode() || isFloodGridRiskMode()) ? 'flex' : 'none';
+    }
+
+    if (gridOpacityLabel) {
+        gridOpacityLabel.innerText = isFloodGridRiskMode() ? '淹水網格透明度' : '氣候網格透明度';
     }
 
     if (gridOpacityValue) {
-        gridOpacityValue.innerText = `${Math.round(climateGridOpacity * 100)}%`;
+        gridOpacityValue.innerText = `${Math.round((isFloodGridRiskMode() ? floodGridOpacity : climateGridOpacity) * 100)}%`;
     }
 
     if (gridOpacitySlider) {
-        gridOpacitySlider.value = String(climateGridOpacity);
+        gridOpacitySlider.value = String(isFloodGridRiskMode() ? floodGridOpacity : climateGridOpacity);
     }
 }
 
@@ -1893,7 +1913,7 @@ function setupUIControls() {
 
             // Safety scenario shift
             if (activeTheme === 'flood') {
-                if (activeFloodLayers.wra && !activeFloodLayers.ncdr) {
+                if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
                     if (activeScenario !== 'gwl15' && activeScenario !== 'gwl20') {
                         activeScenario = 'gwl15';
                     }
@@ -1956,11 +1976,49 @@ function setupUIControls() {
     const modeButtons = document.querySelectorAll('#flood-mode-selector .toggle-btn');
     const syncFloodLayerButtons = () => {
         modeButtons.forEach(button => {
-            button.classList.toggle('active', Boolean(activeFloodLayers[button.dataset.mode]));
-            button.setAttribute('aria-pressed', String(Boolean(activeFloodLayers[button.dataset.mode])));
+            const isActive = Boolean(activeFloodLayers[button.dataset.mode]) || (button.dataset.mode === 'wra' && isFloodGridRiskMode());
+            button.classList.toggle('active', isActive);
+            button.setAttribute('aria-pressed', String(isActive));
         });
     };
     syncFloodLayerButtons();
+
+    const floodRiskModeButtons = document.querySelectorAll('#flood-risk-mode-selector [data-flood-risk-mode]');
+    const syncFloodRiskModeButtons = () => {
+        floodRiskModeButtons.forEach(button => {
+            const isActive = button.dataset.floodRiskMode === activeFloodRiskMode;
+            button.classList.toggle('active', isActive);
+            button.setAttribute('aria-pressed', String(isActive));
+        });
+    };
+    floodRiskModeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const nextMode = button.dataset.floodRiskMode === 'admin' ? 'admin' : 'grid';
+            if (activeFloodRiskMode === nextMode) return;
+            activeFloodRiskMode = nextMode;
+            if (nextMode === 'grid') {
+                activeFloodLayers.wra = true;
+            } else {
+                activeFloodLayers.ncdr = true;
+            }
+            syncFloodRiskModeButtons();
+            syncFloodLayerButtons();
+            updateRiskOpacityControl();
+
+            if (isWraLayerEnabled()) {
+                loadWraData(getActiveWraScenario(), () => {
+                    renderTimelineUI();
+                    updateHeaderIndicator();
+                    refreshStandardizedData();
+                });
+            } else {
+                renderTimelineUI();
+                updateHeaderIndicator();
+                refreshStandardizedData();
+            }
+        });
+    });
+    syncFloodRiskModeButtons();
     updateRiskOpacityControl();
 
     modeButtons.forEach(btn => {
@@ -1977,7 +2035,7 @@ function setupUIControls() {
             syncFloodLayerButtons();
             updateRiskOpacityControl();
 
-            if (activeFloodLayers.wra && !activeFloodLayers.ncdr) {
+            if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
                 if (activeScenario !== 'gwl15' && activeScenario !== 'gwl20') {
                     activeScenario = 'gwl15';
                 }
@@ -2008,7 +2066,7 @@ function setupUIControls() {
                 const nextScenario = stepElement.dataset.scenario;
                 activeScenario = nextScenario;
 
-                if (activeTheme === 'flood' && activeFloodLayers.wra && !activeFloodLayers.ncdr) {
+                if (activeTheme === 'flood' && isWraLayerEnabled() && !activeFloodLayers.ncdr) {
                     activeWraScenario = nextScenario;
                 }
 
@@ -2044,7 +2102,11 @@ function setupUIControls() {
     const gridOpacitySlider = document.getElementById('slider-grid-opacity');
     if (gridOpacitySlider) {
         gridOpacitySlider.addEventListener('input', (e) => {
-            climateGridOpacity = parseFloat(e.target.value);
+            if (isFloodGridRiskMode()) {
+                floodGridOpacity = parseFloat(e.target.value);
+            } else {
+                climateGridOpacity = parseFloat(e.target.value);
+            }
             updateRiskOpacityControl();
             updateLayers();
         });
