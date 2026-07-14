@@ -8,7 +8,7 @@
 
 - 🗺️ **Climate Data Engine 架構**：Geometry 與 Attribute 分離，實現 On-Demand 載入
 - 🌡️ **AR6 5km 氣候網格**：整合 NCDR AR6 氣候變遷關鍵指標（SSP126/245/585）
-- 🌊 **淹水風險／潛勢套疊**：以 NCDR AR6 淹水災害風險作為 Primary Risk，並以水利署 24h 650mm 淹水潛勢圖作為主要 Comparison；6h 350mm 設定已預留，待檔案進入 data/wra 後啟用
+- 🌊 **淹水風險／潛勢套疊**：以 NCDR AR6 淹水災害風險作為 Primary Risk，並以水利署 24h 650mm、6h 350mm 與降級備用 24h 350mm 淹水潛勢圖作為 Comparison
 - 📍 **設施點位管理**：日照中心、環保設施等業務點位的風險評估
 - 🔄 **Climate Data Pipeline（CDP）**：自動化 ETL 腳本，將 CSV 轉換為高效前端格式
 
@@ -32,7 +32,8 @@
 │   ├── changhua_towns.json           # 彰化縣行政區邊界（WGS84）
 │   ├── wra/                          # 水利署淹水潛勢 GeoJSON
 │   │   ├── wra_flood_650mm_24h.json  # 24h 650mm 極端長延時
-│   │   └── wra_flood_350mm_24h.json  # 24h 350mm 一般豪雨（備用）
+│   │   ├── wra_flood_350mm_6h.json   # 6h 350mm 極端短延時
+│   │   └── wra_flood_350mm_24h.json  # 24h 350mm 一般豪雨（降級備用）
 │   └── {指標}/{情境}/{模型}.json     # 氣候數值資料
 └── config/
     └── ColorScaleConfig.json         # 絕對色階設定
@@ -64,9 +65,9 @@ python main.py
 ## 淹水風險判讀原則
 
 - **NCDR Primary Risk**：NCDR AR6 淹水災害風險用於策略層級調適判讀，概念上整合危害度、脆弱度與暴露度（`R = H × V × E`），前端目前以彰化鄉鎮彙整欄位呈現。
-- **水利署 Comparison**：水利署第 3 代 24h 650mm 淹水潛勢圖呈現極端長延時廣域淹水，也是 NCDR 風險的物理基底；6h 350mm 已完成前端設定但在檔案進入 data/wra 前不會顯示，避免缺檔時載入失敗。
+- **水利署 Comparison**：水利署第 3 代 24h 650mm 淹水潛勢圖呈現極端長延時廣域淹水，也是 NCDR 風險的物理基底；6h 350mm 淹水潛勢圖呈現極端短延時強降雨，可作為都市防洪壓力測試；24h 350mm 降級為一般颱風豪雨備用參考。
 - **血緣但不混算**：NCDR 的脆弱度可承接水利署 650mm 潛勢圖的淹水情況，因此兩者有資料血緣；但 NCDR 是相對風險等級，水利署是淹水深度潛勢，前端套疊時以互補解讀為主，不以兩者等級取高混算。
-- **目前前端欄位限制**：此版本的 NCDR 淹水前端資料包提供 `flood_risk_current` 與 `flood_risk_future`，因此升溫 1.5°C／2.0°C／4.0°C 在鄉鎮彙整圖上共用未來欄位；水利署目前可用 Comparison 為 650mm/24HR 與備用 350mm/24HR；350mm/6HR 已預留但在檔案進入 data/wra 前不會出現在時間軸。
+- **目前前端欄位限制**：此版本的 NCDR 淹水前端資料包提供 `flood_risk_current` 與 `flood_risk_future`，因此升溫 1.5°C／2.0°C／4.0°C 在鄉鎮彙整圖上共用未來欄位；水利署目前可用 Comparison 為 650mm/24HR、350mm/6HR 與降級備用 350mm/24HR。
 
 ## 資料來源
 
