@@ -225,6 +225,12 @@ const riskColors = {
     5: '#ef4444'  // Soft Red (High)
 };
 
+function normalizeRiskLevel(value, fallback = 1) {
+    const numericValue = Number(value);
+    if (!Number.isFinite(numericValue)) return fallback;
+    return Math.min(Math.max(Math.round(numericValue), 1), 5);
+}
+
 // WRA Flood Depth Colors
 const wraColors = {
     2: '#93c5fd', // 0.3 - 0.5m: Light Blue
@@ -766,9 +772,7 @@ function getWraGridCodeFromDepth(depth) {
 }
 
 function getWraRiskLevelFromGridCode(gridCode) {
-    const numericGridCode = Number(gridCode);
-    if (!Number.isFinite(numericGridCode)) return 1;
-    return Math.min(Math.max(numericGridCode, 1), 5);
+    return normalizeRiskLevel(gridCode);
 }
 
 function getWraPointRiskScore(result) {
@@ -799,10 +803,6 @@ function isHigherPriorityWraResult(candidate, current) {
 
 function getWraPointRisk(feature, config) {
     return daycareIntersectResults[getPointKey(feature, config)] || null;
-}
-
-function getWraPointDepth(feature, config) {
-    return getWraPointRisk(feature, config)?.depth || '';
 }
 
 function formatWraRiskLabel(result) {
@@ -937,7 +937,7 @@ function getWraFeatureRisk(feature, config) {
     // Nearby-but-not-overlapping polygons should not be treated as full direct
     // inundation. Keep the warning visible, but taper the risk level by distance
     // within the 100m buffer so the rendered marker updates more realistically.
-    return Math.max(1, Math.round(1 + ((directLevel - 1) * (wraRisk.weight || 0))));
+    return normalizeRiskLevel(1 + ((directLevel - 1) * (wraRisk.weight || 0)));
 }
 
 function getFeatureRiskAssessment(feature, config) {
@@ -990,7 +990,7 @@ function getFeatureRiskAssessment(feature, config) {
 }
 
 function getFeatureRisk(feature, config) {
-    return getFeatureRiskAssessment(feature, config).risk;
+    return normalizeRiskLevel(getFeatureRiskAssessment(feature, config).risk);
 }
 
 function getFeatureTownMismatch(feature, config) {
@@ -1176,11 +1176,15 @@ function getMarkerColor(feature, config) {
     return (markerConfig.colorMap && markerConfig.colorMap[value]) || markerConfig.fallbackColor || '#94a3b8';
 }
 
-function createRiskOutlinedMarker(latlng, markerColor, riskVal, floodDepth, paneName) {
-    const riskColor = riskColors[riskVal] || '#94a3b8';
-    const isHighRisk = riskVal >= 4;
-    const isFlooded = Boolean(floodDepth);
-    const radiusBoost = isFlooded || isHighRisk ? 1.5 : 0;
+function createRiskOutlinedMarker(latlng, markerColor, riskVal, wraRiskResult, paneName) {
+    const normalizedRisk = normalizeRiskLevel(riskVal);
+    const riskColor = riskColors[normalizedRisk] || '#94a3b8';
+    const isHighRisk = normalizedRisk >= 4;
+    const isDirectFlooded = wraRiskResult?.method === 'direct';
+    const isNearFloodPotential = wraRiskResult?.method === 'proximity';
+    const hasWraWarning = isDirectFlooded || isNearFloodPotential;
+    const radiusBoost = hasWraWarning || isHighRisk ? 1.5 : 0;
+    const coreStrokeColor = isDirectFlooded ? '#ef4444' : isNearFloodPotential ? '#f97316' : '#ffffff';
 
     const outerWhiteRing = L.circleMarker(latlng, {
         radius: 10 + radiusBoost,
@@ -1208,11 +1212,11 @@ function createRiskOutlinedMarker(latlng, markerColor, riskVal, floodDepth, pane
         radius: 5.5 + radiusBoost,
         fillColor: markerColor,
         fillOpacity: 0.95,
-        color: isFlooded ? '#ef4444' : '#ffffff',
-        weight: isFlooded ? 2.5 : 1.5,
+        color: coreStrokeColor,
+        weight: hasWraWarning ? 2.5 : 1.5,
         opacity: 1,
         pane: paneName,
-        className: isFlooded ? 'daycare-marker warning-pulse' : 'daycare-marker'
+        className: hasWraWarning ? 'daycare-marker warning-pulse' : 'daycare-marker'
     });
 
     return L.featureGroup([outerWhiteRing, riskRing, coreMarker]);
@@ -1225,10 +1229,10 @@ function renderPointLayers() {
         pointLayers[config.id] = L.geoJSON(dataset, {
             pointToLayer: (feature, latlng) => {
                 const markerColor = getMarkerColor(feature, config);
-                const floodDepth = getWraPointDepth(feature, config);
+                const wraRisk = getWraPointRisk(feature, config);
                 const riskVal = getFeatureRisk(feature, config);
 
-                return createRiskOutlinedMarker(latlng, markerColor, riskVal, floodDepth, facilityPane);
+                return createRiskOutlinedMarker(latlng, markerColor, riskVal, wraRisk, facilityPane);
             },
             onEachFeature: (feature, layer) => onEachPointFeature(feature, layer, config)
         }).addTo(map);
@@ -1394,7 +1398,7 @@ function getRiskDistribution() {
     const riskDistribution = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
 
     getActivePointFeatures().forEach(({ config, feature }) => {
-        const riskVal = getFeatureRisk(feature, config);
+        const riskVal = normalizeRiskLevel(getFeatureRisk(feature, config));
 
         riskDistribution[riskVal]++;
         if (riskVal >= 4) {
@@ -1413,7 +1417,10 @@ function getWraDepthDistribution() {
         const risk = getWraPointRisk(feature, config);
         if (risk) {
             totalFlooded++;
-            depthDistribution[risk.gridCode || getWraGridCodeFromDepth(risk.depth)]++;
+            const gridCode = risk.gridCode || getWraGridCodeFromDepth(risk.depth);
+            if (depthDistribution[gridCode] !== undefined) {
+                depthDistribution[gridCode]++;
+            }
         }
     });
 
@@ -2375,6 +2382,7 @@ function updateLegendUI() {
         <div class="legend-scale">
             ${pointLegendItems}
             <div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid ${riskColors[5]}"></span> <span>外框色代表所處風險等級</span></div>
+            ${isWraLayerEnabled() ? `<div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid #ef4444"></span> <span>紅色核心框：直接套疊淹水潛勢</span></div><div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid #f97316"></span> <span>橘色核心框：100m 內鄰近潛勢</span></div>` : ''}
         </div>
     `;
 
