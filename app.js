@@ -78,8 +78,8 @@ function getActiveWraScenario() {
 const WRA_DATA_BASE_PATH = 'data/wra';
 const WRA_SCENARIOS = {
     wra650_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', timelineLabel: '24h 650mm（NCDR 物理基底）', cacheKey: 'wra650_24h', enabled: true },
-    // Keep the 6h short-duration stress-test scenario configured, but do not expose it until the GeoJSON exists in data/wra.
-    wra350_6h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_6h.json`, label: '6h 350mm 極端短延時', timelineLabel: '6h 350mm（短延時強降雨）', cacheKey: 'wra350_6h', enabled: false },
+    // Prefer the normalized data/wra path; keep the root path as a temporary main-branch fallback for the newly uploaded 6h file.
+    wra350_6h: { file: [`${WRA_DATA_BASE_PATH}/wra_flood_350mm_6h.json`, 'wra_flood_350mm_6h.json'], label: '6h 350mm 極端短延時', timelineLabel: '6h 350mm（短延時強降雨）', cacheKey: 'wra350_6h', enabled: true },
     wra350_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般豪雨（備用）', timelineLabel: '24h 350mm（備用）', cacheKey: 'wra350_24h', enabled: true },
     // Backward-compatible aliases for old timeline ids.
     gwl20: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', timelineLabel: '24h 650mm（NCDR 物理基底）', cacheKey: 'wra650_24h', enabled: true },
@@ -1671,9 +1671,25 @@ function populatePointList() {
 // ==========================================================================
 // Lazy Loader for WRA Flood GeoJSON
 // ==========================================================================
+async function fetchFirstAvailableWraFile(files) {
+    let lastError = null;
+    for (const file of files) {
+        try {
+            const res = await fetch(`${file}?t=${new Date().getTime()}`);
+            if (!res.ok) throw new Error(`${file} responded ${res.status}`);
+            return await res.json();
+        } catch (err) {
+            lastError = err;
+            console.warn(`WRA GeoJSON unavailable at ${file}; trying next candidate if present.`, err);
+        }
+    }
+    throw lastError || new Error('No WRA GeoJSON candidates configured');
+}
+
 function loadWraData(scenarioId, callback) {
     const scenarioConfig = getWraScenarioConfig(scenarioId);
     const { file, cacheKey } = scenarioConfig;
+    const files = Array.isArray(file) ? file : [file];
     const cachedGeoJson = getCachedWraData(cacheKey);
 
     if (cachedGeoJson) {
@@ -1685,8 +1701,7 @@ function loadWraData(scenarioId, callback) {
     const originalText = indicator.innerText;
     indicator.innerText = `載入水利署精細潛勢圖中...請稍候...`;
 
-    fetch(`${file}?t=${new Date().getTime()}`)
-        .then(res => res.json())
+    fetchFirstAvailableWraFile(files)
         .then(geojson => {
             setCachedWraData(cacheKey, geojson);
             indicator.innerText = originalText;
