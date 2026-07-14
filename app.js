@@ -23,7 +23,6 @@ let lastClimateScenario = activeScenario;
 let activeFloodLayers = { ncdr: true, wra: true }; // NCDR flood layer is visual reference; WRA is the point-level flood risk overlay
 let activeTempAdminReference = false; // optional township reference overlay for temp mode
 let activeTempRiskMode = 'grid'; // 'grid' = NCDR AR6 climate grid; 'admin' = township fallback without grid display
-let activeFloodRiskMode = 'grid'; // Flood point risk uses WRA inundation potential only; admin/NCDR polygons are visual reference
 let activeWraScenario = 'wra650_24h'; // WRA comparison: 650mm/24HR physical base; 350mm/6HR urban flash-flood stress test; 350mm/24HR is a general typhoon-rain reference
 let tempAdminOpacity = 0.45;
 let ncdrRiskOpacity = 0.7;
@@ -58,7 +57,9 @@ function isWraLayerEnabled() {
 }
 
 function isNcdrLayerEnabled() {
-    return activeTheme === 'temp' ? (activeTempAdminReference || activeTempRiskMode === 'admin') : (activeFloodLayers.ncdr || activeFloodRiskMode === 'admin');
+    return activeTheme === 'temp'
+        ? (activeTempAdminReference || activeTempRiskMode === 'admin')
+        : activeFloodLayers.ncdr;
 }
 
 function isClimateGridRiskMode() {
@@ -80,7 +81,7 @@ const WRA_DATA_BASE_PATH = 'data/wra';
 const WRA_SCENARIOS = {
     wra650_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', shortLabel: '24h 650mm', timelineLabel: '24h 650mm（NCDR 物理基底）', cacheKey: 'wra650_24h', enabled: true },
     wra350_6h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_6h.json`, label: '6h 350mm 極端短延時', shortLabel: '6h 350mm', timelineLabel: '6h 350mm（都市防洪壓力測試）', cacheKey: 'wra350_6h', enabled: true },
-    wra350_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般颱風豪雨（備用）', shortLabel: '24h 350mm', timelineLabel: '24h 350mm（備用參考）', cacheKey: 'wra350_24h', enabled: true },
+    wra350_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般颱風豪雨基準', shortLabel: '24h 350mm', timelineLabel: '24h 350mm（一般颱風豪雨基準）', cacheKey: 'wra350_24h', enabled: true },
     // Backward-compatible aliases for old timeline ids.
     gwl20: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', timelineLabel: '24h 650mm（NCDR 物理基底）', cacheKey: 'wra650_24h', enabled: true },
     gwl15: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般颱風豪雨', timelineLabel: '24h 350mm（一般颱風豪雨）', cacheKey: 'wra350_24h', enabled: true }
@@ -223,6 +224,12 @@ const riskColors = {
     4: '#f97316', // Orange
     5: '#ef4444'  // Soft Red (High)
 };
+
+function normalizeRiskLevel(value, fallback = 1) {
+    const numericValue = Number(value);
+    if (!Number.isFinite(numericValue)) return fallback;
+    return Math.min(Math.max(Math.round(numericValue), 1), 5);
+}
 
 // WRA Flood Depth Colors
 const wraColors = {
@@ -755,20 +762,47 @@ function distancePointToWraFeatureMeters(x, y, feature) {
 }
 
 function getWraGridCodeFromDepth(depth) {
-    if (depth === '0.3-0.5') return 2;
-    if (depth === '0.5-1') return 3;
-    if (depth === '1-2') return 4;
-    if (depth === '2-3') return 5;
-    if (depth === '>3') return 6;
-    return 2;
+    const normalizedDepth = String(depth || '').replace(/\s/g, '').replace(/\.0/g, '');
+    if (normalizedDepth === '0.3-0.5') return 2;
+    if (normalizedDepth === '0.5-1') return 3;
+    if (normalizedDepth === '1-2') return 4;
+    if (normalizedDepth === '2-3') return 5;
+    if (normalizedDepth === '>3') return 6;
+    return 1;
+}
+
+function getWraRiskLevelFromGridCode(gridCode) {
+    return normalizeRiskLevel(gridCode);
+}
+
+function getWraPointRiskScore(result) {
+    if (!result) return 0;
+    const directLevel = getWraRiskLevelFromGridCode(result.gridCode || getWraGridCodeFromDepth(result.depth));
+    if (result.method === 'direct') return directLevel;
+    return 1 + ((directLevel - 1) * (result.weight || 0));
+}
+
+function isHigherPriorityWraResult(candidate, current) {
+    if (!candidate) return false;
+    if (!current) return true;
+
+    if (candidate.method !== current.method) {
+        return candidate.method === 'direct';
+    }
+
+    const candidateScore = getWraPointRiskScore(candidate);
+    const currentScore = getWraPointRiskScore(current);
+    if (candidateScore !== currentScore) return candidateScore > currentScore;
+
+    const candidateGridCode = candidate.gridCode || getWraGridCodeFromDepth(candidate.depth);
+    const currentGridCode = current.gridCode || getWraGridCodeFromDepth(current.depth);
+    if (candidateGridCode !== currentGridCode) return candidateGridCode > currentGridCode;
+
+    return (candidate.distanceMeters ?? Infinity) < (current.distanceMeters ?? Infinity);
 }
 
 function getWraPointRisk(feature, config) {
     return daycareIntersectResults[getPointKey(feature, config)] || null;
-}
-
-function getWraPointDepth(feature, config) {
-    return getWraPointRisk(feature, config)?.depth || '';
 }
 
 function formatWraRiskLabel(result) {
@@ -897,13 +931,13 @@ function getWraFeatureRisk(feature, config) {
     // WRA depth classes are stored as grid codes 2-6. For point-level risk display,
     // normalize them to the same 1-5 scale used by township risks:
     // no intersection = 1, 0.3-0.5m = 2, 0.5-1m = 3, 1-2m = 4, >=2m = 5.
-    const directLevel = Math.min(wraRisk.gridCode || getWraGridCodeFromDepth(wraRisk.depth), 5);
+    const directLevel = getWraRiskLevelFromGridCode(wraRisk.gridCode || getWraGridCodeFromDepth(wraRisk.depth));
     if (wraRisk.method === 'direct') return directLevel;
 
     // Nearby-but-not-overlapping polygons should not be treated as full direct
     // inundation. Keep the warning visible, but taper the risk level by distance
     // within the 100m buffer so the rendered marker updates more realistically.
-    return Math.max(1, Math.round(1 + ((directLevel - 1) * (wraRisk.weight || 0))));
+    return normalizeRiskLevel(1 + ((directLevel - 1) * (wraRisk.weight || 0)));
 }
 
 function getFeatureRiskAssessment(feature, config) {
@@ -939,7 +973,6 @@ function getFeatureRiskAssessment(feature, config) {
         };
     }
 
-    const hasNcdr = isNcdrLayerEnabled();
     const hasWra = isWraLayerEnabled();
     const ncdrRisk = getNcdrFeatureRisk(feature, config);
     const wraPointRisk = hasWra ? getWraPointRisk(feature, config) : null;
@@ -947,7 +980,7 @@ function getFeatureRiskAssessment(feature, config) {
 
     if (hasWra) {
         if (wraPointRisk?.method === 'direct') {
-            const directGridRisk = Math.min(wraPointRisk.gridCode || getWraGridCodeFromDepth(wraPointRisk.depth), 5);
+            const directGridRisk = getWraRiskLevelFromGridCode(wraPointRisk.gridCode || getWraGridCodeFromDepth(wraPointRisk.depth));
             return { risk: directGridRisk, ncdrRisk, wraRisk: directGridRisk, source: '水利署淹水潛勢圖', mode: 'flood_grid' };
         }
         return { risk: wraRisk || 1, ncdrRisk, wraRisk, source: wraRisk ? '水利署鄰近淹水潛勢' : '未命中水利署淹水潛勢', mode: wraRisk ? 'flood_grid_proximity' : 'flood_grid_no_match' };
@@ -957,7 +990,7 @@ function getFeatureRiskAssessment(feature, config) {
 }
 
 function getFeatureRisk(feature, config) {
-    return getFeatureRiskAssessment(feature, config).risk;
+    return normalizeRiskLevel(getFeatureRiskAssessment(feature, config).risk);
 }
 
 function getFeatureTownMismatch(feature, config) {
@@ -995,7 +1028,8 @@ function computeIntersections() {
             if (!coords) return;
 
             const [x, y] = coords;
-            let nearest = null;
+            let bestDirect = null;
+            let bestProximity = null;
 
             for (const feat of activeWraData.features || []) {
                 const geometry = feat.geometry;
@@ -1010,25 +1044,32 @@ function computeIntersections() {
                 const gridCode = feat.properties.grid_code || getWraGridCodeFromDepth(depth);
 
                 if (isPointInBBox(x, y, feat._bbox) && isPointInWraFeature(x, y, feat)) {
-                    daycareIntersectResults[getPointKey(feature, config)] = {
+                    const directCandidate = {
                         depth,
                         gridCode,
                         method: 'direct',
                         distanceMeters: 0,
                         weight: 1
                     };
-                    return;
+                    if (isHigherPriorityWraResult(directCandidate, bestDirect)) {
+                        bestDirect = directCandidate;
+                    }
+                    continue;
                 }
 
                 const distanceMeters = distancePointToWraFeatureMeters(x, y, feat);
-                if (distanceMeters <= WRA_PROXIMITY_RADIUS_METERS && (!nearest || distanceMeters < nearest.distanceMeters)) {
-                    nearest = { depth, gridCode, method: 'proximity', distanceMeters };
+                if (distanceMeters <= WRA_PROXIMITY_RADIUS_METERS) {
+                    const weight = Math.max(0, 1 - (distanceMeters / WRA_PROXIMITY_RADIUS_METERS));
+                    const proximityCandidate = { depth, gridCode, method: 'proximity', distanceMeters, weight };
+                    if (isHigherPriorityWraResult(proximityCandidate, bestProximity)) {
+                        bestProximity = proximityCandidate;
+                    }
                 }
             }
 
-            if (nearest) {
-                const weight = Math.max(0, 1 - (nearest.distanceMeters / WRA_PROXIMITY_RADIUS_METERS));
-                daycareIntersectResults[getPointKey(feature, config)] = { ...nearest, weight };
+            const bestResult = bestDirect || bestProximity;
+            if (bestResult) {
+                daycareIntersectResults[getPointKey(feature, config)] = bestResult;
             }
         });
     }
@@ -1135,11 +1176,15 @@ function getMarkerColor(feature, config) {
     return (markerConfig.colorMap && markerConfig.colorMap[value]) || markerConfig.fallbackColor || '#94a3b8';
 }
 
-function createRiskOutlinedMarker(latlng, markerColor, riskVal, floodDepth, paneName) {
-    const riskColor = riskColors[riskVal] || '#94a3b8';
-    const isHighRisk = riskVal >= 4;
-    const isFlooded = Boolean(floodDepth);
-    const radiusBoost = isFlooded || isHighRisk ? 1.5 : 0;
+function createRiskOutlinedMarker(latlng, markerColor, riskVal, wraRiskResult, paneName) {
+    const normalizedRisk = normalizeRiskLevel(riskVal);
+    const riskColor = riskColors[normalizedRisk] || '#94a3b8';
+    const isHighRisk = normalizedRisk >= 4;
+    const isDirectFlooded = wraRiskResult?.method === 'direct';
+    const isNearFloodPotential = wraRiskResult?.method === 'proximity';
+    const hasWraWarning = isDirectFlooded || isNearFloodPotential;
+    const radiusBoost = hasWraWarning || isHighRisk ? 1.5 : 0;
+    const coreStrokeColor = isDirectFlooded ? '#ef4444' : isNearFloodPotential ? '#f97316' : '#ffffff';
 
     const outerWhiteRing = L.circleMarker(latlng, {
         radius: 10 + radiusBoost,
@@ -1167,11 +1212,11 @@ function createRiskOutlinedMarker(latlng, markerColor, riskVal, floodDepth, pane
         radius: 5.5 + radiusBoost,
         fillColor: markerColor,
         fillOpacity: 0.95,
-        color: isFlooded ? '#ef4444' : '#ffffff',
-        weight: isFlooded ? 2.5 : 1.5,
+        color: coreStrokeColor,
+        weight: hasWraWarning ? 2.5 : 1.5,
         opacity: 1,
         pane: paneName,
-        className: isFlooded ? 'daycare-marker warning-pulse' : 'daycare-marker'
+        className: hasWraWarning ? 'daycare-marker warning-pulse' : 'daycare-marker'
     });
 
     return L.featureGroup([outerWhiteRing, riskRing, coreMarker]);
@@ -1184,10 +1229,10 @@ function renderPointLayers() {
         pointLayers[config.id] = L.geoJSON(dataset, {
             pointToLayer: (feature, latlng) => {
                 const markerColor = getMarkerColor(feature, config);
-                const floodDepth = getWraPointDepth(feature, config);
+                const wraRisk = getWraPointRisk(feature, config);
                 const riskVal = getFeatureRisk(feature, config);
 
-                return createRiskOutlinedMarker(latlng, markerColor, riskVal, floodDepth, facilityPane);
+                return createRiskOutlinedMarker(latlng, markerColor, riskVal, wraRisk, facilityPane);
             },
             onEachFeature: (feature, layer) => onEachPointFeature(feature, layer, config)
         }).addTo(map);
@@ -1353,7 +1398,7 @@ function getRiskDistribution() {
     const riskDistribution = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
 
     getActivePointFeatures().forEach(({ config, feature }) => {
-        const riskVal = getFeatureRisk(feature, config);
+        const riskVal = normalizeRiskLevel(getFeatureRisk(feature, config));
 
         riskDistribution[riskVal]++;
         if (riskVal >= 4) {
@@ -1372,7 +1417,10 @@ function getWraDepthDistribution() {
         const risk = getWraPointRisk(feature, config);
         if (risk) {
             totalFlooded++;
-            depthDistribution[risk.gridCode || getWraGridCodeFromDepth(risk.depth)]++;
+            const gridCode = risk.gridCode || getWraGridCodeFromDepth(risk.depth);
+            if (depthDistribution[gridCode] !== undefined) {
+                depthDistribution[gridCode]++;
+            }
         }
     });
 
@@ -1731,70 +1779,56 @@ function renderWraScenarioSelector() {
         return `
             <button class="toggle-btn ${isActive ? 'active' : ''}" data-wra-scenario="${scenario.id}" type="button" aria-pressed="${String(isActive)}">
                 <i class="fa-solid fa-water"></i> ${scenario.shortLabel || scenario.label}
-                <small>${scenario.id === 'wra350_6h' ? '都市防洪壓力測試' : scenario.id === 'wra350_24h' ? '備用參考' : 'NCDR 物理基底'}</small>
+                <small>${scenario.id === 'wra350_6h' ? '都市防洪壓力測試' : scenario.id === 'wra350_24h' ? '一般颱風豪雨基準' : 'NCDR 物理基底'}</small>
             </button>
         `;
     }).join('');
 }
 
+function shouldShowScenarioTimeline() {
+    return activeTheme !== 'flood' || activeFloodLayers.ncdr;
+}
+
 function renderTimelineUI() {
     const selector = document.getElementById('scenario-selector');
+    const controlGroup = document.getElementById('scenario-control-group');
     if (!selector) return;
 
-    let html = '<div class="timeline-track"></div>';
+    const shouldShow = shouldShowScenarioTimeline();
+    if (controlGroup) {
+        controlGroup.style.display = shouldShow ? 'block' : 'none';
+    }
 
-    if (activeTheme === 'flood') {
-        if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
-            const availableScenarios = getAvailableWraScenarios();
-            const denominator = Math.max(availableScenarios.length - 1, 1);
-            const steps = availableScenarios.map((scenario, index) => ({
-                id: scenario.id,
-                label: scenario.timelineLabel,
-                left: `${(index / denominator) * 100}%`
-            }));
-            steps.forEach(step => {
-                const isActive = getActiveWraScenario() === step.id ? 'active' : '';
-                html += `
-                    <div class="timeline-step ${isActive}" data-scenario="${step.id}" style="left: ${step.left};">
-                        <span class="step-dot"></span>
-                        <span class="step-label">${step.label}</span>
-                    </div>
-                `;
-            });
-        } else {
-            const steps = [
-                { id: 'current', label: '現況基準', left: '0%' },
-                { id: 'gwl15', label: '升溫 1.5°C', left: '33.33%' },
-                { id: 'gwl20', label: '升溫 2.0°C', left: '66.67%' },
-                { id: 'gwl40', label: '升溫 4.0°C', left: '100%' }
-            ];
-            steps.forEach(step => {
-                const isActive = activeScenario === step.id ? 'active' : '';
-                html += `
-                    <div class="timeline-step ${isActive}" data-scenario="${step.id}" style="left: ${step.left};">
-                        <span class="step-dot"></span>
-                        <span class="step-label">${step.label}</span>
-                    </div>
-                `;
-            });
-        }
-    } else {
-        const steps = [
+    if (!shouldShow) {
+        selector.innerHTML = '';
+        renderWraScenarioSelector();
+        return;
+    }
+
+    let html = '<div class="timeline-track"></div>';
+    const steps = activeTheme === 'flood'
+        ? [
+            { id: 'current', label: '現況基準', left: '0%' },
+            { id: 'gwl15', label: '升溫 1.5°C', left: '33.33%' },
+            { id: 'gwl20', label: '升溫 2.0°C', left: '66.67%' },
+            { id: 'gwl40', label: '升溫 4.0°C', left: '100%' }
+        ]
+        : [
             { id: 'current', label: '現況基準', left: '0%' },
             { id: 'gwl15', label: '升溫 1.5°C（SSP1-2.6）', left: '33.33%' },
             { id: 'gwl20', label: '升溫 2.0°C（SSP2-4.5）', left: '66.67%' },
             { id: 'gwl40', label: '升溫 4.0°C（SSP5-8.5）', left: '100%' }
         ];
-        steps.forEach(step => {
-            const isActive = activeScenario === step.id ? 'active' : '';
-            html += `
-                <div class="timeline-step ${isActive}" data-scenario="${step.id}" style="left: ${step.left};">
-                    <span class="step-dot"></span>
-                    <span class="step-label">${step.label}</span>
-                </div>
-            `;
-        });
-    }
+
+    steps.forEach(step => {
+        const isActive = activeScenario === step.id ? 'active' : '';
+        html += `
+            <div class="timeline-step ${isActive}" data-scenario="${step.id}" style="left: ${step.left};">
+                <span class="step-dot"></span>
+                <span class="step-label">${step.label}</span>
+            </div>
+        `;
+    });
 
     selector.innerHTML = html;
     renderWraScenarioSelector();
@@ -2094,48 +2128,6 @@ function setupUIControls() {
     };
     syncFloodLayerButtons();
 
-    const floodRiskModeButtons = document.querySelectorAll('#flood-risk-mode-selector [data-flood-risk-mode]');
-    const syncFloodRiskModeButtons = () => {
-        floodRiskModeButtons.forEach(button => {
-            const isActive = button.dataset.floodRiskMode === activeFloodRiskMode;
-            button.classList.toggle('active', isActive);
-            button.setAttribute('aria-pressed', String(isActive));
-        });
-    };
-    floodRiskModeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const nextMode = button.dataset.floodRiskMode === 'admin' ? 'admin' : 'grid';
-            if (activeFloodRiskMode === nextMode) return;
-            activeFloodRiskMode = nextMode;
-            if (nextMode === 'grid') {
-                activeFloodLayers.ncdr = false;
-                activeFloodLayers.wra = true;
-                activeScenario = activeWraScenario;
-            } else {
-                activeFloodLayers.ncdr = true;
-                activeFloodLayers.wra = false;
-                if (isWraScenarioId(activeScenario)) {
-                    activeScenario = 'current';
-                }
-            }
-            syncFloodRiskModeButtons();
-            syncFloodLayerButtons();
-            updateRiskOpacityControl();
-
-            if (isWraLayerEnabled()) {
-                loadWraData(getActiveWraScenario(), () => {
-                    renderTimelineUI();
-                    updateHeaderIndicator();
-                    refreshStandardizedData();
-                });
-            } else {
-                renderTimelineUI();
-                updateHeaderIndicator();
-                refreshStandardizedData();
-            }
-        });
-    });
-    syncFloodRiskModeButtons();
     updateRiskOpacityControl();
 
     const wraScenarioSelector = document.getElementById('wra-scenario-selector');
@@ -2390,6 +2382,7 @@ function updateLegendUI() {
         <div class="legend-scale">
             ${pointLegendItems}
             <div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid ${riskColors[5]}"></span> <span>外框色代表所處風險等級</span></div>
+            ${isWraLayerEnabled() ? `<div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid #ef4444"></span> <span>紅色核心框：直接套疊淹水潛勢</span></div><div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid #f97316"></span> <span>橘色核心框：100m 內鄰近潛勢</span></div>` : ''}
         </div>
     `;
 
