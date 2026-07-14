@@ -24,7 +24,7 @@ let activeFloodLayers = { ncdr: true, wra: false }; // NCDR is the primary flood
 let activeTempAdminReference = false; // optional township reference overlay for temp mode
 let activeTempRiskMode = 'grid'; // 'grid' = NCDR AR6 climate grid; 'admin' = township fallback without grid display
 let activeFloodRiskMode = 'admin'; // 'admin' = NCDR primary risk; 'grid' = WRA inundation potential comparison
-let activeWraScenario = 'wra650_24h'; // WRA comparison: 650mm/24HR physical base; 350mm/6HR urban flash-flood stress test; 350mm/24HR remains a downgraded backup reference
+let activeWraScenario = 'wra650_24h'; // WRA comparison: 650mm/24HR physical base; 350mm/6HR urban flash-flood stress test; 350mm/24HR is a general typhoon-rain reference
 let tempAdminOpacity = 0.45;
 let ncdrRiskOpacity = 0.7;
 let climateGridOpacity = 0.7;
@@ -80,10 +80,10 @@ const WRA_DATA_BASE_PATH = 'data/wra';
 const WRA_SCENARIOS = {
     wra650_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', timelineLabel: '24h 650mm（NCDR 物理基底）', cacheKey: 'wra650_24h', enabled: true },
     wra350_6h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_6h.json`, label: '6h 350mm 極端短延時', timelineLabel: '6h 350mm（都市防洪壓力測試）', cacheKey: 'wra350_6h', enabled: true },
-    wra350_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般豪雨（備用）', timelineLabel: '24h 350mm（備用）', cacheKey: 'wra350_24h', enabled: true },
+    wra350_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般颱風豪雨', timelineLabel: '24h 350mm（一般颱風豪雨）', cacheKey: 'wra350_24h', enabled: true },
     // Backward-compatible aliases for old timeline ids.
     gwl20: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', timelineLabel: '24h 650mm（NCDR 物理基底）', cacheKey: 'wra650_24h', enabled: true },
-    gwl15: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般豪雨（備用）', timelineLabel: '24h 350mm（備用）', cacheKey: 'wra350_24h', enabled: true }
+    gwl15: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般颱風豪雨', timelineLabel: '24h 350mm（一般颱風豪雨）', cacheKey: 'wra350_24h', enabled: true }
 };
 
 function getAvailableWraScenarios() {
