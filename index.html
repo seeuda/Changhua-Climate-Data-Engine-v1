@@ -121,23 +121,23 @@
                 <div class="control-group" id="flood-mode-group" style="display: none;">
                     <label class="group-label">淹水風險資料來源</label>
                     <div class="toggle-buttons flood-risk-mode-selector" id="flood-risk-mode-selector" aria-label="選擇淹水點位風險判定方式">
-                        <button class="toggle-btn active" data-flood-risk-mode="grid" type="button" aria-pressed="true">
-                            <i class="fa-solid fa-border-all"></i> 使用淹水網格
+                        <button class="toggle-btn active" data-flood-risk-mode="admin" type="button" aria-pressed="true">
+                            <i class="fa-solid fa-map"></i> 使用 NCDR 主風險
                         </button>
-                        <button class="toggle-btn" data-flood-risk-mode="admin" type="button" aria-pressed="false">
-                            <i class="fa-solid fa-map"></i> 使用鄉鎮風險
+                        <button class="toggle-btn" data-flood-risk-mode="grid" type="button" aria-pressed="false">
+                            <i class="fa-solid fa-border-all"></i> 使用水利署潛勢
                         </button>
                     </div>
                     <label class="group-label flood-layer-label">淹水圖資套疊（可複選）</label>
                     <div class="toggle-buttons" id="flood-mode-selector">
-                        <button class="toggle-btn" data-mode="ncdr">
-                            <i class="fa-solid fa-map"></i> NCDR 鄉鎮風險
+                        <button class="toggle-btn active" data-mode="ncdr">
+                            <i class="fa-solid fa-map"></i> NCDR 主風險
                         </button>
-                        <button class="toggle-btn active" data-mode="wra">
-                            <i class="fa-solid fa-water"></i> 水利署潛勢圖
+                        <button class="toggle-btn" data-mode="wra">
+                            <i class="fa-solid fa-water"></i> 水利署比較圖
                         </button>
                     </div>
-                    <p class="control-hint">預設以水利署淹水潛勢網格判定點位風險；若點位未落入網格，會回退使用 NCDR 鄉鎮彙整風險。</p>
+                    <p class="control-hint">淹水圖資分為兩大類：NCDR AR6 淹水災害風險為 Primary Risk，供升溫 1.5°C／2.0°C／4.0°C 的策略層級調適判讀；水利署第 3 代 24h 650mm 與 6h 350mm 淹水潛勢圖為主要 Comparison，分別代表極端長延時廣域淹水與短延時都市暴雨，24h 350mm 則降級為備用一般豪雨參考。NCDR 風險可理解為 R = H × V × E，其中 V 承接水利署 650mm 潛勢的淹水情況；因此兩者具血緣關係，但數值意義不同，應各自解讀、互補套疊，不混算取高。</p>
                 </div>
 
                 <div class="control-group" id="temp-mode-group">
@@ -211,7 +211,7 @@
                         <details class="concept-tip concept-tip-compact">
                             <summary><i class="fa-solid fa-circle-question"></i> 看範例與限制</summary>
                             <div class="concept-tip-body">
-                                <p>例如「SSP5-8.5 + 2050」代表高排放路徑下 2050 年的模擬結果，不代表 2050 年已升溫 4°C。</p>
+                                <p>例如「SSP5-8.5 + 2050」代表高排放路徑(也就是2100年升溫約4°C的這條路徑)下， 2050 年的模擬結果。</p>
                                 <p>點位風險優先以座標套疊 NCDR AR6 5km 氣候網格；行政區彙整風險僅作參考或缺值回退。</p>
                             </div>
                         </details>

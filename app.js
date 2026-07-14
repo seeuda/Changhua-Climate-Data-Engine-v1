@@ -19,11 +19,11 @@ let activePointLayerIds = new Set();
 
 let activeTheme = 'temp'; // 'flood' or 'temp'
 let activeScenario = 'gwl40'; // 'current', 'gwl15', 'gwl20', 'gwl40'
-let activeFloodLayers = { ncdr: false, wra: true }; // flood overlays can be combined
+let activeFloodLayers = { ncdr: true, wra: false }; // NCDR is the primary flood risk layer; WRA can be overlaid as comparison
 let activeTempAdminReference = false; // optional township reference overlay for temp mode
 let activeTempRiskMode = 'grid'; // 'grid' = NCDR AR6 climate grid; 'admin' = township fallback without grid display
-let activeFloodRiskMode = 'grid'; // 'grid' = WRA inundation grid; 'admin' = NCDR township fallback
-let activeWraScenario = 'gwl15'; // 'gwl15' = 350mm/24HR, 'gwl20' = 650mm/24HR
+let activeFloodRiskMode = 'admin'; // 'admin' = NCDR primary risk; 'grid' = WRA inundation potential comparison
+let activeWraScenario = 'wra650_24h'; // WRA comparison: 650mm/24HR physical base; 350mm/6HR urban flash-flood stress test
 let tempAdminOpacity = 0.45;
 let ncdrRiskOpacity = 0.7;
 let climateGridOpacity = 0.7;
@@ -43,6 +43,7 @@ let layerManager = null;
 
 let wraGeoJson350 = null;
 let wraGeoJson650 = null;
+let wraGeoJson350_6h = null;
 let wraLayer = null;
 let daycareIntersectResults = {}; // point key -> WRA direct/proximity flood risk result
 
@@ -65,8 +66,8 @@ function isClimateGridRiskMode() {
 
 function getActiveFloodLayerNames() {
     const names = [];
-    if (activeFloodLayers.ncdr) names.push('NCDR 鄉鎮風險');
-    if (isWraLayerEnabled()) names.push('水利署潛勢網格');
+    if (activeFloodLayers.ncdr) names.push('NCDR AR6 風險');
+    if (isWraLayerEnabled()) names.push('水利署潛勢圖');
     return names;
 }
 
@@ -74,8 +75,37 @@ function getActiveWraScenario() {
     return isWraLayerEnabled() && !activeFloodLayers.ncdr ? activeScenario : activeWraScenario;
 }
 
+const WRA_SCENARIOS = {
+    wra650_24h: { file: 'wra_flood_650mm_24h.json', label: '24h 650mm 極端長延時', cacheKey: 'wra650_24h' },
+    wra350_6h: { file: 'wra_flood_350mm_6h.json', label: '6h 350mm 極端短延時', cacheKey: 'wra350_6h' },
+    wra350_24h: { file: 'wra_flood_350mm_24h.json', label: '24h 350mm 一般豪雨（備用）', cacheKey: 'wra350_24h' },
+    // Backward-compatible aliases for old timeline ids.
+    gwl20: { file: 'wra_flood_650mm_24h.json', label: '24h 650mm 極端長延時', cacheKey: 'wra650_24h' },
+    gwl15: { file: 'wra_flood_350mm_24h.json', label: '24h 350mm 一般豪雨（備用）', cacheKey: 'wra350_24h' }
+};
+
+function getWraScenarioConfig(scenarioId = getActiveWraScenario()) {
+    return WRA_SCENARIOS[scenarioId] || WRA_SCENARIOS.wra650_24h;
+}
+
 function getWraScenarioName() {
-    return getActiveWraScenario() === 'gwl20' ? '650mm / 24HR 極端降雨' : '350mm / 24HR 暴雨模擬';
+    return getWraScenarioConfig().label;
+}
+
+function getCachedWraData(cacheKey) {
+    if (cacheKey === 'wra650_24h') return wraGeoJson650;
+    if (cacheKey === 'wra350_6h') return wraGeoJson350_6h;
+    return wraGeoJson350;
+}
+
+function setCachedWraData(cacheKey, geojson) {
+    if (cacheKey === 'wra650_24h') {
+        wraGeoJson650 = geojson;
+    } else if (cacheKey === 'wra350_6h') {
+        wraGeoJson350_6h = geojson;
+    } else {
+        wraGeoJson350 = geojson;
+    }
 }
 
 function getTownRiskFillOpacity() {
@@ -475,7 +505,7 @@ async function refreshStandardizedData() {
 
     activeWraData = null;
     if (isWraLayerEnabled()) {
-        const originalWra = getActiveWraScenario() === 'gwl20' ? wraGeoJson650 : wraGeoJson350;
+        const originalWra = getCachedWraData(getWraScenarioConfig().cacheKey);
         if (originalWra) {
             activeWraData = JSON.parse(JSON.stringify(originalWra));
             annotateWraFeatureBBoxes(activeWraData);
@@ -492,7 +522,7 @@ async function refreshStandardizedData() {
 // ==========================================================================
 function getActiveRiskField() {
     if (activeTheme === 'flood') {
-        // Flood supports current and gwl15 (which maps to flood_risk_future)
+        // Flood primary risk follows NCDR AR6 risk logic; current front-end township bundle stores one future field, so gwl15/gwl20/gwl40 map to flood_risk_future.
         return activeScenario === 'current' ? 'flood_risk_current' : 'flood_risk_future';
     } else {
         // Temp township values are derived administrative summaries retained only as reference/fallback; the original NCDR layer is the AR6 grid.
@@ -905,18 +935,17 @@ function getFeatureRiskAssessment(feature, config) {
     if (isFloodGridRiskMode()) {
         if (wraPointRisk?.method === 'direct') {
             const directGridRisk = Math.min(wraPointRisk.gridCode || getWraGridCodeFromDepth(wraPointRisk.depth), 5);
-            return { risk: directGridRisk, ncdrRisk, wraRisk: directGridRisk, source: '水利署淹水網格', mode: 'flood_grid' };
+            return { risk: directGridRisk, ncdrRisk, wraRisk: directGridRisk, source: '水利署淹水潛勢圖', mode: 'flood_grid' };
         }
         return { risk: ncdrRisk || 1, ncdrRisk: ncdrRisk || 1, wraRisk: null, source: '鄉鎮風險（無直接網格淹水）', mode: 'flood_grid_fallback' };
     }
 
     if (hasNcdr && hasWra) {
-        const risk = Math.max(ncdrRisk || 1, wraRisk || 1);
-        return { risk, ncdrRisk, wraRisk, source: '綜合套疊', mode: 'combined' };
+        return { risk: ncdrRisk || 1, ncdrRisk: ncdrRisk || 1, wraRisk, source: 'NCDR AR6 風險', mode: 'ncdr_with_wra' };
     }
 
     if (hasWra) return { risk: wraRisk || 1, ncdrRisk: null, wraRisk: wraRisk || 1, source: '水利署潛勢', mode: 'wra' };
-    return { risk: ncdrRisk || 1, ncdrRisk: ncdrRisk || 1, wraRisk: null, source: 'NCDR 鄉鎮市潛勢', mode: 'ncdr' };
+    return { risk: ncdrRisk || 1, ncdrRisk: ncdrRisk || 1, wraRisk: null, source: 'NCDR AR6 風險', mode: 'ncdr' };
 }
 
 function getFeatureRisk(feature, config) {
@@ -1235,9 +1264,9 @@ function onEachPointFeature(feature, layer, config) {
             <span class="popup-label">所處風險</span>
             <span class="popup-val risk-badge badge-${riskVal}">第 ${riskVal} 級（${riskAssessment.source}）</span>
         </div>
-        ${riskAssessment.mode === 'combined' ? `<div class="popup-row"><span class="popup-label">套疊明細</span><span class="popup-val">鄉鎮市第 ${riskAssessment.ncdrRisk} 級；水利署第 ${riskAssessment.wraRisk} 級，取較高者</span></div>` : ''}
-        ${riskAssessment.mode === 'flood_grid' ? `<div class="popup-row"><span class="popup-label">網格明細</span><span class="popup-val">水利署淹水潛勢網格；第 ${riskAssessment.wraRisk} 級</span></div>` : ''}
-        ${riskAssessment.mode === 'flood_grid_fallback' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位未直接落入淹水網格，改用行政區風險配對</span></div>` : ''}
+        ${riskAssessment.mode === 'ncdr_with_wra' ? `<div class="popup-row"><span class="popup-label">互補解讀</span><span class="popup-val">NCDR 風險第 ${riskAssessment.ncdrRisk} 級為主；水利署潛勢${riskAssessment.wraRisk ? `第 ${riskAssessment.wraRisk} 級` : '未命中'}作為物理淹水深度參考，不取較高者混算</span></div>` : ''}
+        ${riskAssessment.mode === 'flood_grid' ? `<div class="popup-row"><span class="popup-label">網格明細</span><span class="popup-val">水利署淹水潛勢圖；第 ${riskAssessment.wraRisk} 級</span></div>` : ''}
+        ${riskAssessment.mode === 'flood_grid_fallback' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位未直接落入水利署淹水潛勢範圍，改用行政區風險配對</span></div>` : ''}
         ${riskAssessment.mode === 'climate_grid' ? `<div class="popup-row"><span class="popup-label">網格明細</span><span class="popup-val">${riskAssessment.climateGridRisk.indicator} ${riskAssessment.climateGridRisk.value.toFixed(2)}；Grid ${riskAssessment.climateGridRisk.gridId}</span></div>` : ''}
         ${riskAssessment.mode === 'ncdr_fallback' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位無可用網格值，改用行政區風險配對</span></div>` : ''}
         ${townMismatch ? `<div class="popup-row"><span class="popup-label">資料鄉鎮註記</span><span class="popup-val">${townMismatch.declaredTown}（依座標改以 ${townMismatch.spatialTown} 判定風險）</span></div>` : ''}
@@ -1352,11 +1381,11 @@ function updateStatsAndChart() {
         renderChart(riskDistribution);
     } else if (isFloodGridRiskMode()) {
         const { totalHighRisk, riskDistribution } = getRiskDistribution();
-        updateHighRiskCard(totalHighRisk, `淹水網格/鄉鎮回退警戒${getActivePointSummaryLabel()} (Lv.4-5)`);
+        updateHighRiskCard(totalHighRisk, `水利署潛勢/鄉鎮回退警戒${getActivePointSummaryLabel()} (Lv.4-5)`);
         renderChart(riskDistribution);
     } else if (isNcdrLayerEnabled()) {
         const { totalHighRisk, riskDistribution } = getRiskDistribution();
-        const sourceLabel = isWraLayerEnabled() ? '綜合套疊' : '第 4-5 級';
+        const sourceLabel = isWraLayerEnabled() ? 'NCDR主風險＋水利署比較' : '第 4-5 級';
         updateHighRiskCard(totalHighRisk, `${sourceLabel}警戒${getActivePointSummaryLabel()} (Lv.4-5)`);
         renderChart(riskDistribution);
     } else if (isWraLayerEnabled()) {
@@ -1630,14 +1659,12 @@ function populatePointList() {
 // Lazy Loader for WRA Flood GeoJSON
 // ==========================================================================
 function loadWraData(scenarioId, callback) {
-    const file = scenarioId === 'gwl20' ? 'wra_flood_650mm_24h.json' : 'wra_flood_350mm_24h.json';
+    const scenarioConfig = getWraScenarioConfig(scenarioId);
+    const { file, cacheKey } = scenarioConfig;
+    const cachedGeoJson = getCachedWraData(cacheKey);
 
-    if (scenarioId === 'gwl20' && wraGeoJson650) {
-        callback(wraGeoJson650);
-        return;
-    }
-    if (scenarioId !== 'gwl20' && wraGeoJson350) {
-        callback(wraGeoJson350);
+    if (cachedGeoJson) {
+        callback(cachedGeoJson);
         return;
     }
 
@@ -1648,11 +1675,7 @@ function loadWraData(scenarioId, callback) {
     fetch(`${file}?t=${new Date().getTime()}`)
         .then(res => res.json())
         .then(geojson => {
-            if (scenarioId === 'gwl20') {
-                wraGeoJson650 = geojson;
-            } else {
-                wraGeoJson350 = geojson;
-            }
+            setCachedWraData(cacheKey, geojson);
             indicator.innerText = originalText;
             callback(geojson);
         })
@@ -1677,8 +1700,9 @@ function renderTimelineUI() {
     if (activeTheme === 'flood') {
         if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
             const steps = [
-                { id: 'gwl15', label: '350mm / 24HR 暴雨', left: '0%' },
-                { id: 'gwl20', label: '650mm / 24HR 極端降雨', left: '100%' }
+                { id: 'wra650_24h', label: '24h 650mm（NCDR 物理基底）', left: '0%' },
+                { id: 'wra350_6h', label: '6h 350mm（短延時強降雨）', left: '50%' },
+                { id: 'wra350_24h', label: '24h 350mm（備用）', left: '100%' }
             ];
             steps.forEach(step => {
                 const isActive = getActiveWraScenario() === step.id ? 'active' : '';
@@ -1692,7 +1716,9 @@ function renderTimelineUI() {
         } else {
             const steps = [
                 { id: 'current', label: '現況基準', left: '0%' },
-                { id: 'gwl15', label: '升溫 1.5°C', left: '100%' }
+                { id: 'gwl15', label: '升溫 1.5°C', left: '33.33%' },
+                { id: 'gwl20', label: '升溫 2.0°C', left: '66.67%' },
+                { id: 'gwl40', label: '升溫 4.0°C', left: '100%' }
             ];
             steps.forEach(step => {
                 const isActive = activeScenario === step.id ? 'active' : '';
@@ -1757,7 +1783,7 @@ function updateRiskOpacityControl() {
     }
 
     if (gridOpacityLabel) {
-        gridOpacityLabel.innerText = isFloodGridRiskMode() ? '淹水網格透明度' : '氣候網格透明度';
+        gridOpacityLabel.innerText = isFloodGridRiskMode() ? '水利署潛勢圖透明度' : '氣候網格透明度';
     }
 
     if (gridOpacityValue) {
@@ -1943,10 +1969,10 @@ function setupUIControls() {
             // Safety scenario shift
             if (activeTheme === 'flood') {
                 if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
-                    if (activeScenario !== 'gwl15' && activeScenario !== 'gwl20') {
-                        activeScenario = 'gwl15';
+                    if (!['wra650_24h', 'wra350_6h', 'wra350_24h', 'gwl15', 'gwl20'].includes(activeScenario)) {
+                        activeScenario = 'wra650_24h';
                     }
-                } else if (activeScenario !== 'current' && activeScenario !== 'gwl15') {
+                } else if (!['current', 'gwl15', 'gwl20', 'gwl40'].includes(activeScenario)) {
                     activeScenario = 'current';
                 }
             }
@@ -2026,10 +2052,15 @@ function setupUIControls() {
             if (activeFloodRiskMode === nextMode) return;
             activeFloodRiskMode = nextMode;
             if (nextMode === 'grid') {
+                activeFloodLayers.ncdr = false;
                 activeFloodLayers.wra = true;
+                activeScenario = activeWraScenario;
             } else {
                 activeFloodLayers.ncdr = true;
                 activeFloodLayers.wra = false;
+                if (['wra650_24h', 'wra350_6h', 'wra350_24h'].includes(activeScenario)) {
+                    activeScenario = 'current';
+                }
             }
             syncFloodRiskModeButtons();
             syncFloodLayerButtons();
@@ -2066,10 +2097,10 @@ function setupUIControls() {
             updateRiskOpacityControl();
 
             if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
-                if (activeScenario !== 'gwl15' && activeScenario !== 'gwl20') {
-                    activeScenario = 'gwl15';
+                if (!['wra650_24h', 'wra350_6h', 'wra350_24h', 'gwl15', 'gwl20'].includes(activeScenario)) {
+                    activeScenario = 'wra650_24h';
                 }
-            } else if (activeScenario !== 'current' && activeScenario !== 'gwl15') {
+            } else if (!['current', 'gwl15', 'gwl20', 'gwl40'].includes(activeScenario)) {
                 activeScenario = 'current';
             }
 
@@ -2192,7 +2223,11 @@ function updateHeaderIndicator() {
         scenarioName = getWraScenarioName();
     } else {
         if (activeScenario === 'gwl15' || activeScenario === 'future') {
-            scenarioName = '未來情境推估';
+            scenarioName = '升溫 1.5°C 情境推估（NCDR 未來欄位）';
+        } else if (activeScenario === 'gwl20') {
+            scenarioName = '升溫 2.0°C 情境推估（NCDR 未來欄位）';
+        } else if (activeScenario === 'gwl40') {
+            scenarioName = '升溫 4.0°C 情境推估（NCDR 未來欄位）';
         }
 
         if (isWraLayerEnabled()) {
