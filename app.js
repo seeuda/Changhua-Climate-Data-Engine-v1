@@ -20,10 +20,10 @@ let activePointLayerIds = new Set();
 let activeTheme = 'temp'; // 'flood' or 'temp'
 let activeScenario = 'gwl40'; // 'current', 'gwl15', 'gwl20', 'gwl40'
 let lastClimateScenario = activeScenario;
-let activeFloodLayers = { ncdr: true, wra: false }; // NCDR is the primary flood risk layer; WRA can be overlaid as comparison
+let activeFloodLayers = { ncdr: true, wra: true }; // NCDR flood layer is visual reference; WRA is the point-level flood risk overlay
 let activeTempAdminReference = false; // optional township reference overlay for temp mode
 let activeTempRiskMode = 'grid'; // 'grid' = NCDR AR6 climate grid; 'admin' = township fallback without grid display
-let activeFloodRiskMode = 'admin'; // 'admin' = NCDR primary risk; 'grid' = WRA inundation potential comparison
+let activeFloodRiskMode = 'grid'; // Flood point risk uses WRA inundation potential only; admin/NCDR polygons are visual reference
 let activeWraScenario = 'wra650_24h'; // WRA comparison: 650mm/24HR physical base; 350mm/6HR urban flash-flood stress test; 350mm/24HR is a general typhoon-rain reference
 let tempAdminOpacity = 0.45;
 let ncdrRiskOpacity = 0.7;
@@ -50,11 +50,11 @@ let daycareIntersectResults = {}; // point key -> WRA direct/proximity flood ris
 
 
 function isFloodGridRiskMode() {
-    return activeTheme === 'flood' && activeFloodRiskMode === 'grid';
+    return activeTheme === 'flood' && activeFloodLayers.wra;
 }
 
 function isWraLayerEnabled() {
-    return activeTheme === 'flood' && (activeFloodLayers.wra || isFloodGridRiskMode());
+    return activeTheme === 'flood' && activeFloodLayers.wra;
 }
 
 function isNcdrLayerEnabled() {
@@ -945,7 +945,7 @@ function getFeatureRiskAssessment(feature, config) {
     const wraPointRisk = hasWra ? getWraPointRisk(feature, config) : null;
     const wraRisk = wraPointRisk ? getWraFeatureRisk(feature, config) : null;
 
-    if (isFloodGridRiskMode()) {
+    if (hasWra) {
         if (wraPointRisk?.method === 'direct') {
             const directGridRisk = Math.min(wraPointRisk.gridCode || getWraGridCodeFromDepth(wraPointRisk.depth), 5);
             return { risk: directGridRisk, ncdrRisk, wraRisk: directGridRisk, source: '水利署淹水潛勢圖', mode: 'flood_grid' };
@@ -953,12 +953,7 @@ function getFeatureRiskAssessment(feature, config) {
         return { risk: wraRisk || 1, ncdrRisk, wraRisk, source: wraRisk ? '水利署鄰近淹水潛勢' : '未命中水利署淹水潛勢', mode: wraRisk ? 'flood_grid_proximity' : 'flood_grid_no_match' };
     }
 
-    if (hasNcdr && hasWra) {
-        return { risk: ncdrRisk || 1, ncdrRisk: ncdrRisk || 1, wraRisk, source: 'NCDR AR6 風險', mode: 'ncdr_with_wra' };
-    }
-
-    if (hasWra) return { risk: wraRisk || 1, ncdrRisk: null, wraRisk: wraRisk || 1, source: '水利署潛勢', mode: 'wra' };
-    return { risk: ncdrRisk || 1, ncdrRisk: ncdrRisk || 1, wraRisk: null, source: 'NCDR AR6 風險', mode: 'ncdr' };
+    return { risk: 1, ncdrRisk, wraRisk: null, source: '未啟用水利署點位套疊', mode: 'flood_no_point_overlay' };
 }
 
 function getFeatureRisk(feature, config) {
@@ -1283,10 +1278,10 @@ function onEachPointFeature(feature, layer, config) {
             <span class="popup-label">所處風險</span>
             <span class="popup-val risk-badge badge-${riskVal}">第 ${riskVal} 級（${riskAssessment.source}）</span>
         </div>
-        ${riskAssessment.mode === 'ncdr_with_wra' ? `<div class="popup-row"><span class="popup-label">互補解讀</span><span class="popup-val">NCDR 風險第 ${riskAssessment.ncdrRisk} 級為主；水利署潛勢${riskAssessment.wraRisk ? `第 ${riskAssessment.wraRisk} 級` : '未命中'}作為物理淹水深度參考，不取較高者混算</span></div>` : ''}
         ${riskAssessment.mode === 'flood_grid' ? `<div class="popup-row"><span class="popup-label">網格明細</span><span class="popup-val">水利署淹水潛勢圖；第 ${riskAssessment.wraRisk} 級</span></div>` : ''}
         ${riskAssessment.mode === 'flood_grid_proximity' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位未直接落入水利署潛勢面，僅依 100m 內鄰近潛勢加權；不使用行政區風險回退</span></div>` : ''}
-        ${riskAssessment.mode === 'flood_grid_no_match' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位未命中水利署淹水潛勢圖資，維持第 1 級；行政區彙整圖僅供視覺參考</span></div>` : ''}
+        ${riskAssessment.mode === 'flood_grid_no_match' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位未命中水利署淹水潛勢圖資，維持第 1 級；NCDR／行政區彙整圖僅供視覺參考，不作為淹水點位風險</span></div>` : ''}
+        ${riskAssessment.mode === 'flood_no_point_overlay' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">目前未啟用水利署點位套疊；NCDR／行政區彙整圖僅供視覺參考，不作為淹水點位風險</span></div>` : ''}
         ${riskAssessment.mode === 'climate_grid' ? `<div class="popup-row"><span class="popup-label">網格明細</span><span class="popup-val">${riskAssessment.climateGridRisk.indicator} ${riskAssessment.climateGridRisk.value.toFixed(2)}；Grid ${riskAssessment.climateGridRisk.gridId}</span></div>` : ''}
         ${riskAssessment.mode === 'ncdr_fallback' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位無可用網格值，改用行政區風險配對</span></div>` : ''}
         ${townMismatch ? `<div class="popup-row"><span class="popup-label">資料鄉鎮註記</span><span class="popup-val">${townMismatch.declaredTown}（依座標改以 ${townMismatch.spatialTown} 判定風險）</span></div>` : ''}
@@ -2092,7 +2087,7 @@ function setupUIControls() {
     const modeButtons = document.querySelectorAll('#flood-mode-selector .toggle-btn');
     const syncFloodLayerButtons = () => {
         modeButtons.forEach(button => {
-            const isActive = Boolean(activeFloodLayers[button.dataset.mode]) || (button.dataset.mode === 'wra' && isFloodGridRiskMode());
+            const isActive = Boolean(activeFloodLayers[button.dataset.mode]);
             button.classList.toggle('active', isActive);
             button.setAttribute('aria-pressed', String(isActive));
         });
