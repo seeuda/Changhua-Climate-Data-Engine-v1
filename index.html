@@ -189,6 +189,8 @@
                         <option value="暖晝天數">暖晝天數</option>
                         <option value="暖夜天數">暖夜天數</option>
                         <option value="極端高溫持續指數">極端高溫持續指數</option>
+                        <option value="年最大一日降雨量">年最大一日降雨量</option>
+                        <option value="年最大連續五日累積降雨量">年最大連續五日累積降雨量</option>
                     </select>
                     <label class="group-label" for="climate-year-select">目標年份</label>
                     <select id="climate-year-select" class="theme-select" aria-label="選擇氣候網格目標年份">
@@ -197,7 +199,7 @@
                         <option value="2070">2070</option>
                         <option value="2100">2100</option>
                     </select>
-                    <p class="control-hint">網格採固定色階；情境時間軸以 SSP 資料代理升溫情境，現況基準使用 historical 的 2014 年切片。</p>
+                    <p class="control-hint" id="climate-grid-mode-hint">網格採固定色階；高溫指標以 SSP 資料代理升溫情境，降雨指標讀取 data/降雨 的 GWL 圖資。</p>
                     <aside class="concept-guide" aria-labelledby="concept-guide-title">
                         <div class="concept-guide-header">
                             <span class="concept-guide-kicker">解讀指南</span>

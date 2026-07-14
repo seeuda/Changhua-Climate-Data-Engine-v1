@@ -1073,9 +1073,10 @@ async function updateLayers() {
 
     // 3.5. Render New Climate Grid if temp theme is active
     if (isClimateGridRiskMode() && climateGridManager) {
-        const scenarioStr = getClimateScenarioCode(activeScenario);
+        const scenarioStr = getClimateScenarioCode(activeScenario, activeClimateIndicator);
         const year = scenarioStr === 'historical' && Number(activeClimateYear) > 2014 ? '2014' : activeClimateYear;
-        const dataState = await climateGridManager.loadGridData("AR6_v112", activeClimateIndicator, scenarioStr, "TaiESM1", year);
+        const datasetVersion = isRainfallClimateIndicator(activeClimateIndicator) ? "AR6_rainfall" : "AR6_v112";
+        const dataState = await climateGridManager.loadGridData(datasetVersion, activeClimateIndicator, scenarioStr, "TaiESM1", year);
         if (renderRequestId !== layerRenderRequestId) return;
         if (dataState) {
             activeClimateGridDataState = dataState;
@@ -1846,12 +1847,31 @@ function setupColorThemeControl() {
 }
 
 
-function getClimateScenarioCode(scenarioId) {
+function isRainfallClimateIndicator(indicator) {
+    return indicator === '年最大一日降雨量' || indicator === '年最大連續五日累積降雨量';
+}
+
+function getClimateScenarioCode(scenarioId, indicator = activeClimateIndicator) {
+    if (isRainfallClimateIndicator(indicator)) {
+        if (scenarioId === 'gwl20') return 'GWL2.0';
+        if (scenarioId === 'gwl40') return 'GWL4.0';
+        // 降雨圖資目前依全球暖化程度資料夾提供；現況按鈕保守導到最接近的 GWL1.5。
+        return 'GWL1.5';
+    }
+
     // User-facing warming labels map to AR6 SSP folders used by the grid dataset.
     if (scenarioId === 'current') return 'historical';
     if (scenarioId === 'gwl20') return 'ssp245';
     if (scenarioId === 'gwl40') return 'ssp585';
     return 'ssp126';
+}
+
+function updateClimateGridHint() {
+    const hint = document.getElementById('climate-grid-mode-hint');
+    if (!hint) return;
+    hint.innerText = isRainfallClimateIndicator(activeClimateIndicator)
+        ? '降雨指標讀取 data/降雨 下的 GWL 圖資；現況基準暫以 GWL1.5 圖資呈現，年份選單若資料無對應切片會自動使用檔案內可用值。'
+        : '網格採固定色階；高溫指標以 SSP 資料代理升溫情境，現況基準使用 historical 的 2014 年切片。';
 }
 
 function updateClimateGridControlVisibility() {
@@ -1865,11 +1885,14 @@ function setupClimateGridControls() {
     const indicatorSelect = document.getElementById('climate-indicator-select');
     const yearSelect = document.getElementById('climate-year-select');
     updateClimateGridControlVisibility();
+    updateClimateGridHint();
 
     if (indicatorSelect) {
         indicatorSelect.value = activeClimateIndicator;
         indicatorSelect.addEventListener('change', (event) => {
             activeClimateIndicator = event.target.value;
+            updateClimateGridHint();
+            updateHeaderIndicator();
             refreshStandardizedData();
         });
     }
@@ -2142,11 +2165,19 @@ function updateHeaderIndicator() {
 
     const themeName = activeTheme === 'flood'
         ? getActiveFloodLayerNames().join(' + ')
-        : '高溫風險等級';
+        : (isRainfallClimateIndicator(activeClimateIndicator) ? '降雨網格指標' : '高溫風險等級');
 
     let scenarioName = '現況基準';
     if (activeTheme === 'temp') {
-        if (activeScenario === 'gwl15') {
+        if (isRainfallClimateIndicator(activeClimateIndicator)) {
+            if (activeScenario === 'gwl20') {
+                scenarioName = '升溫 2.0°C（GWL2.0）情境推估';
+            } else if (activeScenario === 'gwl40') {
+                scenarioName = '升溫 4.0°C（GWL4.0）情境推估';
+            } else {
+                scenarioName = '升溫 1.5°C（GWL1.5）情境推估';
+            }
+        } else if (activeScenario === 'gwl15') {
             scenarioName = '升溫 1.5°C（SSP1-2.6）情境推估';
         } else if (activeScenario === 'gwl20') {
             scenarioName = '升溫 2.0°C（SSP2-4.5）情境推估';
@@ -2195,7 +2226,7 @@ function getClimateGridLegendHtml() {
         <div class="legend-title">氣候網格固定色階｜${activeClimateIndicator}</div>
         <div class="legend-scale">${items}</div>
         <div class="legend-note">使用全域固定斷點，不會隨情境、年份或模型重新正規化；因此不同情境可直接以同一色階比較。</div>
-        <div class="legend-note">目前時間軸為 SSP 資料代理：升溫 1.5°C→SSP126、2.0°C→SSP245、4.0°C→SSP585；單一網格在同一年份可能受模式內部變異而非單調增加。</div>
+        <div class="legend-note">${isRainfallClimateIndicator(activeClimateIndicator) ? '降雨指標讀取 data/降雨 的 GWL 圖資：1.5°C→GWL1.5、2.0°C→GWL2.0、4.0°C→GWL4.0。' : '目前時間軸為 SSP 資料代理：升溫 1.5°C→SSP126、2.0°C→SSP245、4.0°C→SSP585；單一網格在同一年份可能受模式內部變異而非單調增加。'}</div>
     `;
 }
 
