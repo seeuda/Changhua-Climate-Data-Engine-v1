@@ -1141,7 +1141,7 @@ function getMarkerColor(feature, config) {
     return (markerConfig.colorMap && markerConfig.colorMap[value]) || markerConfig.fallbackColor || '#94a3b8';
 }
 
-function createRiskOutlinedMarker(latlng, markerColor, riskVal, floodDepth) {
+function createRiskOutlinedMarker(latlng, markerColor, riskVal, floodDepth, paneName) {
     const riskColor = riskColors[riskVal] || '#94a3b8';
     const isHighRisk = riskVal >= 4;
     const isFlooded = Boolean(floodDepth);
@@ -1154,6 +1154,7 @@ function createRiskOutlinedMarker(latlng, markerColor, riskVal, floodDepth) {
         weight: 4,
         opacity: 0.98,
         interactive: false,
+        pane: paneName,
         className: 'point-outer-ring'
     });
 
@@ -1164,6 +1165,7 @@ function createRiskOutlinedMarker(latlng, markerColor, riskVal, floodDepth) {
         weight: isHighRisk ? 4 : 3,
         opacity: 1,
         interactive: false,
+        pane: paneName,
         className: 'point-risk-ring'
     });
 
@@ -1174,6 +1176,7 @@ function createRiskOutlinedMarker(latlng, markerColor, riskVal, floodDepth) {
         color: isFlooded ? '#ef4444' : '#ffffff',
         weight: isFlooded ? 2.5 : 1.5,
         opacity: 1,
+        pane: paneName,
         className: isFlooded ? 'daycare-marker warning-pulse' : 'daycare-marker'
     });
 
@@ -1181,6 +1184,8 @@ function createRiskOutlinedMarker(latlng, markerColor, riskVal, floodDepth) {
 }
 
 function renderPointLayers() {
+    const facilityPane = layerManager ? layerManager.getPane('facility') : undefined;
+
     getActivePointEntries().forEach(({ config, dataset }) => {
         pointLayers[config.id] = L.geoJSON(dataset, {
             pointToLayer: (feature, latlng) => {
@@ -1188,7 +1193,7 @@ function renderPointLayers() {
                 const floodDepth = getWraPointDepth(feature, config);
                 const riskVal = getFeatureRisk(feature, config);
 
-                return createRiskOutlinedMarker(latlng, markerColor, riskVal, floodDepth);
+                return createRiskOutlinedMarker(latlng, markerColor, riskVal, floodDepth, facilityPane);
             },
             onEachFeature: (feature, layer) => onEachPointFeature(feature, layer, config)
         }).addTo(map);
