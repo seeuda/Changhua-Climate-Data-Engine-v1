@@ -19,6 +19,7 @@ let activePointLayerIds = new Set();
 
 let activeTheme = 'temp'; // 'flood' or 'temp'
 let activeScenario = 'gwl40'; // 'current', 'gwl15', 'gwl20', 'gwl40'
+let lastClimateScenario = activeScenario;
 let activeFloodLayers = { ncdr: true, wra: false }; // NCDR is the primary flood risk layer; WRA can be overlaid as comparison
 let activeTempAdminReference = false; // optional township reference overlay for temp mode
 let activeTempRiskMode = 'grid'; // 'grid' = NCDR AR6 climate grid; 'admin' = township fallback without grid display
@@ -78,8 +79,8 @@ function getActiveWraScenario() {
 const WRA_DATA_BASE_PATH = 'data/wra';
 const WRA_SCENARIOS = {
     wra650_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', timelineLabel: '24h 650mm（NCDR 物理基底）', cacheKey: 'wra650_24h', enabled: true },
-    // Prefer the normalized data/wra path; keep the root path as a temporary main-branch fallback for the newly uploaded 6h file.
-    wra350_6h: { file: [`${WRA_DATA_BASE_PATH}/wra_flood_350mm_6h.json`, 'wra_flood_350mm_6h.json'], label: '6h 350mm 極端短延時', timelineLabel: '6h 350mm（短延時強降雨）', cacheKey: 'wra350_6h', enabled: true },
+    // Configured for the short-duration stress-test layer, but disabled until the file is present under data/wra.
+    wra350_6h: { file: [`${WRA_DATA_BASE_PATH}/wra_flood_350mm_6h.json`, 'wra_flood_350mm_6h.json'], label: '6h 350mm 極端短延時', timelineLabel: '6h 350mm（短延時強降雨）', cacheKey: 'wra350_6h', enabled: false },
     wra350_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般豪雨（備用）', timelineLabel: '24h 350mm（備用）', cacheKey: 'wra350_24h', enabled: true },
     // Backward-compatible aliases for old timeline ids.
     gwl20: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', timelineLabel: '24h 650mm（NCDR 物理基底）', cacheKey: 'wra650_24h', enabled: true },
@@ -94,6 +95,14 @@ function getAvailableWraScenarios() {
 
 function getDefaultWraScenarioId() {
     return getAvailableWraScenarios()[0]?.id || 'wra650_24h';
+}
+
+function isWraScenarioId(scenarioId) {
+    return ['wra650_24h', 'wra350_6h', 'wra350_24h'].includes(scenarioId);
+}
+
+function isClimateScenarioId(scenarioId) {
+    return ['current', 'gwl15', 'gwl20', 'gwl40'].includes(scenarioId);
 }
 
 function getWraScenarioConfig(scenarioId = getActiveWraScenario()) {
@@ -1980,7 +1989,14 @@ function setupUIControls() {
             themeButtons.forEach(b => b.classList.remove('active'));
             targetBtn.classList.add('active');
 
-            activeTheme = targetBtn.dataset.theme;
+            const nextTheme = targetBtn.dataset.theme;
+            if (activeTheme !== 'flood' && isClimateScenarioId(activeScenario)) {
+                lastClimateScenario = activeScenario;
+            }
+            activeTheme = nextTheme;
+            if (activeTheme === 'temp' && !isClimateScenarioId(activeScenario)) {
+                activeScenario = isClimateScenarioId(lastClimateScenario) ? lastClimateScenario : 'gwl40';
+            }
 
              // Show/Hide WRA mode group
              const modeGroup = document.getElementById('flood-mode-group');
@@ -2002,7 +2018,7 @@ function setupUIControls() {
                     if (!getAvailableWraScenarios().some(scenario => scenario.id === activeScenario) && !['gwl15', 'gwl20'].includes(activeScenario)) {
                         activeScenario = getDefaultWraScenarioId();
                     }
-                } else if (!['current', 'gwl15', 'gwl20', 'gwl40'].includes(activeScenario)) {
+                } else if (!isClimateScenarioId(activeScenario)) {
                     activeScenario = 'current';
                 }
             }
@@ -2088,7 +2104,7 @@ function setupUIControls() {
             } else {
                 activeFloodLayers.ncdr = true;
                 activeFloodLayers.wra = false;
-                if (['wra650_24h', 'wra350_6h', 'wra350_24h'].includes(activeScenario)) {
+                if (isWraScenarioId(activeScenario)) {
                     activeScenario = 'current';
                 }
             }
@@ -2130,7 +2146,7 @@ function setupUIControls() {
                 if (!getAvailableWraScenarios().some(scenario => scenario.id === activeScenario) && !['gwl15', 'gwl20'].includes(activeScenario)) {
                     activeScenario = getDefaultWraScenarioId();
                 }
-            } else if (!['current', 'gwl15', 'gwl20', 'gwl40'].includes(activeScenario)) {
+            } else if (!isClimateScenarioId(activeScenario)) {
                 activeScenario = 'current';
             }
 
@@ -2159,6 +2175,8 @@ function setupUIControls() {
 
                 if (activeTheme === 'flood' && isWraLayerEnabled() && !activeFloodLayers.ncdr) {
                     activeWraScenario = nextScenario;
+                } else if (isClimateScenarioId(nextScenario)) {
+                    lastClimateScenario = nextScenario;
                 }
 
                 if (isWraLayerEnabled()) {
