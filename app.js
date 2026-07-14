@@ -1350,6 +1350,10 @@ function updateStatsAndChart() {
         const { totalHighRisk, riskDistribution } = getRiskDistribution();
         updateHighRiskCard(totalHighRisk, `${getTempRiskSummaryPrefix()}${getActivePointSummaryLabel()} (Lv.4-5)`);
         renderChart(riskDistribution);
+    } else if (isFloodGridRiskMode()) {
+        const { totalHighRisk, riskDistribution } = getRiskDistribution();
+        updateHighRiskCard(totalHighRisk, `淹水網格/鄉鎮回退警戒${getActivePointSummaryLabel()} (Lv.4-5)`);
+        renderChart(riskDistribution);
     } else if (isNcdrLayerEnabled()) {
         const { totalHighRisk, riskDistribution } = getRiskDistribution();
         const sourceLabel = isWraLayerEnabled() ? '綜合套疊' : '第 4-5 級';
@@ -2246,8 +2250,10 @@ function updateLegendUI() {
         </div>
     `;
 
+    const showRiskLegend = isNcdrLayerEnabled() || isFloodGridRiskMode();
+
     const wraLegend = `
-        <div class="legend-title" style="margin-top: ${isNcdrLayerEnabled() ? '10px' : '0'}; ${isNcdrLayerEnabled() ? 'border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;' : ''}">水利署預估淹水深度</div>
+        <div class="legend-title" style="margin-top: ${showRiskLegend ? '10px' : '0'}; ${showRiskLegend ? 'border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;' : ''}">水利署預估淹水深度</div>
         <div class="legend-scale">
             <div class="legend-item"><span class="legend-color-box" style="background:${wraColors[2]}"></span> <span>0.3 - 0.5 公尺</span></div>
             <div class="legend-item"><span class="legend-color-box" style="background:${wraColors[3]}"></span> <span>0.5 - 1.0 公尺</span></div>
@@ -2276,7 +2282,7 @@ function updateLegendUI() {
         </div>
     `;
 
-    legendDiv.innerHTML = `${getClimateGridLegendHtml()}${isNcdrLayerEnabled() ? riskLegend : ''}${isWraLayerEnabled() ? wraLegend : ''}${pointLegend}`;
+    legendDiv.innerHTML = `${getClimateGridLegendHtml()}${showRiskLegend ? riskLegend : ''}${isWraLayerEnabled() ? wraLegend : ''}${pointLegend}`;
 }
 
 // Legend Widget Initialization
