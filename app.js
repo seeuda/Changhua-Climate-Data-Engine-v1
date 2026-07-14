@@ -899,13 +899,15 @@ function getFeatureRiskAssessment(feature, config) {
     const hasNcdr = isNcdrLayerEnabled();
     const hasWra = isWraLayerEnabled();
     const ncdrRisk = getNcdrFeatureRisk(feature, config);
-    const wraRisk = hasWra ? getWraFeatureRisk(feature, config) : null;
+    const wraPointRisk = hasWra ? getWraPointRisk(feature, config) : null;
+    const wraRisk = wraPointRisk ? getWraFeatureRisk(feature, config) : null;
 
     if (isFloodGridRiskMode()) {
-        if (wraRisk && wraRisk > 1) {
-            return { risk: wraRisk, ncdrRisk, wraRisk, source: '水利署淹水網格', mode: 'flood_grid' };
+        if (wraPointRisk?.method === 'direct') {
+            const directGridRisk = Math.min(wraPointRisk.gridCode || getWraGridCodeFromDepth(wraPointRisk.depth), 5);
+            return { risk: directGridRisk, ncdrRisk, wraRisk: directGridRisk, source: '水利署淹水網格', mode: 'flood_grid' };
         }
-        return { risk: ncdrRisk || 1, ncdrRisk: ncdrRisk || 1, wraRisk: null, source: '鄉鎮風險（無網格淹水）', mode: 'flood_grid_fallback' };
+        return { risk: ncdrRisk || 1, ncdrRisk: ncdrRisk || 1, wraRisk: null, source: '鄉鎮風險（無直接網格淹水）', mode: 'flood_grid_fallback' };
     }
 
     if (hasNcdr && hasWra) {
@@ -1234,7 +1236,7 @@ function onEachPointFeature(feature, layer, config) {
         </div>
         ${riskAssessment.mode === 'combined' ? `<div class="popup-row"><span class="popup-label">套疊明細</span><span class="popup-val">鄉鎮市第 ${riskAssessment.ncdrRisk} 級；水利署第 ${riskAssessment.wraRisk} 級，取較高者</span></div>` : ''}
         ${riskAssessment.mode === 'flood_grid' ? `<div class="popup-row"><span class="popup-label">網格明細</span><span class="popup-val">水利署淹水潛勢網格；第 ${riskAssessment.wraRisk} 級</span></div>` : ''}
-        ${riskAssessment.mode === 'flood_grid_fallback' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位未落入淹水網格，改用行政區風險配對</span></div>` : ''}
+        ${riskAssessment.mode === 'flood_grid_fallback' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位未直接落入淹水網格，改用行政區風險配對</span></div>` : ''}
         ${riskAssessment.mode === 'climate_grid' ? `<div class="popup-row"><span class="popup-label">網格明細</span><span class="popup-val">${riskAssessment.climateGridRisk.indicator} ${riskAssessment.climateGridRisk.value.toFixed(2)}；Grid ${riskAssessment.climateGridRisk.gridId}</span></div>` : ''}
         ${riskAssessment.mode === 'ncdr_fallback' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位無可用網格值，改用行政區風險配對</span></div>` : ''}
         ${townMismatch ? `<div class="popup-row"><span class="popup-label">資料鄉鎮註記</span><span class="popup-val">${townMismatch.declaredTown}（依座標改以 ${townMismatch.spatialTown} 判定風險）</span></div>` : ''}
@@ -2000,6 +2002,7 @@ function setupUIControls() {
                 activeFloodLayers.wra = true;
             } else {
                 activeFloodLayers.ncdr = true;
+                activeFloodLayers.wra = false;
             }
             syncFloodRiskModeButtons();
             syncFloodLayerButtons();
