@@ -53,6 +53,31 @@ class ClimateGridManager {
         };
     }
 
+    isRainfallIndicator(indicator) {
+        return indicator === '年最大一日降雨量' || indicator === '年最大連續五日累積降雨量';
+    }
+
+    getAttributeDataPath(indicator, scenario, model) {
+        if (this.isRainfallIndicator(indicator)) {
+            return `data/降雨/${indicator}/${scenario}/${model}.json`;
+        }
+        return `data/${indicator}/${scenario}/${model}.json`;
+    }
+
+    getYearValues(attrData, year) {
+        const values = attrData?.values || {};
+        if (values[year]) return { yearValues: values[year], resolvedYear: year };
+
+        // 部分 GWL 圖資沒有 UI 年份切片，values 可能直接就是 GridID -> value，
+        // 或只提供單一鍵值集合。保留彈性以便新資料可立即被網格引擎讀取。
+        const firstValue = Object.values(values)[0];
+        const looksLikeGridMap = Object.keys(values).some(key => key.startsWith('GRID_')) || typeof firstValue === 'number';
+        if (looksLikeGridMap) return { yearValues: values, resolvedYear: 'GWL' };
+
+        const firstYear = Object.keys(values)[0];
+        return { yearValues: firstYear ? values[firstYear] : {}, resolvedYear: firstYear || year };
+    }
+
     async loadGridData(datasetVersion, indicator, scenario, model, year) {
         // 確認幾何檔已註冊
         let geojson = this.registry.getGrids(datasetVersion);
@@ -67,9 +92,10 @@ class ClimateGridManager {
         // 確認屬性資料已註冊
         let attrData = this.registry.getData(datasetVersion, indicator, scenario, model);
         if (!attrData) {
-            const path = `data/${indicator}/${scenario}/${model}.json`;
+            const path = this.getAttributeDataPath(indicator, scenario, model);
             try {
                 const resp = await fetch(path);
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                 const data = await resp.json();
                 this.registry.registerData(datasetVersion, indicator, scenario, model, data);
                 attrData = data;
@@ -80,7 +106,7 @@ class ClimateGridManager {
         }
 
         // 建立快取映射 (GridID -> Value)。缺值格保留為 no-data，不補值避免誤導風險判定。
-        const yearValues = attrData.values[year] || {};
+        const { yearValues, resolvedYear } = this.getYearValues(attrData, year);
 
         return {
             geojson: geojson,
@@ -88,9 +114,9 @@ class ClimateGridManager {
             indicator: indicator,
             scenario: scenario,
             model: model,
-            year: year,
+            year: resolvedYear,
             datasetVersion: attrData.dataset_version,
-            source: "NCDR AR6",
+            source: this.isRainfallIndicator(indicator) ? "NCDR AR6 降雨" : "NCDR AR6",
             resolution: "5 km"
         };
     }

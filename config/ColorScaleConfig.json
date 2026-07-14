@@ -55,6 +55,20 @@
     "breaks": [0.5, 1.0, 2.0, 3.0],
     "colors": ["#e0f3f8", "#91bfdb", "#4575b4", "#313695"]
   },
+  "年最大一日降雨量": {
+    "mode": "absolute",
+    "unit": "mm",
+    "description": "年最大一日降雨量，讀取 data/降雨/GWL 圖資",
+    "breaks": [120, 180, 240, 300, 360, 450],
+    "colors": ["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#3182bd", "#08519c"]
+  },
+  "年最大連續五日累積降雨量": {
+    "mode": "absolute",
+    "unit": "mm",
+    "description": "年最大連續五日累積降雨量，讀取 data/降雨/GWL 圖資",
+    "breaks": [200, 300, 400, 500, 650, 800],
+    "colors": ["#f7fbff", "#deebf7", "#c6dbef", "#9ecae1", "#6baed6", "#3182bd", "#08519c"]
+  },
   "svi_index": {
     "mode": "relative",
     "unit": "index",
