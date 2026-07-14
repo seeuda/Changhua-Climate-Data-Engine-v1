@@ -75,17 +75,30 @@ function getActiveWraScenario() {
     return isWraLayerEnabled() && !activeFloodLayers.ncdr ? activeScenario : activeWraScenario;
 }
 
+const WRA_DATA_BASE_PATH = 'data/wra';
 const WRA_SCENARIOS = {
-    wra650_24h: { file: 'wra_flood_650mm_24h.json', label: '24h 650mm 極端長延時', cacheKey: 'wra650_24h' },
-    wra350_6h: { file: 'wra_flood_350mm_6h.json', label: '6h 350mm 極端短延時', cacheKey: 'wra350_6h' },
-    wra350_24h: { file: 'wra_flood_350mm_24h.json', label: '24h 350mm 一般豪雨（備用）', cacheKey: 'wra350_24h' },
+    wra650_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', timelineLabel: '24h 650mm（NCDR 物理基底）', cacheKey: 'wra650_24h', enabled: true },
+    // Keep the 6h short-duration stress-test scenario configured, but do not expose it until the GeoJSON exists in data/wra.
+    wra350_6h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_6h.json`, label: '6h 350mm 極端短延時', timelineLabel: '6h 350mm（短延時強降雨）', cacheKey: 'wra350_6h', enabled: false },
+    wra350_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般豪雨（備用）', timelineLabel: '24h 350mm（備用）', cacheKey: 'wra350_24h', enabled: true },
     // Backward-compatible aliases for old timeline ids.
-    gwl20: { file: 'wra_flood_650mm_24h.json', label: '24h 650mm 極端長延時', cacheKey: 'wra650_24h' },
-    gwl15: { file: 'wra_flood_350mm_24h.json', label: '24h 350mm 一般豪雨（備用）', cacheKey: 'wra350_24h' }
+    gwl20: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', timelineLabel: '24h 650mm（NCDR 物理基底）', cacheKey: 'wra650_24h', enabled: true },
+    gwl15: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般豪雨（備用）', timelineLabel: '24h 350mm（備用）', cacheKey: 'wra350_24h', enabled: true }
 };
 
+function getAvailableWraScenarios() {
+    return ['wra650_24h', 'wra350_6h', 'wra350_24h']
+        .map(id => ({ id, ...WRA_SCENARIOS[id] }))
+        .filter(scenario => scenario.enabled);
+}
+
+function getDefaultWraScenarioId() {
+    return getAvailableWraScenarios()[0]?.id || 'wra650_24h';
+}
+
 function getWraScenarioConfig(scenarioId = getActiveWraScenario()) {
-    return WRA_SCENARIOS[scenarioId] || WRA_SCENARIOS.wra650_24h;
+    const scenario = WRA_SCENARIOS[scenarioId];
+    return scenario?.enabled ? scenario : WRA_SCENARIOS[getDefaultWraScenarioId()];
 }
 
 function getWraScenarioName() {
@@ -1699,11 +1712,13 @@ function renderTimelineUI() {
 
     if (activeTheme === 'flood') {
         if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
-            const steps = [
-                { id: 'wra650_24h', label: '24h 650mm（NCDR 物理基底）', left: '0%' },
-                { id: 'wra350_6h', label: '6h 350mm（短延時強降雨）', left: '50%' },
-                { id: 'wra350_24h', label: '24h 350mm（備用）', left: '100%' }
-            ];
+            const availableScenarios = getAvailableWraScenarios();
+            const denominator = Math.max(availableScenarios.length - 1, 1);
+            const steps = availableScenarios.map((scenario, index) => ({
+                id: scenario.id,
+                label: scenario.timelineLabel,
+                left: `${(index / denominator) * 100}%`
+            }));
             steps.forEach(step => {
                 const isActive = getActiveWraScenario() === step.id ? 'active' : '';
                 html += `
@@ -1969,8 +1984,8 @@ function setupUIControls() {
             // Safety scenario shift
             if (activeTheme === 'flood') {
                 if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
-                    if (!['wra650_24h', 'wra350_6h', 'wra350_24h', 'gwl15', 'gwl20'].includes(activeScenario)) {
-                        activeScenario = 'wra650_24h';
+                    if (!getAvailableWraScenarios().some(scenario => scenario.id === activeScenario) && !['gwl15', 'gwl20'].includes(activeScenario)) {
+                        activeScenario = getDefaultWraScenarioId();
                     }
                 } else if (!['current', 'gwl15', 'gwl20', 'gwl40'].includes(activeScenario)) {
                     activeScenario = 'current';
@@ -2097,8 +2112,8 @@ function setupUIControls() {
             updateRiskOpacityControl();
 
             if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
-                if (!['wra650_24h', 'wra350_6h', 'wra350_24h', 'gwl15', 'gwl20'].includes(activeScenario)) {
-                    activeScenario = 'wra650_24h';
+                if (!getAvailableWraScenarios().some(scenario => scenario.id === activeScenario) && !['gwl15', 'gwl20'].includes(activeScenario)) {
+                    activeScenario = getDefaultWraScenarioId();
                 }
             } else if (!['current', 'gwl15', 'gwl20', 'gwl40'].includes(activeScenario)) {
                 activeScenario = 'current';
