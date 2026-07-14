@@ -130,7 +130,7 @@ class ClimateGridManager {
         const fillOpacity = Number.isFinite(options.fillOpacity) ? options.fillOpacity : 0.6;
 
         this.currentLayer = L.geoJSON(geojson, {
-            pane: layerManager.getPane('climate_grid'),
+            pane: layerManager.getPane('primary-risk'),
             style: (feature) => {
                 const gridId = feature.properties.GridID;
                 const val = values[gridId];
