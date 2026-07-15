@@ -138,17 +138,17 @@
                 <div class="control-group" id="temp-mode-group">
                     <label class="group-label">高溫風險資料來源</label>
                     <div class="toggle-buttons temp-risk-mode-selector" id="temp-risk-mode-selector" aria-label="選擇高溫點位風險判定方式">
-                        <button class="toggle-btn active" data-temp-risk-mode="grid" type="button" aria-pressed="true">
-                            <i class="fa-solid fa-border-all"></i> 使用氣候網格
+                        <button class="toggle-btn active" data-temp-risk-mode="hazard" type="button" aria-pressed="true">
+                            <i class="fa-solid fa-border-all"></i> 純氣候危害度
                         </button>
-                        <button class="toggle-btn" data-temp-risk-mode="admin" type="button" aria-pressed="false">
-                            <i class="fa-solid fa-ban"></i> 不呈現網格
+                        <button class="toggle-btn" data-temp-risk-mode="official" type="button" aria-pressed="false">
+                            <i class="fa-solid fa-certificate"></i> NCDR官方綜合風險
                         </button>
                     </div>
                     <button class="toggle-btn reference-toggle" id="temp-admin-reference-toggle" type="button" aria-pressed="false">
-                        <i class="fa-solid fa-map-location-dot"></i> 顯示行政區彙整風險參考
+                        <i class="fa-solid fa-map-location-dot"></i> 疊加NCDR官方風險參考
                     </button>
-                    <p class="control-hint">預設以 NCDR AR6 氣候網格判定點位風險；選擇「不呈現網格」時，點位改以前端即時計算的行政區加權危害度配對，行政區圖層也會作為主要參考顯示。高溫行政區底色會在使用者操作時讀取「日高溫最大值」與「極端高溫持續指數」網格，在未取得正式權重前採均權彙整，不再讀取鄉鎮資料包內預先寫入的 temp_risk_* 舊欄位。</p>
+                    <p class="control-hint">高溫主題提供雙模式：預設「純氣候危害度」以 AR6 氣候網格呈現日高溫與連續高溫等物理危害，未納入人口社會因子，適合套疊長照機構等脆弱點位；「NCDR官方綜合風險」則直接讀取 temp_risk_* 官方分數，屬 R=H×V×E 的綜合風險，已內建考量 65 歲以上高齡人口比例與人口暴露，適合公文、簡報與縣市整體風險比對。</p>
                     <p class="control-hint">情境時間軸保留易讀的升溫標籤；實際讀取對應 AR6 SSP 模擬資料，單一網格/年份可能受模式內部變異影響而不逐格遞增。</p>
                 </div>
 
