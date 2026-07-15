@@ -596,7 +596,10 @@ function getTownDisplayRisk(props) {
 }
 
 function isTempAdminHazardSummaryNeeded() {
-    return activeTheme === 'temp' && isNcdrLayerEnabled();
+    // Needed in every temperature mode: even when the township overlay is hidden,
+    // grid-mode points with no usable AR6 grid value can fall back to the computed
+    // township hazard summary. Do not tie this to isNcdrLayerEnabled().
+    return activeTheme === 'temp';
 }
 
 function getTempAdminHazardCacheKey() {
