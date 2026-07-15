@@ -28,7 +28,7 @@ let tempAdminOpacity = 0.45;
 let ncdrRiskOpacity = 0.7;
 let climateGridOpacity = 0.7;
 let floodGridOpacity = 0.65;
-let activeClimateIndicator = '日夜溫差';
+let activeClimateIndicator = '極端高溫持續指數';
 let activeClimateYear = '2050';
 let activeClimateGridDataState = null;
 let selectedTown = null; // Filter daycare list
@@ -68,7 +68,7 @@ function isClimateGridRiskMode() {
 
 function getActiveFloodLayerNames() {
     const names = [];
-    if (activeFloodLayers.ncdr) names.push('NCDR AR6 風險');
+    if (activeFloodLayers.ncdr) names.push('NCDR行政區風險');
     if (isWraLayerEnabled()) names.push('水利署潛勢圖');
     return names;
 }
@@ -79,11 +79,11 @@ function getActiveWraScenario() {
 
 const WRA_DATA_BASE_PATH = 'data/wra';
 const WRA_SCENARIOS = {
-    wra650_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', shortLabel: '24h 650mm', timelineLabel: '24h 650mm（NCDR 物理基底）', cacheKey: 'wra650_24h', enabled: true },
+    wra650_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', shortLabel: '24h 650mm', timelineLabel: '24h 650mm（水利署潛勢情境）', cacheKey: 'wra650_24h', enabled: true },
     wra350_6h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_6h.json`, label: '6h 350mm 極端短延時', shortLabel: '6h 350mm', timelineLabel: '6h 350mm（都市防洪壓力測試）', cacheKey: 'wra350_6h', enabled: true },
     wra350_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般颱風豪雨基準', shortLabel: '24h 350mm', timelineLabel: '24h 350mm（一般颱風豪雨基準）', cacheKey: 'wra350_24h', enabled: true },
     // Backward-compatible aliases for old timeline ids.
-    gwl20: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', timelineLabel: '24h 650mm（NCDR 物理基底）', cacheKey: 'wra650_24h', enabled: true },
+    gwl20: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', timelineLabel: '24h 650mm（水利署潛勢情境）', cacheKey: 'wra650_24h', enabled: true },
     gwl15: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般颱風豪雨基準', timelineLabel: '24h 350mm（一般颱風豪雨基準）', cacheKey: 'wra350_24h', enabled: true }
 };
 
@@ -549,7 +549,7 @@ function getActiveRiskField() {
         // Flood primary risk follows NCDR AR6 risk logic; current front-end township bundle stores one future field, so gwl15/gwl20/gwl40 map to flood_risk_future.
         return activeScenario === 'current' ? 'flood_risk_current' : 'flood_risk_future';
     } else {
-        // Temp township values are derived administrative summaries retained only as reference/fallback; the original NCDR layer is the AR6 grid.
+        // Temp township values are derived from front-end reproduced administrative summaries of the original NCDR risk fields (daily high temperature and consecutive hot-day indicators), retained only as reference/fallback; the original NCDR layer used for point judgement is the AR6 grid.
         return `temp_risk_${activeScenario}`;
     }
 }
@@ -994,7 +994,15 @@ function getFeatureRiskAssessment(feature, config) {
         return { risk: wraRisk || 1, ncdrRisk, wraRisk, source: wraRisk ? '水利署鄰近淹水潛勢' : '未命中水利署淹水潛勢', mode: wraRisk ? 'flood_grid_proximity' : 'flood_grid_no_match' };
     }
 
-    return { risk: 1, ncdrRisk, wraRisk: null, source: '未啟用水利署點位套疊', mode: 'flood_no_point_overlay' };
+    return { risk: 1, ncdrRisk, wraRisk: null, source: '未判定（未啟用水利署點位套疊）', mode: 'flood_no_point_overlay' };
+}
+
+
+function formatRiskAssessmentLabel(riskAssessment, riskVal) {
+    if (riskAssessment.mode === 'flood_no_point_overlay') {
+        return riskAssessment.source;
+    }
+    return `第 ${riskVal} 級（${riskAssessment.source}）`;
 }
 
 function getFeatureRisk(feature, config) {
@@ -1329,7 +1337,7 @@ function onEachPointFeature(feature, layer, config) {
         </div>
         <div class="popup-row">
             <span class="popup-label">所處風險</span>
-            <span class="popup-val risk-badge badge-${riskVal}">第 ${riskVal} 級（${riskAssessment.source}）</span>
+            <span class="popup-val risk-badge badge-${riskVal}">${formatRiskAssessmentLabel(riskAssessment, riskVal)}</span>
         </div>
         ${riskAssessment.mode === 'flood_grid' ? `<div class="popup-row"><span class="popup-label">網格明細</span><span class="popup-val">水利署淹水潛勢圖；第 ${riskAssessment.wraRisk} 級</span></div>` : ''}
         ${riskAssessment.mode === 'flood_grid_proximity' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位未直接落入水利署潛勢面，僅依 100m 內鄰近潛勢加權；不使用行政區風險回退</span></div>` : ''}
@@ -1462,7 +1470,7 @@ function updateStatsAndChart() {
         renderChart(riskDistribution);
     } else if (isNcdrLayerEnabled()) {
         const { totalHighRisk, riskDistribution } = getRiskDistribution();
-        const sourceLabel = isWraLayerEnabled() ? 'NCDR主風險＋水利署比較' : '第 4-5 級';
+        const sourceLabel = isWraLayerEnabled() ? 'NCDR行政區風險＋水利署比較' : '第 4-5 級';
         updateHighRiskCard(totalHighRisk, `${sourceLabel}警戒${getActivePointSummaryLabel()} (Lv.4-5)`);
         renderChart(riskDistribution);
     }
@@ -1792,7 +1800,7 @@ function renderWraScenarioSelector() {
         return `
             <button class="toggle-btn ${isActive ? 'active' : ''}" data-wra-scenario="${scenario.id}" type="button" aria-pressed="${String(isActive)}">
                 <i class="fa-solid fa-water"></i> ${scenario.shortLabel || scenario.label}
-                <small>${scenario.id === 'wra350_6h' ? '都市防洪壓力測試' : scenario.id === 'wra350_24h' ? '一般颱風豪雨基準' : 'NCDR 物理基底'}</small>
+                <small>${scenario.id === 'wra350_6h' ? '都市防洪壓力測試' : scenario.id === 'wra350_24h' ? '一般颱風豪雨基準' : '水利署潛勢情境'}</small>
             </button>
         `;
     }).join('');
@@ -2111,19 +2119,29 @@ function setupUIControls() {
             syncTempRiskModeButtons();
             updateRiskOpacityControl();
             updateClimateGridControlVisibility();
+            syncTempAdminReferenceToggleState();
             refreshStandardizedData();
         });
     });
     syncTempRiskModeButtons();
 
     const tempAdminReferenceToggle = document.getElementById('temp-admin-reference-toggle');
+    const syncTempAdminReferenceToggleState = () => {
+        if (!tempAdminReferenceToggle) return;
+        const isDisabled = activeTempRiskMode === 'admin';
+        tempAdminReferenceToggle.disabled = isDisabled;
+        tempAdminReferenceToggle.setAttribute('aria-disabled', String(isDisabled));
+        tempAdminReferenceToggle.classList.toggle('is-disabled', isDisabled);
+        tempAdminReferenceToggle.classList.toggle('active', activeTempAdminReference && !isDisabled);
+        tempAdminReferenceToggle.setAttribute('aria-pressed', String(activeTempAdminReference && !isDisabled));
+    };
+
     if (tempAdminReferenceToggle) {
-        tempAdminReferenceToggle.classList.toggle('active', activeTempAdminReference);
-        tempAdminReferenceToggle.setAttribute('aria-pressed', String(activeTempAdminReference));
+        syncTempAdminReferenceToggleState();
         tempAdminReferenceToggle.addEventListener('click', () => {
+            if (activeTempRiskMode === 'admin') return;
             activeTempAdminReference = !activeTempAdminReference;
-            tempAdminReferenceToggle.classList.toggle('active', activeTempAdminReference);
-            tempAdminReferenceToggle.setAttribute('aria-pressed', String(activeTempAdminReference));
+            syncTempAdminReferenceToggleState();
             updateRiskOpacityControl();
             updateClimateGridControlVisibility();
             refreshStandardizedData();
