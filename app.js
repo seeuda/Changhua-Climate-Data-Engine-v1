@@ -227,6 +227,32 @@ const riskColors = {
     5: '#ef4444'  // Soft Red (High)
 };
 
+
+function normalizeOpacity(value, fallback = 1) {
+    const numericValue = Number(value);
+    const safeValue = Number.isFinite(numericValue) ? numericValue : fallback;
+    return Math.min(Math.max(safeValue, 0), 1);
+}
+
+function colorWithOpacity(color, opacity) {
+    const alpha = normalizeOpacity(opacity);
+    if (typeof color !== 'string') return color;
+
+    const hex = color.trim();
+    const hexMatch = hex.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+    if (!hexMatch) return color;
+
+    const value = hexMatch[1];
+    const fullHex = value.length === 3
+        ? value.split('').map(char => char + char).join('')
+        : value;
+    const red = parseInt(fullHex.slice(0, 2), 16);
+    const green = parseInt(fullHex.slice(2, 4), 16);
+    const blue = parseInt(fullHex.slice(4, 6), 16);
+
+    return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+}
+
 function normalizeRiskLevel(value, fallback = 1) {
     const numericValue = Number(value);
     const fallbackValue = Number(fallback);
@@ -2381,6 +2407,7 @@ function setupUIControls() {
                 ncdrRiskOpacity = parseFloat(e.target.value);
             }
             updateRiskOpacityControl();
+            updateLegendUI();
             updateLayers();
         });
     }
@@ -2394,6 +2421,7 @@ function setupUIControls() {
                 climateGridOpacity = parseFloat(e.target.value);
             }
             updateRiskOpacityControl();
+            updateLegendUI();
             updateLayers();
         });
     }
@@ -2483,13 +2511,13 @@ function getClimateGridLegendHtml() {
         } else {
             label = `${formatClimateLegendNumber(config.breaks[index - 1])}–${formatClimateLegendNumber(config.breaks[index])}${unit}`;
         }
-        return `<div class="legend-item"><span class="legend-color-box" style="background:${color}"></span> <span>${label}</span></div>`;
+        return `<div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(color, climateGridOpacity)}"></span> <span>${label}</span></div>`;
     }).join('');
 
     return `
         <div class="legend-title">氣候網格固定色階｜${activeClimateIndicator}</div>
         <div class="legend-scale">${items}</div>
-        <div class="legend-note">使用全域固定斷點，不會隨情境、年份或模型重新正規化；因此不同情境可直接以同一色階比較。</div>
+        <div class="legend-note">使用全域固定斷點，不會隨情境、年份或模型重新正規化；圖說色階同步反映目前 ${Math.round(climateGridOpacity * 100)}% 透明度。</div>
         <div class="legend-note">${isRainfallClimateIndicator(activeClimateIndicator) ? '降雨指標讀取 data/降雨 的 GWL 圖資：1.5°C→GWL1.5、2.0°C→GWL2.0、4.0°C→GWL4.0。' : '目前時間軸為 SSP 資料代理：升溫 1.5°C→SSP126、2.0°C→SSP245、4.0°C→SSP585；單一網格在同一年份可能受模式內部變異而非單調增加。'}</div>
     `;
 }
@@ -2499,14 +2527,15 @@ function updateLegendUI() {
     const legendDiv = document.getElementById('map-legend-widget');
     if (!legendDiv) return;
 
+    const riskLegendOpacity = isNcdrLayerEnabled() ? getTownRiskFillOpacity() : 1;
     const riskLegend = `
         <div class="legend-title">綜合風險指標等級</div>
         <div class="legend-scale">
-            <div class="legend-item"><span class="legend-color-box" style="background:${riskColors[1]}"></span> <span>第 1 級</span></div>
-            <div class="legend-item"><span class="legend-color-box" style="background:${riskColors[2]}"></span> <span>第 2 級</span></div>
-            <div class="legend-item"><span class="legend-color-box" style="background:${riskColors[3]}"></span> <span>第 3 級</span></div>
-            <div class="legend-item"><span class="legend-color-box" style="background:${riskColors[4]}"></span> <span>第 4 級 </span></div>
-            <div class="legend-item"><span class="legend-color-box" style="background:${riskColors[5]}"></span> <span>第 5 級 </span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[1], riskLegendOpacity)}"></span> <span>第 1 級</span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[2], riskLegendOpacity)}"></span> <span>第 2 級</span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[3], riskLegendOpacity)}"></span> <span>第 3 級</span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[4], riskLegendOpacity)}"></span> <span>第 4 級 </span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[5], riskLegendOpacity)}"></span> <span>第 5 級 </span></div>
         </div>
     `;
 
@@ -2515,11 +2544,11 @@ function updateLegendUI() {
     const wraLegend = `
         <div class="legend-title" style="margin-top: ${showRiskLegend ? '10px' : '0'}; ${showRiskLegend ? 'border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;' : ''}">水利署預估淹水深度</div>
         <div class="legend-scale">
-            <div class="legend-item"><span class="legend-color-box" style="background:${wraColors[2]}"></span> <span>0.3 - 0.5 公尺</span></div>
-            <div class="legend-item"><span class="legend-color-box" style="background:${wraColors[3]}"></span> <span>0.5 - 1.0 公尺</span></div>
-            <div class="legend-item"><span class="legend-color-box" style="background:${wraColors[4]}"></span> <span>1.0 - 2.0 公尺</span></div>
-            <div class="legend-item"><span class="legend-color-box" style="background:${wraColors[5]}"></span> <span>2.0 - 3.0 公尺</span></div>
-            <div class="legend-item"><span class="legend-color-box" style="background:${wraColors[6]}"></span> <span>大於 3.0 公尺</span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(wraColors[2], floodGridOpacity)}"></span> <span>0.3 - 0.5 公尺</span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(wraColors[3], floodGridOpacity)}"></span> <span>0.5 - 1.0 公尺</span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(wraColors[4], floodGridOpacity)}"></span> <span>1.0 - 2.0 公尺</span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(wraColors[5], floodGridOpacity)}"></span> <span>2.0 - 3.0 公尺</span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(wraColors[6], floodGridOpacity)}"></span> <span>大於 3.0 公尺</span></div>
         </div>
     `;
 
