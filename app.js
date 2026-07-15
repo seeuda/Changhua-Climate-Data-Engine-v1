@@ -84,7 +84,7 @@ const WRA_SCENARIOS = {
     wra350_24h: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般颱風豪雨基準', shortLabel: '24h 350mm', timelineLabel: '24h 350mm（一般颱風豪雨基準）', cacheKey: 'wra350_24h', enabled: true },
     // Backward-compatible aliases for old timeline ids.
     gwl20: { file: `${WRA_DATA_BASE_PATH}/wra_flood_650mm_24h.json`, label: '24h 650mm 極端長延時', timelineLabel: '24h 650mm（NCDR 物理基底）', cacheKey: 'wra650_24h', enabled: true },
-    gwl15: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般颱風豪雨', timelineLabel: '24h 350mm（一般颱風豪雨）', cacheKey: 'wra350_24h', enabled: true }
+    gwl15: { file: `${WRA_DATA_BASE_PATH}/wra_flood_350mm_24h.json`, label: '24h 350mm 一般颱風豪雨基準', timelineLabel: '24h 350mm（一般颱風豪雨基準）', cacheKey: 'wra350_24h', enabled: true }
 };
 
 function getAvailableWraScenarios() {
@@ -227,7 +227,11 @@ const riskColors = {
 
 function normalizeRiskLevel(value, fallback = 1) {
     const numericValue = Number(value);
-    if (!Number.isFinite(numericValue)) return fallback;
+    const fallbackValue = Number(fallback);
+    if (!Number.isFinite(numericValue)) {
+        const safeFallback = Number.isFinite(fallbackValue) ? fallbackValue : 1;
+        return Math.min(Math.max(Math.round(safeFallback), 1), 5);
+    }
     return Math.min(Math.max(Math.round(numericValue), 1), 5);
 }
 
@@ -783,6 +787,10 @@ function getWraPointRiskScore(result) {
 }
 
 function isHigherPriorityWraResult(candidate, current) {
+    // Direct WRA polygon hits always outrank 100m proximity results. Within the
+    // same method, choose the higher point-risk score first (proximity score is
+    // depth risk tapered by distance weight), then use grid code and distance as
+    // deterministic tie-breakers so GeoJSON feature order never decides the result.
     if (!candidate) return false;
     if (!current) return true;
 
@@ -1442,6 +1450,12 @@ function updateStatsAndChart() {
         const { totalHighRisk, riskDistribution } = getRiskDistribution();
         updateHighRiskCard(totalHighRisk, `${getTempRiskSummaryPrefix()}${getActivePointSummaryLabel()} (Lv.4-5)`);
         renderChart(riskDistribution);
+    } else if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
+        // WRA-only mode summarizes WRA direct/proximity hits by depth; it should
+        // not describe the metric as NCDR/admin or composite Lv.4-5 risk.
+        const { totalFlooded, depthDistribution } = getWraDepthDistribution();
+        updateHighRiskCard(totalFlooded, `水利署淹水潛勢命中${getActivePointSummaryLabel()}`);
+        renderChartWRA(depthDistribution);
     } else if (isFloodGridRiskMode()) {
         const { totalHighRisk, riskDistribution } = getRiskDistribution();
         updateHighRiskCard(totalHighRisk, `水利署潛勢警戒${getActivePointSummaryLabel()} (Lv.4-5)`);
@@ -1451,11 +1465,6 @@ function updateStatsAndChart() {
         const sourceLabel = isWraLayerEnabled() ? 'NCDR主風險＋水利署比較' : '第 4-5 級';
         updateHighRiskCard(totalHighRisk, `${sourceLabel}警戒${getActivePointSummaryLabel()} (Lv.4-5)`);
         renderChart(riskDistribution);
-    } else if (isWraLayerEnabled()) {
-        // WRA-only mode has no NCDR Lv.4-5 towns, so summarize flooded daycare sites by depth.
-        const { totalFlooded, depthDistribution } = getWraDepthDistribution();
-        updateHighRiskCard(totalFlooded, `淹水警戒${getActivePointSummaryLabel()}`);
-        renderChartWRA(depthDistribution);
     }
 }
 
@@ -1539,9 +1548,13 @@ function renderChartWRA(distribution) {
         distribution[6]
     ];
 
+    if (!riskChart) {
+        renderChart({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
+    }
+
     if (riskChart) {
         riskChart.data.labels = chartLabels;
-        riskChart.data.datasets[0].label = '警戒機構';
+        riskChart.data.datasets[0].label = '水利署命中點位';
         riskChart.data.datasets[0].data = chartData;
         riskChart.data.datasets[0].backgroundColor = [
             wraColors[2],
