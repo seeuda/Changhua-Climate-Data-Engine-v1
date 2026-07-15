@@ -148,7 +148,7 @@
                     <button class="toggle-btn reference-toggle" id="temp-admin-reference-toggle" type="button" aria-pressed="false">
                         <i class="fa-solid fa-map-location-dot"></i> 顯示行政區彙整風險參考
                     </button>
-                    <p class="control-hint">預設以 NCDR AR6 氣候網格判定點位風險；選擇「不呈現網格」時，點位改以行政區彙整風險配對，行政區圖層也會作為主要參考顯示。行政區彙整風險是前端依原始 NCDR 高溫風險欄位（日高溫與連續高溫日數相關指標）再製成鄉鎮層級參考，不是現場另行把兩種網格指標即時計算加權。</p>
+                    <p class="control-hint">預設以 NCDR AR6 氣候網格判定點位風險；選擇「不呈現網格」時，點位改以前端即時計算的行政區加權危害度配對，行政區圖層也會作為主要參考顯示。高溫行政區底色會在使用者操作時讀取「日高溫最大值」與「極端高溫持續指數」網格，在未取得正式權重前採均權彙整，不再讀取鄉鎮資料包內預先寫入的 temp_risk_* 舊欄位。</p>
                     <p class="control-hint">情境時間軸保留易讀的升溫標籤；實際讀取對應 AR6 SSP 模擬資料，單一網格/年份可能受模式內部變異影響而不逐格遞增。</p>
                 </div>
 
