@@ -2527,14 +2527,15 @@ function updateLegendUI() {
     const legendDiv = document.getElementById('map-legend-widget');
     if (!legendDiv) return;
 
+    const riskLegendOpacity = isNcdrLayerEnabled() ? getTownRiskFillOpacity() : 1;
     const riskLegend = `
         <div class="legend-title">綜合風險指標等級</div>
         <div class="legend-scale">
-            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[1], getTownRiskFillOpacity())}"></span> <span>第 1 級</span></div>
-            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[2], getTownRiskFillOpacity())}"></span> <span>第 2 級</span></div>
-            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[3], getTownRiskFillOpacity())}"></span> <span>第 3 級</span></div>
-            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[4], getTownRiskFillOpacity())}"></span> <span>第 4 級 </span></div>
-            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[5], getTownRiskFillOpacity())}"></span> <span>第 5 級 </span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[1], riskLegendOpacity)}"></span> <span>第 1 級</span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[2], riskLegendOpacity)}"></span> <span>第 2 級</span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[3], riskLegendOpacity)}"></span> <span>第 3 級</span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[4], riskLegendOpacity)}"></span> <span>第 4 級 </span></div>
+            <div class="legend-item"><span class="legend-color-box" style="background:${colorWithOpacity(riskColors[5], riskLegendOpacity)}"></span> <span>第 5 級 </span></div>
         </div>
     `;
 
