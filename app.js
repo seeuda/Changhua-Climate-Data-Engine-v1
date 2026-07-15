@@ -993,10 +993,12 @@ function getRiskBadgeClass(level) {
 }
 
 function formatRiskBadgeText(riskAssessment) {
-    if (riskAssessment.display_risk === null || riskAssessment.display_risk === undefined) {
+    if (Object.prototype.hasOwnProperty.call(riskAssessment, 'display_risk') && riskAssessment.display_risk === null) {
         return riskAssessment.source;
     }
-    return formatRiskAssessmentLabel(riskAssessment, riskAssessment.display_risk);
+    const displayLevel = riskAssessment.display_risk ?? riskAssessment.risk;
+    if (displayLevel === null || displayLevel === undefined) return riskAssessment.source;
+    return formatRiskAssessmentLabel(riskAssessment, displayLevel);
 }
 
 function formatWraRiskLabel(result) {
@@ -1204,7 +1206,9 @@ function formatRiskAssessmentLabel(riskAssessment, riskVal) {
 function getFeatureRisk(feature, config) {
     const assessment = getFeatureRiskAssessment(feature, config);
     if (assessment.risk === null || assessment.risk === undefined) return null;
-    return normalizeRiskLevel(assessment.risk);
+    const numericRisk = Number(assessment.risk);
+    if (!Number.isFinite(numericRisk)) return null;
+    return Math.max(1, Math.round(numericRisk));
 }
 
 function getFeatureTownMismatch(feature, config) {
@@ -1618,7 +1622,7 @@ function getRiskDistribution() {
     const riskDistribution = Object.fromEntries(Array.from({ length: maxLevel }, (_, i) => [i + 1, 0]));
 
     getActivePointFeatures().forEach(({ config, feature }) => {
-        const riskVal = normalizeRiskLevel(getFeatureRisk(feature, config));
+        const riskVal = getFeatureRisk(feature, config);
 
         if (riskVal === null || riskVal === undefined) return;
         riskDistribution[riskVal] = (riskDistribution[riskVal] || 0) + 1;
