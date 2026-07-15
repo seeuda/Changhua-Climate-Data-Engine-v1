@@ -588,11 +588,19 @@ function getTempAdminHazardYear() {
     return scenarioStr === 'historical' && Number(activeClimateYear) > 2014 ? '2014' : activeClimateYear;
 }
 
-function getTownDisplayRisk(props) {
-    if (activeTheme !== 'temp') return props?.[getActiveRiskField()] || 1;
-    if (activeTempRiskMode === 'official') return props?.[getActiveRiskField()] || 1;
+function getOfficialTempRisk(props) {
+    return props?.[getActiveRiskField()] || 1;
+}
+
+function getTempAdminHazardRisk(props) {
     const dynamicRisk = activeTempAdminHazardByTown?.[props?.town_name]?.risk;
     return dynamicRisk || 1;
+}
+
+function getTownDisplayRisk(props) {
+    if (activeTheme !== 'temp') return props?.[getActiveRiskField()] || 1;
+    if (activeTempRiskMode === 'official' || activeTempAdminReference) return getOfficialTempRisk(props);
+    return getTempAdminHazardRisk(props);
 }
 
 function isTempAdminHazardSummaryNeeded() {
@@ -986,12 +994,12 @@ function getPointKey(feature, config) {
     return `${config.id}:${getFeatureId(feature, config)}`;
 }
 
-function getTownRiskMap() {
+function getTownRiskMap(riskGetter = getTownDisplayRisk) {
     const townRisks = {};
     if (!townGeoJsonData) return townRisks;
     townGeoJsonData.features.forEach(feat => {
         const townName = feat.properties.town_name;
-        townRisks[townName] = getTownDisplayRisk(feat.properties);
+        townRisks[townName] = riskGetter(feat.properties);
     });
     return townRisks;
 }
@@ -1039,7 +1047,13 @@ function getClimateGridFeatureRisk(feature) {
 
 function getNcdrFeatureRisk(feature, config) {
     const town = getFeatureTown(feature, config);
-    return getTownRiskMap()[town] || 1;
+    const riskMap = activeTheme === 'temp' ? getTownRiskMap(getOfficialTempRisk) : getTownRiskMap();
+    return riskMap[town] || 1;
+}
+
+function getTempAdminHazardFeatureRisk(feature, config) {
+    const town = getFeatureTown(feature, config);
+    return getTownRiskMap(getTempAdminHazardRisk)[town] || 1;
 }
 
 function getWraFeatureRisk(feature, config) {
@@ -1061,9 +1075,11 @@ function getWraFeatureRisk(feature, config) {
 function getFeatureRiskAssessment(feature, config) {
     if (activeTheme === 'temp') {
         const ncdrRisk = getNcdrFeatureRisk(feature, config);
+        const adminHazardRisk = getTempAdminHazardFeatureRisk(feature, config);
         if (!isClimateGridRiskMode()) {
+            const displayRisk = activeTempRiskMode === 'official' ? ncdrRisk : adminHazardRisk;
             return {
-                risk: ncdrRisk || 1,
+                risk: displayRisk || 1,
                 ncdrRisk: ncdrRisk || 1,
                 climateGridRisk: null,
                 source: activeTempRiskMode === 'official' ? 'NCDR官方綜合風險（含高齡人口比例與人口暴露）' : '行政區即時加權危害度（未呈現網格）',
@@ -1083,7 +1099,7 @@ function getFeatureRiskAssessment(feature, config) {
         }
 
         return {
-            risk: ncdrRisk || 1,
+            risk: adminHazardRisk || 1,
             ncdrRisk: ncdrRisk || 1,
             climateGridRisk: null,
             source: '行政區即時加權危害度（網格未命中回退）',
@@ -1732,7 +1748,7 @@ function updateInfoWidget(props) {
                     <span class="hover-stat-val risk-badge badge-${vulVal}">第 ${vulVal} 級</span>
                 </div>
                 <div class="hover-stat-row">
-                    <span class="hover-stat-label">加權危害度等級 (Hazard)</span>
+                    <span class="hover-stat-label">${activeTempRiskMode === 'official' || activeTempAdminReference ? 'NCDR官方綜合風險 (Risk)' : '加權危害度等級 (Hazard)'}</span>
                     <span class="hover-stat-val risk-badge badge-${riskVal}">第 ${riskVal} 級</span>
                 </div>
                 <div class="hover-stat-row" style="margin-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
