@@ -124,15 +124,15 @@
                     <label class="group-label flood-layer-label">淹水圖資套疊（可複選）</label>
                     <div class="toggle-buttons" id="flood-mode-selector">
                         <button class="toggle-btn active" data-mode="ncdr">
-                            <i class="fa-solid fa-map"></i> NCDR 主風險
+                            <i class="fa-solid fa-map"></i> NCDR行政區風險
                         </button>
                         <button class="toggle-btn" data-mode="wra">
                             <i class="fa-solid fa-water"></i> 水利署比較圖
                         </button>
                     </div>
-                    <label class="group-label wra-scenario-label">水利署 Comparison 情境</label>
+                    <label class="group-label wra-scenario-label">水利署比較圖情境</label>
                     <div class="toggle-buttons wra-scenario-selector" id="wra-scenario-selector" aria-label="選擇水利署淹水潛勢情境"></div>
-                    <p class="control-hint">淹水圖資分為兩大類：NCDR AR6 淹水災害風險為 Primary Risk，供升溫 1.5°C／2.0°C／4.0°C 的策略層級調適判讀；水利署 Comparison 提供 24h 650mm 極端長延時情境（NCDR AR6 物理基底）、6h 350mm 極端短延時強降雨情境（都市防洪壓力測試），24h 350mm 則定位為一般颱風豪雨基準，用於與極端情境對照。NCDR 風險可理解為 R = H × V × E，其中 V 承接水利署 650mm 潛勢的淹水情況；因此兩者具血緣關係，但數值意義不同，應各自解讀、互補套疊，不混算取高。NCDR／行政區彙整風險僅供策略層級與視覺參考，不作為淹水點位風險套疊或水利署潛勢未命中回退依據。</p>
+                    <p class="control-hint">淹水圖資分為兩大類：NCDR行政區風險供升溫 1.5°C／2.0°C／4.0°C 的策略層級調適判讀；水利署比較圖提供 24h 650mm 極端長延時、6h 350mm 極端短延時強降雨（都市防洪壓力測試），24h 350mm 則定位為一般颱風豪雨基準，用於與極端情境對照。NCDR 風險可理解為 R = H × V × E，其中 V 參考水利署 650mm 潛勢的淹水情況；兩者資料來源有所銜接，但數值意義不同，應各自解讀、互補套疊，不混算取高。NCDR／行政區彙整風險僅供策略層級與視覺參考，不作為淹水點位風險套疊或水利署潛勢未命中回退依據。</p>
                 </div>
 
                 <div class="control-group" id="temp-mode-group">
@@ -148,7 +148,7 @@
                     <button class="toggle-btn reference-toggle" id="temp-admin-reference-toggle" type="button" aria-pressed="false">
                         <i class="fa-solid fa-map-location-dot"></i> 顯示行政區彙整風險參考
                     </button>
-                    <p class="control-hint">預設以 NCDR AR6 氣候網格判定點位風險；選擇「不呈現網格」時，點位改以行政區彙整風險配對，行政區圖層也會作為主要參考顯示。</p>
+                    <p class="control-hint">預設以 NCDR AR6 氣候網格判定點位風險；選擇「不呈現網格」時，點位改以行政區彙整風險配對，行政區圖層也會作為主要參考顯示。行政區彙整風險是前端依原始 NCDR 高溫風險欄位（日高溫與連續高溫日數相關指標）再製成鄉鎮層級參考，不是現場另行把兩種網格指標即時計算加權。</p>
                     <p class="control-hint">情境時間軸保留易讀的升溫標籤；實際讀取對應 AR6 SSP 模擬資料，單一網格/年份可能受模式內部變異影響而不逐格遞增。</p>
                 </div>
 
@@ -183,7 +183,7 @@
                         <option value="日低溫最大值">日低溫最大值</option>
                         <option value="暖晝天數">暖晝天數</option>
                         <option value="暖夜天數">暖夜天數</option>
-                        <option value="極端高溫持續指數">極端高溫持續指數</option>
+                        <option value="極端高溫持續指數" selected>極端高溫持續指數</option>
                     </select>
                     <label class="group-label" for="climate-year-select">目標年份</label>
                     <select id="climate-year-select" class="theme-select" aria-label="選擇氣候網格目標年份">

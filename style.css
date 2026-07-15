@@ -414,7 +414,13 @@ body, html {
     box-shadow: 0 4px 10px var(--primary-glow);
 }
 
-.toggle-btn:hover:not(.active) {
+.toggle-btn:disabled,
+.toggle-btn.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+.toggle-btn:hover:not(.active):not(:disabled) {
     color: var(--text-primary);
     background: rgba(255, 255, 255, 0.05);
 }
