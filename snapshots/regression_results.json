@@ -1,0 +1,120 @@
+{
+  "R1": {
+    "total": 140,
+    "gridExceptions": 0,
+    "townMismatch": 0
+  },
+  "R2": {
+    "direct_overlay": 34,
+    "near_total": 69,
+    "no_hit": 37
+  },
+  "R3": {
+    "direct_overlay": 15,
+    "near_total": 58,
+    "no_hit": 67
+  },
+  "R4": {
+    "direct_overlay": 5,
+    "near_total": 46,
+    "no_hit": 89
+  },
+  "R5": {
+    "near_0_25m": 22,
+    "near_25_50m": 17,
+    "near_50_75m": 14,
+    "near_75_100m": 16
+  },
+  "R6": {
+    "L3": 121,
+    "L4": 19
+  },
+  "R10": {
+    "daycare": {
+      "coordinate_review_status": "manually_reviewed",
+      "coordinate_review_scope": "all_points_in_dataset",
+      "coordinate_review_count": 88
+    },
+    "env": {
+      "total": 52,
+      "categories": {
+        "清潔隊部": 26,
+        "資源回收場": 26
+      },
+      "source": "W-06A 氣候風險套疊擴大應用",
+      "generated": "2026-07-02",
+      "coordinate_review_status": "manually_reviewed",
+      "coordinate_review_scope": "all_points_in_dataset",
+      "coordinate_review_count": 52
+    }
+  },
+  "R11": {
+    "uiMentions": 0
+  },
+  "R12": [
+    {
+      "name": "彰化市清潔隊",
+      "GridID": "GRID_00048",
+      "v2014": 26,
+      "l2014": 2,
+      "v2030": 19,
+      "l2030": 1,
+      "breaks": "19 <= 20 -> 19 <= 40 -> 19 <= 60 -> 19 <= 90 -> 19 <= 130 -> 19 <= 180"
+    },
+    {
+      "name": "鹿港鎮清潔隊",
+      "GridID": "GRID_00021",
+      "v2014": 22,
+      "l2014": 2,
+      "v2030": 18,
+      "l2030": 1,
+      "breaks": "18 <= 20 -> 18 <= 40 -> 18 <= 60 -> 18 <= 90 -> 18 <= 130 -> 18 <= 180"
+    },
+    {
+      "name": "線西鄉清潔隊",
+      "GridID": "GRID_00031",
+      "v2014": 24,
+      "l2014": 2,
+      "v2030": 19,
+      "l2030": 1,
+      "breaks": "19 <= 20 -> 19 <= 40 -> 19 <= 60 -> 19 <= 90 -> 19 <= 130 -> 19 <= 180"
+    },
+    {
+      "name": "員林市清潔隊",
+      "GridID": "GRID_00054",
+      "v2014": 22,
+      "l2014": 2,
+      "v2030": 20,
+      "l2030": 1,
+      "breaks": "20 <= 20 -> 20 <= 40 -> 20 <= 60 -> 20 <= 90 -> 20 <= 130 -> 20 <= 180"
+    },
+    {
+      "name": "芬園鄉清潔隊",
+      "GridID": "GRID_00062",
+      "v2014": 24,
+      "l2014": 2,
+      "v2030": 20,
+      "l2030": 1,
+      "breaks": "20 <= 20 -> 20 <= 40 -> 20 <= 60 -> 20 <= 90 -> 20 <= 130 -> 20 <= 180"
+    }
+  ],
+  "R13": {
+    "nonMonotonicCount": 110
+  },
+  "R14": {
+    "sameAsExpected": true
+  },
+  "R15": {
+    "differences": 0
+  },
+  "R16": {
+    "differences": 0
+  },
+  "R18": {
+    "methodDifferences": 0,
+    "featureDifferences": 0,
+    "gridCodeDifferences": 0,
+    "depthTypeDifferences": 0,
+    "distanceDifferences": 0
+  }
+}

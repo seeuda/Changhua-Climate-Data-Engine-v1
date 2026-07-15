@@ -8,7 +8,10 @@
       "資源回收場": 26
     },
     "source": "W-06A 氣候風險套疊擴大應用",
-    "generated": "2026-07-02"
+    "generated": "2026-07-02",
+    "coordinate_review_status": "manually_reviewed",
+    "coordinate_review_scope": "all_points_in_dataset",
+    "coordinate_review_count": 52
   },
   "features": [
     {
@@ -22,7 +25,7 @@
         "address": "彰化縣彰化市仁愛東街17號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -43,7 +46,7 @@
         "address": "彰化縣芬園鄉社口村芬草路300號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -64,7 +67,7 @@
         "address": "彰化縣花壇鄉彰員路2段487號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -85,7 +88,7 @@
         "address": "彰化縣秀水鄉安東村枋林巷9號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -106,7 +109,7 @@
         "address": "彰化縣鹿港鎮東石里鹽埕巷200號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -127,7 +130,7 @@
         "address": "彰化縣福興鄉廈粘村沿海路三段355號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -148,7 +151,7 @@
         "address": "彰化縣線西鄉下犁村下塭路449巷168號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -169,7 +172,7 @@
         "address": "彰化縣和美鎮和善東路57號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -190,7 +193,7 @@
         "address": "彰化縣伸港鄉仁愛路38號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -211,7 +214,7 @@
         "address": "彰化縣員林市大饒路279巷57號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -232,7 +235,7 @@
         "address": "彰化縣社頭鄉山清段13號",
         "shade_info": "",
         "phone": "",
-        "note": "approx-cadastral"
+        "legacy_ai_coordinate_note": "approx-cadastral"
       },
       "geometry": {
         "type": "Point",
@@ -253,7 +256,7 @@
         "address": "彰化縣永靖鄉港新段47地號",
         "shade_info": "",
         "phone": "",
-        "note": "approx-cadastral"
+        "legacy_ai_coordinate_note": "approx-cadastral"
       },
       "geometry": {
         "type": "Point",
@@ -274,7 +277,7 @@
         "address": "彰化縣埔心鄉忠義北路32號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -295,7 +298,7 @@
         "address": "彰化縣溪湖鎮湖東里青雅路58號",
         "shade_info": "",
         "phone": "",
-        "note": "approx"
+        "legacy_ai_coordinate_note": "approx"
       },
       "geometry": {
         "type": "Point",
@@ -316,7 +319,7 @@
         "address": "彰化縣大村鄉中正西路338號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -337,7 +340,7 @@
         "address": "彰化縣埔鹽鄉中正路192號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -358,7 +361,7 @@
         "address": "彰化縣田中鎮復興路335號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -379,7 +382,7 @@
         "address": "彰化縣北斗鎮地政路2之1號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -400,7 +403,7 @@
         "address": "彰化縣田尾鄉光復路二段575號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -421,7 +424,7 @@
         "address": "彰化縣埤頭鄉中和村溪林路767號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -442,7 +445,7 @@
         "address": "彰化縣溪州鄉溪連北路8號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -463,7 +466,7 @@
         "address": "彰化縣竹塘鄉竹林路一段305號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -484,7 +487,7 @@
         "address": "彰化縣二林鎮斗苑路四段636之1號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -505,7 +508,7 @@
         "address": "彰化縣大城鄉古山路132號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -526,7 +529,7 @@
         "address": "彰化縣芳苑鄉崙腳村中正路46號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
@@ -547,7 +550,7 @@
         "address": "彰化縣二水鄉南通路二段764號",
         "shade_info": "",
         "phone": "",
-        "note": "exact"
+        "legacy_ai_coordinate_note": "exact"
       },
       "geometry": {
         "type": "Point",
