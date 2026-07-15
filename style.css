@@ -1452,3 +1452,6 @@ body, html {
     background: var(--control-track-bg);
     padding: 10px 12px;
 }
+.badge-6 { background-color: #dc2626; }
+.badge-7 { background-color: #991b1b; }
+.badge-neutral { background-color: #64748b; }

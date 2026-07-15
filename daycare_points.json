@@ -1673,5 +1673,10 @@
         ]
       }
     }
-  ]
+  ],
+  "metadata": {
+    "coordinate_review_status": "manually_reviewed",
+    "coordinate_review_scope": "all_points_in_dataset",
+    "coordinate_review_count": 88
+  }
 }

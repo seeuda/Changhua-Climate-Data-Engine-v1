@@ -224,7 +224,19 @@ const riskColors = {
     2: '#84cc16', // Lime Green
     3: '#eab308', // Amber Yellow (Medium)
     4: '#f97316', // Orange
-    5: '#ef4444'  // Soft Red (High)
+    5: '#ef4444', // Soft Red (High)
+    6: '#dc2626',
+    7: '#991b1b'
+};
+
+const WRA_STATUS_LABELS = {
+    direct_overlay: '直接套疊',
+    near_0_25m: '0–25 公尺鄰近',
+    near_25_50m: '25–50 公尺鄰近',
+    near_50_75m: '50–75 公尺鄰近',
+    near_75_100m: '75–100 公尺鄰近',
+    no_hit: '圖資未命中',
+    no_data: '無資料'
 };
 
 
@@ -356,14 +368,14 @@ const POINT_REGISTRY = {
             { field: 'shade_info', label: '遮蔭資訊' },
             { field: 'phone', label: '聯絡電話' },
             { field: 'address', label: '位置地址' },
-            { field: 'note', label: '資料註記' }
+            { field: 'legacy_ai_coordinate_note', label: '歷史AI座標註記', internalOnly: true }
         ],
         listFields: [
             { field: 'sub_type', icon: 'fa-briefcase' },
             { field: 'shade_info', icon: 'fa-tree' },
             { field: 'phone', icon: 'fa-phone' },
             { field: 'address', icon: 'fa-map-location-dot' },
-            { field: 'note', icon: 'fa-circle-info' }
+            { field: 'legacy_ai_coordinate_note', icon: 'fa-circle-info', internalOnly: true }
         ],
         marker: {
             color: '#f59e0b',
@@ -395,14 +407,14 @@ const POINT_REGISTRY = {
             { field: 'shade_info', label: '遮蔭資訊' },
             { field: 'phone', label: '聯絡電話' },
             { field: 'address', label: '位置地址' },
-            { field: 'note', label: '資料註記' }
+            { field: 'legacy_ai_coordinate_note', label: '歷史AI座標註記', internalOnly: true }
         ],
         listFields: [
             { field: 'sub_type', icon: 'fa-briefcase' },
             { field: 'shade_info', icon: 'fa-tree' },
             { field: 'phone', icon: 'fa-phone' },
             { field: 'address', icon: 'fa-map-location-dot' },
-            { field: 'note', icon: 'fa-circle-info' }
+            { field: 'legacy_ai_coordinate_note', icon: 'fa-circle-info', internalOnly: true }
         ],
         marker: {
             color: '#10b981',
@@ -433,7 +445,7 @@ const POINT_REGISTRY = {
             { field: 'shade_info', label: '遮蔭資訊' },
             { field: 'phone', label: '聯絡電話' },
             { field: 'address', label: '位置地址' },
-            { field: 'note', label: '資料註記' }
+            { field: 'legacy_ai_coordinate_note', label: '歷史AI座標註記', internalOnly: true }
         ],
         listFields: [
             { field: 'category', icon: 'fa-layer-group' },
@@ -441,7 +453,7 @@ const POINT_REGISTRY = {
             { field: 'shade_info', icon: 'fa-tree' },
             { field: 'phone', icon: 'fa-phone' },
             { field: 'address', icon: 'fa-map-location-dot' },
-            { field: 'note', icon: 'fa-circle-info' }
+            { field: 'legacy_ai_coordinate_note', icon: 'fa-circle-info', internalOnly: true }
         ],
         marker: {
             colorField: 'category',
@@ -907,6 +919,14 @@ function distancePointToWraFeatureMeters(x, y, feature) {
     return minDistance;
 }
 
+function boundaryDistancePointInWraFeatureMeters(x, y, feature) {
+    let minDistance = Infinity;
+    for (const item of feature._rings || []) {
+        minDistance = Math.min(minDistance, distancePointToRingMeters(x, y, item.ring));
+    }
+    return Number.isFinite(minDistance) ? minDistance : null;
+}
+
 function getWraGridCodeFromDepth(depth) {
     const normalizedDepth = String(depth || '').replace(/\s/g, '').replace(/\.0/g, '');
     if (normalizedDepth === '0.3-0.5') return 2;
@@ -955,10 +975,37 @@ function getWraPointRisk(feature, config) {
     return daycareIntersectResults[getPointKey(feature, config)] || null;
 }
 
+function getWraStatusForDistance(method, distanceMeters) {
+    if (method === 'direct') return 'direct_overlay';
+    if (distanceMeters > 0 && distanceMeters <= 25) return 'near_0_25m';
+    if (distanceMeters > 25 && distanceMeters <= 50) return 'near_25_50m';
+    if (distanceMeters > 50 && distanceMeters <= 75) return 'near_50_75m';
+    if (distanceMeters > 75 && distanceMeters <= WRA_PROXIMITY_RADIUS_METERS) return 'near_75_100m';
+    return 'no_hit';
+}
+
+function getWraStatusLabel(status) {
+    return WRA_STATUS_LABELS[status] || status || '';
+}
+
+function getRiskBadgeClass(level) {
+    return level === null || level === undefined ? 'badge-neutral' : `badge-${level}`;
+}
+
+function formatRiskBadgeText(riskAssessment) {
+    if (Object.prototype.hasOwnProperty.call(riskAssessment, 'display_risk') && riskAssessment.display_risk === null) {
+        return riskAssessment.source;
+    }
+    const displayLevel = riskAssessment.display_risk ?? riskAssessment.risk;
+    if (displayLevel === null || displayLevel === undefined) return riskAssessment.source;
+    return formatRiskAssessmentLabel(riskAssessment, displayLevel);
+}
+
 function formatWraRiskLabel(result) {
     if (!result) return '';
-    if (result.method === 'direct') return `${result.depth} 公尺（直接套疊）`;
-    return `${result.depth} 公尺（鄰近 ${Math.round(result.distanceMeters)}m，加權 ${Math.round(result.weight * 100)}%）`;
+    if (result.method === 'direct') return `${result.depth} 公尺（${getWraStatusLabel(result.status)}，距勝出潛勢面邊界 ${Math.round(result.boundary_distance_m ?? 0)}m）`;
+    const sensitive = result.status === 'near_0_25m' ? '；邊界敏感區：點座標僅代表設施單一代表點，實際設施範圍可能跨越潛勢面邊界' : '';
+    return `${result.depth} 公尺（${getWraStatusLabel(result.status)} ${Math.round(result.distanceMeters)}m，加權 ${Math.round(result.weight * 100)}%${sensitive}）`;
 }
 
 function getConfigValue(config, key, fallback = null) {
@@ -1037,7 +1084,7 @@ function getClimateGridRiskLevelForIndicator(indicator, value) {
     let binIndex = config.breaks.findIndex(breakValue => value <= breakValue);
     if (binIndex === -1) binIndex = config.colors.length - 1;
 
-    return Math.min(5, Math.max(1, Math.ceil(((binIndex + 1) / config.colors.length) * 5)));
+    return binIndex + 1;
 }
 
 function getClimateGridRiskLevel(value) {
@@ -1065,7 +1112,7 @@ function getClimateGridFeatureRisk(feature) {
         const risk = getClimateGridRiskLevel(value);
         if (!risk) return null;
 
-        return { risk, value, gridId, indicator, scenario, model, year };
+        return { risk, absolute_level: risk, value, gridId, indicator, scenario, model, year };
     }
 
     return null;
@@ -1084,17 +1131,13 @@ function getTempAdminHazardFeatureRisk(feature, config) {
 
 function getWraFeatureRisk(feature, config) {
     const wraRisk = getWraPointRisk(feature, config);
-    if (!wraRisk) return 1;
+    if (!wraRisk) return null;
 
-    // WRA depth classes are stored as grid codes 2-6. For point-level risk display,
-    // normalize them to the same 1-5 scale used by township risks:
-    // no intersection = 1, 0.3-0.5m = 2, 0.5-1m = 3, 1-2m = 4, >=2m = 5.
+    // WRA source grid_code is 2-6. Display risk remains normalized to 1-5 only for
+    // direct/proximity hazard rendering; no_hit/no_data are null, not L1/low risk.
     const directLevel = getWraRiskLevelFromGridCode(wraRisk.gridCode || getWraGridCodeFromDepth(wraRisk.depth));
     if (wraRisk.method === 'direct') return directLevel;
 
-    // Nearby-but-not-overlapping polygons should not be treated as full direct
-    // inundation. Keep the warning visible, but taper the risk level by distance
-    // within the 100m buffer so the rendered marker updates more realistically.
     return normalizeRiskLevel(1 + ((directLevel - 1) * (wraRisk.weight || 0)));
 }
 
@@ -1141,12 +1184,15 @@ function getFeatureRiskAssessment(feature, config) {
     if (hasWra) {
         if (wraPointRisk?.method === 'direct') {
             const directGridRisk = getWraRiskLevelFromGridCode(wraPointRisk.gridCode || getWraGridCodeFromDepth(wraPointRisk.depth));
-            return { risk: directGridRisk, ncdrRisk, wraRisk: directGridRisk, source: '水利署淹水潛勢圖', mode: 'flood_grid' };
+            return { risk: directGridRisk, hazard_level: directGridRisk, display_risk: directGridRisk, ncdrRisk, wraRisk: directGridRisk, status: wraPointRisk.status, source: '水利署淹水潛勢圖：直接套疊', mode: 'flood_grid' };
         }
-        return { risk: wraRisk || 1, ncdrRisk, wraRisk, source: wraRisk ? '水利署鄰近淹水潛勢' : '未命中水利署淹水潛勢', mode: wraRisk ? 'flood_grid_proximity' : 'flood_grid_no_match' };
+        if (wraPointRisk?.method === 'proximity') {
+            return { risk: wraRisk, hazard_level: wraRisk, display_risk: wraRisk, ncdrRisk, wraRisk, status: wraPointRisk.status, source: `水利署淹水潛勢：${getWraStatusLabel(wraPointRisk.status)}`, mode: 'flood_grid_proximity' };
+        }
+        return { risk: null, hazard_level: null, display_risk: null, legacy_risk: 1, ncdrRisk, wraRisk: null, status: 'no_hit', source: '圖資未命中', mode: 'flood_grid_no_match' };
     }
 
-    return { risk: 1, ncdrRisk, wraRisk: null, source: '未判定（未啟用水利署點位套疊）', mode: 'flood_no_point_overlay' };
+    return { risk: null, hazard_level: null, display_risk: null, legacy_risk: 1, ncdrRisk, wraRisk: null, status: 'no_data', no_data_reason: activeWraData ? 'layer_unavailable' : 'layer_unavailable', source: '無資料', mode: 'flood_no_point_overlay' };
 }
 
 
@@ -1158,7 +1204,11 @@ function formatRiskAssessmentLabel(riskAssessment, riskVal) {
 }
 
 function getFeatureRisk(feature, config) {
-    return normalizeRiskLevel(getFeatureRiskAssessment(feature, config).risk);
+    const assessment = getFeatureRiskAssessment(feature, config);
+    if (assessment.risk === null || assessment.risk === undefined) return null;
+    const numericRisk = Number(assessment.risk);
+    if (!Number.isFinite(numericRisk)) return null;
+    return Math.max(1, Math.round(numericRisk));
 }
 
 function getFeatureTownMismatch(feature, config) {
@@ -1217,7 +1267,10 @@ function computeIntersections() {
                         gridCode,
                         method: 'direct',
                         distanceMeters: 0,
-                        weight: 1
+                        weight: 1,
+                        status: 'direct_overlay',
+                        boundary_distance_m: boundaryDistancePointInWraFeatureMeters(x, y, feat),
+                        featureId: feat.properties?.id || feat.properties?.OBJECTID || feat.properties?.TownName || feat.properties?.Town || null
                     };
                     if (isHigherPriorityWraResult(directCandidate, bestDirect)) {
                         bestDirect = directCandidate;
@@ -1228,7 +1281,7 @@ function computeIntersections() {
                 const distanceMeters = distancePointToWraFeatureMeters(x, y, feat);
                 if (distanceMeters <= WRA_PROXIMITY_RADIUS_METERS) {
                     const weight = Math.max(0, 1 - (distanceMeters / WRA_PROXIMITY_RADIUS_METERS));
-                    const proximityCandidate = { depth, gridCode, method: 'proximity', distanceMeters, weight };
+                    const proximityCandidate = { depth, gridCode, method: 'proximity', distanceMeters, weight, status: getWraStatusForDistance('proximity', distanceMeters), featureId: feat.properties?.id || feat.properties?.OBJECTID || feat.properties?.TownName || feat.properties?.Town || null };
                     if (isHigherPriorityWraResult(proximityCandidate, bestProximity)) {
                         bestProximity = proximityCandidate;
                     }
@@ -1346,7 +1399,7 @@ function getMarkerColor(feature, config) {
 }
 
 function createRiskOutlinedMarker(latlng, markerColor, riskVal, wraRiskResult, paneName) {
-    const normalizedRisk = normalizeRiskLevel(riskVal);
+    const normalizedRisk = riskVal === null || riskVal === undefined ? 1 : normalizeRiskLevel(riskVal);
     const riskColor = riskColors[normalizedRisk] || '#94a3b8';
     const isHighRisk = normalizedRisk >= 4;
     const isDirectFlooded = wraRiskResult?.method === 'direct';
@@ -1490,11 +1543,11 @@ function onEachPointFeature(feature, layer, config) {
         </div>
         <div class="popup-row">
             <span class="popup-label">所處風險</span>
-            <span class="popup-val risk-badge badge-${riskVal}">${formatRiskAssessmentLabel(riskAssessment, riskVal)}</span>
+            <span class="popup-val risk-badge ${getRiskBadgeClass(riskAssessment.display_risk ?? riskVal)}">${formatRiskBadgeText(riskAssessment)}</span>
         </div>
         ${riskAssessment.mode === 'flood_grid' ? `<div class="popup-row"><span class="popup-label">網格明細</span><span class="popup-val">水利署淹水潛勢圖；第 ${riskAssessment.wraRisk} 級</span></div>` : ''}
-        ${riskAssessment.mode === 'flood_grid_proximity' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位未直接落入水利署潛勢面，僅依 100m 內鄰近潛勢加權；不使用行政區風險回退</span></div>` : ''}
-        ${riskAssessment.mode === 'flood_grid_no_match' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位未命中水利署淹水潛勢圖資，維持第 1 級；NCDR／行政區彙整圖僅供視覺參考，不作為淹水點位風險</span></div>` : ''}
+        ${riskAssessment.mode === 'flood_grid_proximity' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位未直接落入水利署潛勢面，依 100m 系統設計參數內鄰近潛勢加權；100公尺為系統設計參數，不是自然形成的地理斷點。near_0_25m 為邊界敏感區：點座標僅代表設施單一代表點，實際設施範圍可能跨越潛勢面邊界；不使用行政區風險回退</span></div>` : ''}
+        ${riskAssessment.mode === 'flood_grid_no_match' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位未直接套疊且距所有潛勢面大於100公尺，正式狀態為圖資未命中；hazard_level/display_risk 為 null，不列為低風險或第1級。NCDR／行政區彙整圖僅供視覺參考</span></div>` : ''}
         ${riskAssessment.mode === 'flood_no_point_overlay' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">目前未啟用水利署點位套疊；NCDR／行政區彙整圖僅供視覺參考，不作為淹水點位風險</span></div>` : ''}
         ${riskAssessment.mode === 'climate_grid' ? `<div class="popup-row"><span class="popup-label">網格明細</span><span class="popup-val">${riskAssessment.climateGridRisk.indicator} ${riskAssessment.climateGridRisk.value.toFixed(2)}；Grid ${riskAssessment.climateGridRisk.gridId}</span></div>` : ''}
         ${riskAssessment.mode === 'ncdr_fallback' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位無可用網格值，改用行政區即時加權危害度配對；不讀取舊 temp_risk_* 欄位</span></div>` : ''}
@@ -1502,6 +1555,7 @@ function onEachPointFeature(feature, layer, config) {
     `;
 
     const rowsHtml = (config.popupFields || []).map(fieldConfig => {
+        if (fieldConfig.internalOnly) return '';
         const value = getFeatureValue(props, fieldConfig.field);
         if (!hasDisplayValue(value)) return '';
         const text = `${value}${fieldConfig.suffix || ''}`;
@@ -1564,12 +1618,14 @@ function updateHighRiskCard(total, label) {
 
 function getRiskDistribution() {
     let totalHighRisk = 0;
-    const riskDistribution = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    const maxLevel = activeTheme === 'temp' && isClimateGridRiskMode() ? (climateGridManager?.colorScaleConfig?.[activeClimateIndicator]?.colors?.length || 5) : 5;
+    const riskDistribution = Object.fromEntries(Array.from({ length: maxLevel }, (_, i) => [i + 1, 0]));
 
     getActivePointFeatures().forEach(({ config, feature }) => {
-        const riskVal = normalizeRiskLevel(getFeatureRisk(feature, config));
+        const riskVal = getFeatureRisk(feature, config);
 
-        riskDistribution[riskVal]++;
+        if (riskVal === null || riskVal === undefined) return;
+        riskDistribution[riskVal] = (riskDistribution[riskVal] || 0) + 1;
         if (riskVal >= 4) {
             totalHighRisk++;
         }
@@ -1578,22 +1634,18 @@ function getRiskDistribution() {
     return { totalHighRisk, riskDistribution };
 }
 
-function getWraDepthDistribution() {
-    let totalFlooded = 0;
-    const depthDistribution = { 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+function getWraStatusDistribution() {
+    const statusDistribution = { direct_overlay: 0, near_0_25m: 0, near_25_50m: 0, near_50_75m: 0, near_75_100m: 0, no_hit: 0, no_data: 0 };
 
     getActivePointFeatures().forEach(({ config, feature }) => {
         const risk = getWraPointRisk(feature, config);
-        if (risk) {
-            totalFlooded++;
-            const gridCode = risk.gridCode || getWraGridCodeFromDepth(risk.depth);
-            if (depthDistribution[gridCode] !== undefined) {
-                depthDistribution[gridCode]++;
-            }
-        }
+        const status = risk?.status || (getFeatureCoordinates(feature) ? 'no_hit' : 'no_data');
+        statusDistribution[status] = (statusDistribution[status] || 0) + 1;
     });
 
-    return { totalFlooded, depthDistribution };
+    const totalFlooded = ['direct_overlay', 'near_0_25m', 'near_25_50m', 'near_50_75m', 'near_75_100m']
+        .reduce((sum, status) => sum + (statusDistribution[status] || 0), 0);
+    return { totalFlooded, statusDistribution };
 }
 
 function getTempRiskSummaryPrefix() {
@@ -1614,9 +1666,9 @@ function updateStatsAndChart() {
     } else if (isWraLayerEnabled() && !activeFloodLayers.ncdr) {
         // WRA-only mode summarizes WRA direct/proximity hits by depth; it should
         // not describe the metric as NCDR/admin or composite Lv.4-5 risk.
-        const { totalFlooded, depthDistribution } = getWraDepthDistribution();
-        updateHighRiskCard(totalFlooded, `水利署淹水潛勢命中${getActivePointSummaryLabel()}`);
-        renderChartWRA(depthDistribution);
+        const { totalFlooded, statusDistribution } = getWraStatusDistribution();
+        updateHighRiskCard(totalFlooded, `水利署直接套疊與100m內鄰近${getActivePointSummaryLabel()}`);
+        renderChartWRA(statusDistribution);
     } else if (isFloodGridRiskMode()) {
         const { totalHighRisk, riskDistribution } = getRiskDistribution();
         updateHighRiskCard(totalHighRisk, `水利署潛勢警戒${getActivePointSummaryLabel()} (Lv.4-5)`);
@@ -1638,26 +1690,16 @@ function getActivePointSummaryLabel() {
 function renderChart(distributionData) {
     const ctx = document.getElementById('riskChart').getContext('2d');
 
-    const chartLabels = ['第 1 級', '第 2 級', '第 3 級', '第 4 級', '第 5 級'];
-    const chartData = [
-        distributionData[1],
-        distributionData[2],
-        distributionData[3],
-        distributionData[4],
-        distributionData[5]
-    ];
+    const levels = Object.keys(distributionData).map(Number).sort((a, b) => a - b);
+    const chartLabels = levels.map(level => `第 ${level} 級`);
+    const chartData = levels.map(level => distributionData[level] || 0);
+    const chartColors = levels.map(level => riskColors[level] || riskColors[5]);
 
     if (riskChart) {
         riskChart.data.labels = chartLabels;
         riskChart.data.datasets[0].label = '機構數量';
         riskChart.data.datasets[0].data = chartData;
-        riskChart.data.datasets[0].backgroundColor = [
-            riskColors[1],
-            riskColors[2],
-            riskColors[3],
-            riskColors[4],
-            riskColors[5]
-        ];
+        riskChart.data.datasets[0].backgroundColor = chartColors;
         riskChart.update();
     } else {
         riskChart = new Chart(ctx, {
@@ -1667,13 +1709,7 @@ function renderChart(distributionData) {
                 datasets: [{
                     label: '機構數量',
                     data: chartData,
-                    backgroundColor: [
-                        riskColors[1],
-                        riskColors[2],
-                        riskColors[3],
-                        riskColors[4],
-                        riskColors[5]
-                    ],
+                    backgroundColor: chartColors,
                     borderRadius: 4,
                     borderWidth: 0
                 }]
@@ -1700,14 +1736,9 @@ function renderChart(distributionData) {
 }
 
 function renderChartWRA(distribution) {
-    const chartLabels = ['0.3-0.5m', '0.5-1m', '1-2m', '2-3m', '>3m'];
-    const chartData = [
-        distribution[2],
-        distribution[3],
-        distribution[4],
-        distribution[5],
-        distribution[6]
-    ];
+    const statuses = ['direct_overlay', 'near_0_25m', 'near_25_50m', 'near_50_75m', 'near_75_100m', 'no_hit', 'no_data'];
+    const chartLabels = statuses.map(getWraStatusLabel);
+    const chartData = statuses.map(status => distribution[status] || 0);
 
     if (!riskChart) {
         renderChart({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
@@ -1715,15 +1746,9 @@ function renderChartWRA(distribution) {
 
     if (riskChart) {
         riskChart.data.labels = chartLabels;
-        riskChart.data.datasets[0].label = '水利署命中點位';
+        riskChart.data.datasets[0].label = '水利署點位判定狀態';
         riskChart.data.datasets[0].data = chartData;
-        riskChart.data.datasets[0].backgroundColor = [
-            wraColors[2],
-            wraColors[3],
-            wraColors[4],
-            wraColors[5],
-            wraColors[6]
-        ];
+        riskChart.data.datasets[0].backgroundColor = ['#ef4444', '#f97316', '#fb923c', '#fdba74', '#fed7aa', '#64748b', '#94a3b8'];
         updateChartTheme();
     }
 }
@@ -1841,11 +1866,13 @@ function populatePointList() {
 
         const riskVal = getFeatureRisk(feat, config);
         const categoryTags = (config.categoryFields || []).map(fieldConfig => {
+            if (fieldConfig.internalOnly) return '';
             const value = getFeatureValue(props, fieldConfig.field);
             if (!hasDisplayValue(value)) return '';
             return `<span class="item-tag ${fieldConfig.tagClass || 'tag-service'}">${value}</span>`;
         }).join('');
         const detailRows = (config.listFields || []).map(fieldConfig => {
+            if (fieldConfig.internalOnly) return '';
             const value = getFeatureValue(props, fieldConfig.field);
             if (!hasDisplayValue(value)) return '';
             const text = `${value}${fieldConfig.suffix || ''}`;
@@ -1866,7 +1893,7 @@ function populatePointList() {
         card.innerHTML = `
             <div class="daycare-item-title"><i class="fa-solid ${config.icon}"></i> ${getFeatureName(feat, config)}</div>
             <div class="daycare-item-tags">
-                <span class="item-tag tag-warning">風險 ${riskVal}｜${getFeatureRiskAssessment(feat, config).source}</span>
+                <span class="item-tag tag-warning">${formatRiskBadgeText(getFeatureRiskAssessment(feat, config))}</span>
                 ${categoryTags}
                 ${warningTag}
             </div>
@@ -2517,7 +2544,7 @@ function getClimateGridLegendHtml() {
     return `
         <div class="legend-title">氣候網格固定色階｜${activeClimateIndicator}</div>
         <div class="legend-scale">${items}</div>
-        <div class="legend-note">使用全域固定斷點，不會隨情境、年份或模型重新正規化；圖說色階同步反映目前 ${Math.round(climateGridOpacity * 100)}% 透明度。</div>
+        <div class="legend-note">使用全域固定斷點，不會隨情境、年份或模型重新正規化；圖說色階同步反映目前 ${Math.round(climateGridOpacity * 100)}% 透明度。點位高溫等級與本色階一一對應。</div>
         <div class="legend-note">${isRainfallClimateIndicator(activeClimateIndicator) ? '降雨指標讀取 data/降雨 的 GWL 圖資：1.5°C→GWL1.5、2.0°C→GWL2.0、4.0°C→GWL4.0。' : '目前時間軸為 SSP 資料代理：升溫 1.5°C→SSP126、2.0°C→SSP245、4.0°C→SSP585；單一網格在同一年份可能受模式內部變異而非單調增加。'}</div>
     `;
 }
@@ -2568,7 +2595,7 @@ function updateLegendUI() {
         <div class="legend-scale">
             ${pointLegendItems}
             <div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid ${riskColors[5]}"></span> <span>外框色代表所處風險等級</span></div>
-            ${isWraLayerEnabled() ? `<div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid #ef4444"></span> <span>紅色核心框：直接套疊淹水潛勢</span></div><div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid #f97316"></span> <span>橘色核心框：100m 內鄰近潛勢</span></div>` : ''}
+            ${isWraLayerEnabled() ? `<div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid #ef4444"></span> <span>紅色核心框：直接套疊淹水潛勢</span></div><div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid #f97316"></span> <span>橘色核心框：0–25／25–50／50–75／75–100m 鄰近潛勢（100公尺為系統設計參數，不是自然形成的地理斷點）</span></div><div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid #94a3b8"></span> <span>圖資未命中／無資料不視為低風險或L1</span></div>` : ''}
         </div>
     `;
 
