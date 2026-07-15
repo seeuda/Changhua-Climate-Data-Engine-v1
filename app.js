@@ -31,6 +31,8 @@ let floodGridOpacity = 0.65;
 let activeClimateIndicator = '極端高溫持續指數';
 let activeClimateYear = '2050';
 let activeClimateGridDataState = null;
+let activeTempAdminHazardByTown = {};
+let tempAdminHazardSummaryCache = new Map();
 let selectedTown = null; // Filter daycare list
 let layerRenderRequestId = 0;
 
@@ -549,8 +551,10 @@ function getActiveRiskField() {
         // Flood primary risk follows NCDR AR6 risk logic; current front-end township bundle stores one future field, so gwl15/gwl20/gwl40 map to flood_risk_future.
         return activeScenario === 'current' ? 'flood_risk_current' : 'flood_risk_future';
     } else {
-        // Temp township values are derived from front-end reproduced administrative summaries of the original NCDR risk fields (daily high temperature and consecutive hot-day indicators), retained only as reference/fallback; the original NCDR layer used for point judgement is the AR6 grid.
-        return `temp_risk_${activeScenario}`;
+        // Deprecated: township data bundles may still contain temp_risk_* legacy fields,
+        // but the app intentionally does not read them for high-temperature display or fallback.
+        // High-temperature township coloring is derived from live AR6 grid indicators instead.
+        return null;
     }
 }
 
@@ -569,6 +573,110 @@ function getActiveHazardField() {
 function getActiveVulnerabilityField() {
     return activeTheme === 'flood' ? 'flood_vulnerability' : 'temp_vulnerability';
 }
+
+// 未取得 NCDR 或業務方正式權重前，兩個高溫危害組成指標採均權，避免硬編未經確認的主觀 60/40 權重。
+const TEMP_ADMIN_HAZARD_WEIGHTS = {
+    '日高溫最大值': 0.5,
+    '極端高溫持續指數': 0.5
+};
+const TEMP_ADMIN_HAZARD_INDICATORS = Object.keys(TEMP_ADMIN_HAZARD_WEIGHTS);
+const TEMP_ADMIN_HAZARD_MODEL = 'TaiESM1';
+
+function getTempAdminHazardYear() {
+    const scenarioStr = getClimateScenarioCode(activeScenario, '日高溫最大值');
+    return scenarioStr === 'historical' && Number(activeClimateYear) > 2014 ? '2014' : activeClimateYear;
+}
+
+function getTownDisplayRisk(props) {
+    if (activeTheme !== 'temp') return props?.[getActiveRiskField()] || 1;
+    const dynamicRisk = activeTempAdminHazardByTown?.[props?.town_name]?.risk;
+    // Do not fall back to legacy temp_risk_* township fields; keep deprecated fields unused
+    // so future users do not mistake stale pre-baked risk values for live grid summaries.
+    return dynamicRisk || 1;
+}
+
+function isTempAdminHazardSummaryNeeded() {
+    // Needed in every temperature mode: even when the township overlay is hidden,
+    // grid-mode points with no usable AR6 grid value can fall back to the computed
+    // township hazard summary. Do not tie this to isNcdrLayerEnabled().
+    return activeTheme === 'temp';
+}
+
+function getTempAdminHazardCacheKey() {
+    return [activeScenario, getClimateScenarioCode(activeScenario, '日高溫最大值'), getTempAdminHazardYear(), TEMP_ADMIN_HAZARD_MODEL].join('|');
+}
+
+async function ensureTempAdminHazardSummary() {
+    activeTempAdminHazardByTown = {};
+    if (!isTempAdminHazardSummaryNeeded() || !townGeoJsonData || !climateGridManager) return;
+
+    const scenarioStr = getClimateScenarioCode(activeScenario, '日高溫最大值');
+    const year = getTempAdminHazardYear();
+    const cacheKey = getTempAdminHazardCacheKey();
+    if (tempAdminHazardSummaryCache.has(cacheKey)) {
+        activeTempAdminHazardByTown = tempAdminHazardSummaryCache.get(cacheKey);
+        return;
+    }
+
+    const dataStates = await Promise.all(TEMP_ADMIN_HAZARD_INDICATORS.map(indicator =>
+        climateGridManager.loadGridData('AR6_v112', indicator, scenarioStr, TEMP_ADMIN_HAZARD_MODEL, year)
+    ));
+    if (dataStates.some(dataState => !dataState)) return;
+
+    const townBuckets = {};
+    townGeoJsonData.features.forEach(townFeature => {
+        const townName = townFeature.properties?.town_name;
+        if (townName) townBuckets[townName] = { weightedSum: 0, weightSum: 0, components: {} };
+    });
+
+    const gridGeojson = dataStates[0].geojson;
+    for (const gridFeature of gridGeojson?.features || []) {
+        const lon = gridFeature.properties?.lon;
+        const lat = gridFeature.properties?.lat;
+        const gridId = gridFeature.properties?.GridID;
+        if (!Number.isFinite(Number(lon)) || !Number.isFinite(Number(lat)) || !gridId) continue;
+
+        const townFeature = townGeoJsonData.features.find(feature => {
+            const geometry = feature.geometry;
+            if (!geometry) return false;
+            const coordinates = geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.coordinates;
+            return (geometry.type === 'Polygon' || geometry.type === 'MultiPolygon') && isPointInMultiPolygon(Number(lon), Number(lat), coordinates);
+        });
+        const townName = townFeature?.properties?.town_name;
+        if (!townName || !townBuckets[townName]) continue;
+
+        dataStates.forEach(dataState => {
+            const value = dataState.values?.[gridId];
+            const level = getClimateGridRiskLevelForIndicator(dataState.indicator, value);
+            const weight = TEMP_ADMIN_HAZARD_WEIGHTS[dataState.indicator] || 0;
+            if (!level || !weight) return;
+            townBuckets[townName].weightedSum += level * weight;
+            townBuckets[townName].weightSum += weight;
+            const component = townBuckets[townName].components[dataState.indicator] || { sum: 0, count: 0 };
+            component.sum += level;
+            component.count += 1;
+            townBuckets[townName].components[dataState.indicator] = component;
+        });
+    }
+
+    const summary = {};
+    Object.entries(townBuckets).forEach(([townName, bucket]) => {
+        if (!bucket.weightSum) return;
+        const risk = normalizeRiskLevel(Math.round(bucket.weightedSum / bucket.weightSum));
+        summary[townName] = {
+            risk,
+            source: '前端即時網格加權危害度',
+            components: Object.fromEntries(Object.entries(bucket.components).map(([indicator, component]) => [
+                indicator,
+                component.count ? Number((component.sum / component.count).toFixed(2)) : null
+            ]))
+        };
+    });
+
+    tempAdminHazardSummaryCache.set(cacheKey, summary);
+    activeTempAdminHazardByTown = summary;
+}
+
 
 // ==========================================================================
 // Layer Rendering & Styling
@@ -879,25 +987,27 @@ function getPointKey(feature, config) {
 }
 
 function getTownRiskMap() {
-    const riskField = getActiveRiskField();
     const townRisks = {};
     if (!townGeoJsonData) return townRisks;
     townGeoJsonData.features.forEach(feat => {
-        townRisks[feat.properties.town_name] = feat.properties[riskField] || 1;
+        const townName = feat.properties.town_name;
+        townRisks[townName] = getTownDisplayRisk(feat.properties);
     });
     return townRisks;
 }
 
-
-
-function getClimateGridRiskLevel(value) {
-    const config = climateGridManager?.colorScaleConfig?.[activeClimateIndicator];
+function getClimateGridRiskLevelForIndicator(indicator, value) {
+    const config = climateGridManager?.colorScaleConfig?.[indicator];
     if (value === null || value === undefined || value === -99.9 || !config?.breaks || !config?.colors) return null;
 
     let binIndex = config.breaks.findIndex(breakValue => value <= breakValue);
     if (binIndex === -1) binIndex = config.colors.length - 1;
 
     return Math.min(5, Math.max(1, Math.ceil(((binIndex + 1) / config.colors.length) * 5)));
+}
+
+function getClimateGridRiskLevel(value) {
+    return getClimateGridRiskLevelForIndicator(activeClimateIndicator, value);
 }
 
 function getClimateGridFeatureRisk(feature) {
@@ -956,7 +1066,7 @@ function getFeatureRiskAssessment(feature, config) {
                 risk: ncdrRisk || 1,
                 ncdrRisk: ncdrRisk || 1,
                 climateGridRisk: null,
-                source: '行政區彙整風險（未呈現網格）',
+                source: activeTheme === 'temp' ? '行政區即時加權危害度（未呈現網格）' : '行政區彙整風險（未呈現網格）',
                 mode: 'ncdr_manual'
             };
         }
@@ -976,7 +1086,7 @@ function getFeatureRiskAssessment(feature, config) {
             risk: ncdrRisk || 1,
             ncdrRisk: ncdrRisk || 1,
             climateGridRisk: null,
-            source: '行政區彙整風險（無網格資料）',
+            source: activeTheme === 'temp' ? '行政區即時加權危害度（未使用舊 temp_risk_*）' : '行政區彙整風險（無網格資料）',
             mode: 'ncdr_fallback'
         };
     }
@@ -1112,6 +1222,8 @@ async function updateLayers() {
 
     // Compute spatial intersections first
     computeIntersections();
+    await ensureTempAdminHazardSummary();
+    if (renderRequestId !== layerRenderRequestId) return;
 
     // 2. Renders WRA Layer if active
     if (activeTheme === 'flood' && isWraLayerEnabled() && activeWraData) {
@@ -1149,8 +1261,7 @@ async function updateLayers() {
                     className: 'town-boundary'
                 };
             } else {
-                const riskField = getActiveRiskField();
-                const riskVal = feature.properties[riskField] || 1;
+                const riskVal = getTownDisplayRisk(feature.properties);
                 return {
                     fillColor: riskColors[riskVal] || '#cccccc',
                     fillOpacity: getTownRiskFillOpacity(),
@@ -1344,7 +1455,7 @@ function onEachPointFeature(feature, layer, config) {
         ${riskAssessment.mode === 'flood_grid_no_match' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位未命中水利署淹水潛勢圖資，維持第 1 級；NCDR／行政區彙整圖僅供視覺參考，不作為淹水點位風險</span></div>` : ''}
         ${riskAssessment.mode === 'flood_no_point_overlay' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">目前未啟用水利署點位套疊；NCDR／行政區彙整圖僅供視覺參考，不作為淹水點位風險</span></div>` : ''}
         ${riskAssessment.mode === 'climate_grid' ? `<div class="popup-row"><span class="popup-label">網格明細</span><span class="popup-val">${riskAssessment.climateGridRisk.indicator} ${riskAssessment.climateGridRisk.value.toFixed(2)}；Grid ${riskAssessment.climateGridRisk.gridId}</span></div>` : ''}
-        ${riskAssessment.mode === 'ncdr_fallback' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位無可用網格值，改用行政區風險配對</span></div>` : ''}
+        ${riskAssessment.mode === 'ncdr_fallback' ? `<div class="popup-row"><span class="popup-label">判定註記</span><span class="popup-val">此點位無可用網格值，改用行政區即時加權危害度配對；不讀取舊 temp_risk_* 欄位</span></div>` : ''}
         ${townMismatch ? `<div class="popup-row"><span class="popup-label">資料鄉鎮註記</span><span class="popup-val">${townMismatch.declaredTown}（依座標改以 ${townMismatch.spatialTown} 判定風險）</span></div>` : ''}
     `;
 
@@ -1598,31 +1709,30 @@ function updateInfoWidget(props) {
             </div>
         `;
     } else {
-        const riskVal = props[getActiveRiskField()] || 1;
+        const riskVal = getTownDisplayRisk(props);
         const vulVal = props[getActiveVulnerabilityField()] || 1;
 
         if (activeTheme === 'temp') {
-            const hazTempField = `temp_hazard_temp_${activeScenario}`;
-            const hazDurField = `temp_hazard_dur_${activeScenario}`;
-            const hazTempVal = props[hazTempField] || 1;
-            const hazDurVal = props[hazDurField] || 1;
+            const hazardSummary = activeTempAdminHazardByTown?.[props.town_name];
+            const hazTempVal = hazardSummary?.components?.['日高溫最大值'] || props[`temp_hazard_temp_${activeScenario}`] || 1;
+            const hazDurVal = hazardSummary?.components?.['極端高溫持續指數'] || props[`temp_hazard_dur_${activeScenario}`] || 1;
 
             infoDiv.innerHTML = `
                 <div class="hover-town-title">${props.town_name}</div>
                 <div class="hover-stat-row">
                     <span class="hover-stat-label">強度危害度 (Intensity Hazard)</span>
-                    <span class="hover-stat-val risk-badge badge-${hazTempVal}">第 ${hazTempVal} 級</span>
+                    <span class="hover-stat-val risk-badge badge-${Math.round(hazTempVal)}">第 ${Number(hazTempVal).toFixed(1)} 級</span>
                 </div>
                 <div class="hover-stat-row">
                     <span class="hover-stat-label">持續危害度 (Duration Hazard)</span>
-                    <span class="hover-stat-val risk-badge badge-${hazDurVal}">第 ${hazDurVal} 級</span>
+                    <span class="hover-stat-val risk-badge badge-${Math.round(hazDurVal)}">第 ${Number(hazDurVal).toFixed(1)} 級</span>
                 </div>
                 <div class="hover-stat-row">
                     <span class="hover-stat-label">脆弱度等級 (Vulnerability)</span>
                     <span class="hover-stat-val risk-badge badge-${vulVal}">第 ${vulVal} 級</span>
                 </div>
                 <div class="hover-stat-row">
-                    <span class="hover-stat-label">綜合風險等級 (Risk)</span>
+                    <span class="hover-stat-label">加權危害度等級 (Hazard)</span>
                     <span class="hover-stat-val risk-badge badge-${riskVal}">第 ${riskVal} 級</span>
                 </div>
                 <div class="hover-stat-row" style="margin-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
