@@ -22,7 +22,7 @@ let activeScenario = 'gwl40'; // 'current', 'gwl15', 'gwl20', 'gwl40'
 let lastClimateScenario = activeScenario;
 let activeFloodLayers = { ncdr: true, wra: true }; // NCDR flood layer is visual reference; WRA is the point-level flood risk overlay
 let activeTempAdminReference = false; // optional township reference overlay for temp mode
-let activeTempRiskMode = 'grid'; // 'grid' = NCDR AR6 climate grid; 'admin' = township fallback without grid display
+let activeTempRiskMode = 'hazard'; // 'hazard' = pure climate hazard grid; 'official' = NCDR official composite township risk
 let activeWraScenario = 'wra650_24h'; // WRA comparison: 650mm/24HR physical base; 350mm/6HR urban flash-flood stress test; 350mm/24HR is a general typhoon-rain reference
 let tempAdminOpacity = 0.45;
 let ncdrRiskOpacity = 0.7;
@@ -60,12 +60,12 @@ function isWraLayerEnabled() {
 
 function isNcdrLayerEnabled() {
     return activeTheme === 'temp'
-        ? (activeTempAdminReference || activeTempRiskMode === 'admin')
+        ? (activeTempAdminReference || activeTempRiskMode === 'official')
         : activeFloodLayers.ncdr;
 }
 
 function isClimateGridRiskMode() {
-    return activeTheme === 'temp' && activeTempRiskMode === 'grid';
+    return activeTheme === 'temp' && activeTempRiskMode === 'hazard';
 }
 
 function getActiveFloodLayerNames() {
@@ -551,10 +551,11 @@ function getActiveRiskField() {
         // Flood primary risk follows NCDR AR6 risk logic; current front-end township bundle stores one future field, so gwl15/gwl20/gwl40 map to flood_risk_future.
         return activeScenario === 'current' ? 'flood_risk_current' : 'flood_risk_future';
     } else {
-        // Deprecated: township data bundles may still contain temp_risk_* legacy fields,
-        // but the app intentionally does not read them for high-temperature display or fallback.
-        // High-temperature township coloring is derived from live AR6 grid indicators instead.
-        return null;
+        if (activeScenario === 'current') return 'temp_risk_current';
+        if (activeScenario === 'gwl15') return 'temp_risk_gwl15';
+        if (activeScenario === 'gwl20') return 'temp_risk_gwl20';
+        if (activeScenario === 'gwl40') return 'temp_risk_gwl40';
+        return 'temp_risk_current';
     }
 }
 
@@ -587,12 +588,19 @@ function getTempAdminHazardYear() {
     return scenarioStr === 'historical' && Number(activeClimateYear) > 2014 ? '2014' : activeClimateYear;
 }
 
+function getOfficialTempRisk(props) {
+    return props?.[getActiveRiskField()] || 1;
+}
+
+function getTempAdminHazardRisk(props) {
+    const dynamicRisk = activeTempAdminHazardByTown?.[props?.town_name]?.risk;
+    return dynamicRisk || 1;
+}
+
 function getTownDisplayRisk(props) {
     if (activeTheme !== 'temp') return props?.[getActiveRiskField()] || 1;
-    const dynamicRisk = activeTempAdminHazardByTown?.[props?.town_name]?.risk;
-    // Do not fall back to legacy temp_risk_* township fields; keep deprecated fields unused
-    // so future users do not mistake stale pre-baked risk values for live grid summaries.
-    return dynamicRisk || 1;
+    if (activeTempRiskMode === 'official' || activeTempAdminReference) return getOfficialTempRisk(props);
+    return getTempAdminHazardRisk(props);
 }
 
 function isTempAdminHazardSummaryNeeded() {
@@ -986,12 +994,12 @@ function getPointKey(feature, config) {
     return `${config.id}:${getFeatureId(feature, config)}`;
 }
 
-function getTownRiskMap() {
+function getTownRiskMap(riskGetter = getTownDisplayRisk) {
     const townRisks = {};
     if (!townGeoJsonData) return townRisks;
     townGeoJsonData.features.forEach(feat => {
         const townName = feat.properties.town_name;
-        townRisks[townName] = getTownDisplayRisk(feat.properties);
+        townRisks[townName] = riskGetter(feat.properties);
     });
     return townRisks;
 }
@@ -1039,7 +1047,13 @@ function getClimateGridFeatureRisk(feature) {
 
 function getNcdrFeatureRisk(feature, config) {
     const town = getFeatureTown(feature, config);
-    return getTownRiskMap()[town] || 1;
+    const riskMap = activeTheme === 'temp' ? getTownRiskMap(getOfficialTempRisk) : getTownRiskMap();
+    return riskMap[town] || 1;
+}
+
+function getTempAdminHazardFeatureRisk(feature, config) {
+    const town = getFeatureTown(feature, config);
+    return getTownRiskMap(getTempAdminHazardRisk)[town] || 1;
 }
 
 function getWraFeatureRisk(feature, config) {
@@ -1061,13 +1075,15 @@ function getWraFeatureRisk(feature, config) {
 function getFeatureRiskAssessment(feature, config) {
     if (activeTheme === 'temp') {
         const ncdrRisk = getNcdrFeatureRisk(feature, config);
+        const adminHazardRisk = getTempAdminHazardFeatureRisk(feature, config);
         if (!isClimateGridRiskMode()) {
+            const displayRisk = activeTempRiskMode === 'official' ? ncdrRisk : adminHazardRisk;
             return {
-                risk: ncdrRisk || 1,
+                risk: displayRisk || 1,
                 ncdrRisk: ncdrRisk || 1,
                 climateGridRisk: null,
-                source: activeTheme === 'temp' ? '行政區即時加權危害度（未呈現網格）' : '行政區彙整風險（未呈現網格）',
-                mode: 'ncdr_manual'
+                source: activeTempRiskMode === 'official' ? 'NCDR官方綜合風險（含高齡人口比例與人口暴露）' : '行政區即時加權危害度（未呈現網格）',
+                mode: activeTempRiskMode === 'official' ? 'official_risk' : 'ncdr_manual'
             };
         }
 
@@ -1083,10 +1099,10 @@ function getFeatureRiskAssessment(feature, config) {
         }
 
         return {
-            risk: ncdrRisk || 1,
+            risk: adminHazardRisk || 1,
             ncdrRisk: ncdrRisk || 1,
             climateGridRisk: null,
-            source: activeTheme === 'temp' ? '行政區即時加權危害度（未使用舊 temp_risk_*）' : '行政區彙整風險（無網格資料）',
+            source: '行政區即時加權危害度（網格未命中回退）',
             mode: 'ncdr_fallback'
         };
     }
@@ -1555,7 +1571,7 @@ function getWraDepthDistribution() {
 }
 
 function getTempRiskSummaryPrefix() {
-    return isClimateGridRiskMode() ? '網格高溫警戒' : '行政區高溫警戒';
+    return isClimateGridRiskMode() ? '純氣候危害警戒' : (activeTempRiskMode === 'official' ? 'NCDR綜合風險警戒' : '行政區高溫警戒');
 }
 
 function updateStatsAndChart() {
@@ -1732,7 +1748,7 @@ function updateInfoWidget(props) {
                     <span class="hover-stat-val risk-badge badge-${vulVal}">第 ${vulVal} 級</span>
                 </div>
                 <div class="hover-stat-row">
-                    <span class="hover-stat-label">加權危害度等級 (Hazard)</span>
+                    <span class="hover-stat-label">${activeTempRiskMode === 'official' || activeTempAdminReference ? 'NCDR官方綜合風險 (Risk)' : '加權危害度等級 (Hazard)'}</span>
                     <span class="hover-stat-val risk-badge badge-${riskVal}">第 ${riskVal} 級</span>
                 </div>
                 <div class="hover-stat-row" style="margin-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
@@ -1981,7 +1997,7 @@ function updateRiskOpacityControl() {
     }
 
     if (opacityLabel) {
-        opacityLabel.innerText = activeTheme === 'temp' ? '行政區彙整風險透明度' : 'NCDR 風險圖透明度';
+        opacityLabel.innerText = activeTheme === 'temp' ? (activeTempRiskMode === 'official' ? 'NCDR 官方風險透明度' : '行政區彙整參考透明度') : 'NCDR 風險圖透明度';
     }
 
     if (opacityValue) {
@@ -2223,7 +2239,7 @@ function setupUIControls() {
     };
     tempRiskModeButtons.forEach(button => {
         button.addEventListener('click', () => {
-            const nextMode = button.dataset.tempRiskMode === 'admin' ? 'admin' : 'grid';
+            const nextMode = button.dataset.tempRiskMode === 'official' ? 'official' : 'hazard';
             if (activeTempRiskMode === nextMode) return;
             activeTempRiskMode = nextMode;
             syncTempRiskModeButtons();
@@ -2238,7 +2254,7 @@ function setupUIControls() {
     const tempAdminReferenceToggle = document.getElementById('temp-admin-reference-toggle');
     const syncTempAdminReferenceToggleState = () => {
         if (!tempAdminReferenceToggle) return;
-        const isDisabled = activeTempRiskMode === 'admin';
+        const isDisabled = activeTempRiskMode === 'official';
         tempAdminReferenceToggle.disabled = isDisabled;
         tempAdminReferenceToggle.setAttribute('aria-disabled', String(isDisabled));
         tempAdminReferenceToggle.classList.toggle('is-disabled', isDisabled);
@@ -2249,7 +2265,7 @@ function setupUIControls() {
     if (tempAdminReferenceToggle) {
         syncTempAdminReferenceToggleState();
         tempAdminReferenceToggle.addEventListener('click', () => {
-            if (activeTempRiskMode === 'admin') return;
+            if (activeTempRiskMode === 'official') return;
             activeTempAdminReference = !activeTempAdminReference;
             syncTempAdminReferenceToggleState();
             updateRiskOpacityControl();
