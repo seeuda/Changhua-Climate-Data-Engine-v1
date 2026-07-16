@@ -2594,8 +2594,8 @@ function updateLegendUI() {
         <div class="legend-title" style="margin-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">業務點位與風險外框</div>
         <div class="legend-scale">
             ${pointLegendItems}
-            <div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid ${riskColors[5]}"></span> <span>外框色代表所處風險等級</span></div>
-            ${isWraLayerEnabled() ? `<div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid #ef4444"></span> <span>紅色核心框：直接套疊淹水潛勢</span></div><div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid #f97316"></span> <span>橘色核心框：0–25／25–50／50–75／75–100m 鄰近潛勢（100公尺為系統設計參數，不是自然形成的地理斷點）</span></div><div class="legend-item"><span class="legend-color-box" style="background:#fff; border-radius:50%; border: 3px solid #94a3b8"></span> <span>圖資未命中／無資料不視為低風險或L1</span></div>` : ''}
+            <div class="legend-item"><span class="legend-color-box legend-point-symbol" style="background:#fff; border-color:${riskColors[5]}"></span> <span>點位外框色：代表所處風險等級</span></div>
+            ${isWraLayerEnabled() ? `<div class="legend-note legend-core-note">中心核心框預設為白色；只有符合水利署點位判定時，才會改用下列狀態色。</div><div class="legend-item legend-item-emphasis"><span class="legend-color-box legend-point-symbol legend-core-direct"></span> <span><strong>核心框顯示紅色</strong>：點位直接落在水利署淹水潛勢範圍內</span></div><div class="legend-item legend-item-emphasis"><span class="legend-color-box legend-point-symbol legend-core-near"></span> <span><strong>核心框顯示橘色</strong>：點位未落入潛勢面，但距離 100m 內，採鄰近潛勢加權（0–25／25–50／50–75／75–100m）</span></div><div class="legend-item"><span class="legend-color-box legend-point-symbol legend-core-miss"></span> <span>核心框維持白色：圖資未命中／無資料，不視為低風險或 L1</span></div>` : ''}
         </div>
     `;
 
