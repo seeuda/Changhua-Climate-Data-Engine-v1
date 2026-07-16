@@ -1064,16 +1064,17 @@ body, html {
     backdrop-filter: blur(12px);
     border: 1px solid var(--border-color) !important;
     border-radius: 12px;
-    padding: 12px 16px;
+    padding: 14px 18px;
     color: var(--text-primary);
-    line-height: 1.4;
+    line-height: 1.5;
     box-shadow: 0 10px 25px var(--panel-shadow) !important;
+    max-width: 430px;
 }
 
 .legend-title {
     font-family: var(--font-heading);
-    font-size: 11px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: var(--text-secondary);
@@ -1083,30 +1084,56 @@ body, html {
 .legend-scale {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 7px;
 }
 
 .legend-item {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 11px;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.legend-item-emphasis {
+    align-items: flex-start;
+    font-size: 14px;
 }
 
 .legend-color-box {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
     border-radius: 3px;
+    flex: 0 0 auto;
 }
 
+.legend-point-symbol {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 4px solid var(--risk-5);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.95), 0 2px 5px rgba(15, 23, 42, 0.2);
+}
+
+.legend-core-direct { background: #fff; border-color: #ef4444; }
+.legend-core-near { background: #fff; border-color: #f97316; }
+.legend-core-miss { background: #fff; border-color: #94a3b8; }
+
 .legend-note {
-    max-width: 240px;
+    max-width: 360px;
     margin-top: 8px;
     padding-top: 8px;
     border-top: 1px dashed var(--border-color);
     color: var(--text-muted);
-    font-size: 10px;
+    font-size: 12px;
     line-height: 1.5;
+}
+
+.legend-note.legend-core-note {
+    margin: 2px 0 4px 0;
+    padding-top: 0;
+    border-top: 0;
+    color: var(--text-secondary);
 }
 
 /* Leaflet Custom Popups Style */
