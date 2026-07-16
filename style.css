@@ -1117,7 +1117,7 @@ body, html {
 
 .legend-core-direct { background: #fff; border-color: #ef4444; }
 .legend-core-near { background: #fff; border-color: #f97316; }
-.legend-core-miss { background: #fff; border-color: #94a3b8; }
+.legend-core-miss { background: #fff; border-color: #ffffff; }
 
 .legend-note {
     max-width: 360px;
