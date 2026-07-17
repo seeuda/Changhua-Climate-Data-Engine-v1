@@ -299,6 +299,7 @@ const POINT_LAYER_GROUP_ORDER = ['環保設施', '日照中心'];
 const POINT_REGISTRY = {
     daycare: {
         id: 'daycare',
+        datasetId: 'daycare',
         label: '日照與小規機構',
         shortLabel: '日照',
         icon: 'fa-house-chimney-medical',
@@ -345,6 +346,7 @@ const POINT_REGISTRY = {
     },
     envHq: {
         id: 'envHq',
+        datasetId: 'env_facilities',
         label: '清潔隊隊部',
         shortLabel: '隊部',
         icon: 'fa-truck',
@@ -384,6 +386,7 @@ const POINT_REGISTRY = {
     },
     envRecycling: {
         id: 'envRecycling',
+        datasetId: 'env_facilities',
         label: '資源回收場',
         shortLabel: '回收場',
         icon: 'fa-recycle',
@@ -423,6 +426,7 @@ const POINT_REGISTRY = {
     },
     envFacilities: {
         id: 'envFacilities',
+        datasetId: 'env_facilities',
         label: '環保設施合計',
         shortLabel: '環保',
         icon: 'fa-map-pin',
@@ -519,17 +523,24 @@ function initMap() {
 // ==========================================================================
 function loadData() {
     // Fetch pre-calibrated geojson files directly (clean baseline data with correct temperature fields)
-    const pointLoaders = Object.values(POINT_REGISTRY).map(config =>
+    const pointDatasetSources = Array.from(Object.values(POINT_REGISTRY).reduce((sources, config) => {
+        const datasetId = getPointDatasetId(config);
+        if (!sources.has(datasetId)) sources.set(datasetId, config);
+        return sources;
+    }, new Map()).entries());
+    const pointLoaders = pointDatasetSources.map(([datasetId, config]) =>
         fetch(`${config.file}?t=${new Date().getTime()}`)
             .then(res => {
                 if (!res.ok) throw new Error(`${config.file} ${res.status}`);
                 return res.json();
             })
-            .then(data => ({ id: config.id, data }))
+            .then(data => ({ datasetId, data }))
             .catch(err => {
                 console.warn(`Point dataset skipped: ${config.file}`, err);
-                activePointLayerIds.delete(config.id);
-                return { id: config.id, data: null };
+                Object.values(POINT_REGISTRY)
+                    .filter(candidate => getPointDatasetId(candidate) === datasetId)
+                    .forEach(candidate => activePointLayerIds.delete(candidate.id));
+                return { datasetId, data: null };
             })
     );
 
@@ -539,8 +550,10 @@ function loadData() {
     ]).then(([towns, pointResults]) => {
         originalTownGeoJson = towns;
         originalPointDatasets = {};
-        pointResults.forEach(result => {
-            if (result.data) originalPointDatasets[result.id] = result.data;
+        const datasetsById = new Map(pointResults.map(result => [result.datasetId, result.data]));
+        Object.values(POINT_REGISTRY).forEach(config => {
+            const data = datasetsById.get(getPointDatasetId(config));
+            if (data) originalPointDatasets[config.id] = data;
         });
         originalDaycarePoints = originalPointDatasets.daycare || null;
         renderPointLayerSelector();
@@ -1024,7 +1037,16 @@ function hasDisplayValue(value) {
 
 function getFeatureId(feature, config) {
     const props = feature.properties || {};
-    return String(getFeatureValue(props, config.idField) || getFeatureValue(props, config.nameField));
+    const featureId = getFeatureValue(props, config.idField);
+    return String(featureId === '' ? getFeatureValue(props, config.nameField) : featureId);
+}
+
+function getPointDatasetId(config) {
+    return String(config.datasetId || config.file || config.id);
+}
+
+function isActivePointFeature(feature) {
+    return String(feature?.properties?.status || 'active').toLowerCase() !== 'retired';
 }
 
 function getFeatureName(feature, config) {
@@ -1064,7 +1086,7 @@ function getFeatureTown(feature, config) {
 }
 
 function getPointKey(feature, config) {
-    return `${config.id}:${getFeatureId(feature, config)}`;
+    return `${getPointDatasetId(config)}:${String(getFeatureId(feature, config))}`;
 }
 
 function getTownRiskMap(riskGetter = getTownDisplayRisk) {
@@ -1219,11 +1241,40 @@ function getFeatureTownMismatch(feature, config) {
 }
 
 function filterPointDataset(dataset, config) {
-    if (!config.filterCategory) return dataset;
     return {
         ...dataset,
-        features: (dataset.features || []).filter(feature => feature.properties?.category === config.filterCategory)
+        features: (dataset.features || []).filter(feature =>
+            isActivePointFeature(feature)
+            && (!config.filterCategory || feature.properties?.category === config.filterCategory)
+        )
     };
+}
+
+function getAllUniquePointFeatures(options = {}) {
+    const includeRetired = options.includeRetired === true;
+    const uniqueFeatures = new Map();
+    const sourceConfigs = Object.values(POINT_REGISTRY).sort((a, b) =>
+        Number(Boolean(a.filterCategory)) - Number(Boolean(b.filterCategory))
+    );
+
+    sourceConfigs.forEach(config => {
+        const dataset = pointDatasets[config.id];
+        if (!dataset) return;
+
+        (dataset.features || []).forEach(feature => {
+            if (!includeRetired && !isActivePointFeature(feature)) return;
+            const key = getPointKey(feature, config);
+            if (!uniqueFeatures.has(key)) {
+                uniqueFeatures.set(key, {
+                    datasetId: getPointDatasetId(config),
+                    config,
+                    feature
+                });
+            }
+        });
+    });
+
+    return Array.from(uniqueFeatures.values());
 }
 
 function getActivePointEntries() {
@@ -1233,9 +1284,14 @@ function getActivePointEntries() {
 }
 
 function getActivePointFeatures() {
-    return getActivePointEntries().flatMap(({ config, dataset }) =>
-        dataset.features.map(feature => ({ config, feature }))
-    );
+    const uniqueFeatures = new Map();
+    getActivePointEntries().forEach(({ config, dataset }) => {
+        dataset.features.forEach(feature => {
+            const key = getPointKey(feature, config);
+            if (!uniqueFeatures.has(key)) uniqueFeatures.set(key, { config, feature });
+        });
+    });
+    return Array.from(uniqueFeatures.values());
 }
 
 function computeIntersections() {
@@ -1592,8 +1648,9 @@ function updateTotalPointCard() {
     const totalLabel = totalCard.querySelector('.stat-label');
     const totalValue = totalCard.querySelector('.stat-value');
     const activeFeatures = getActivePointFeatures();
+    const allFeatures = getAllUniquePointFeatures();
 
-    totalLabel.innerText = `目前顯示${getActivePointSummaryLabel()}`;
+    totalLabel.innerText = `目前顯示${getActivePointSummaryLabel()}（全資料 ${allFeatures.length} 處）`;
     totalValue.innerText = activeFeatures.length;
 }
 

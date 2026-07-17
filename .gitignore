@@ -25,3 +25,11 @@ data/unknown_indicator/
 # IDE
 .vscode/
 *.swp
+
+# Generated point-validation and test artifacts
+tools/output/
+*_fixture.json
+validation_report_*.json
+validation_report_*.md
+screenshots/
+*.log

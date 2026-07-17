@@ -1,0 +1,46 @@
+{
+  "datasets": [
+    {
+      "dataset_id": "daycare",
+      "file": "daycare_points.json",
+      "required_fields": ["id", "name", "town", "address"],
+      "id_field": "id",
+      "name_field": "name",
+      "town_field": "town"
+    },
+    {
+      "dataset_id": "env_facilities",
+      "file": "env_facilities.json",
+      "required_fields": ["id", "name", "town", "address", "category"],
+      "id_field": "id",
+      "name_field": "name",
+      "town_field": "town",
+      "category_field": "category",
+      "visible_categories": ["清潔隊部", "資源回收場"],
+      "aggregate_only_categories": []
+    }
+  ],
+  "town_file": "data/changhua_towns.json",
+  "climate_grid_file": "data/climate_grids.geojson",
+  "temperature_baseline": {
+    "indicator": "極端高溫持續指數",
+    "scenario": "ssp585",
+    "model": "TaiESM1",
+    "year": "2050",
+    "values_file": "data/極端高溫持續指數/ssp585/TaiESM1.json"
+  },
+  "wra_scenarios": [
+    {
+      "id": "wra650_24h",
+      "file": "data/wra/wra_flood_650mm_24h.json"
+    },
+    {
+      "id": "wra350_6h",
+      "file": "data/wra/wra_flood_350mm_6h.json"
+    },
+    {
+      "id": "wra350_24h",
+      "file": "data/wra/wra_flood_350mm_24h.json"
+    }
+  ]
+}

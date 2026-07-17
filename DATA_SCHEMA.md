@@ -128,7 +128,7 @@ python3 -m http.server 4173
 }
 ```
 
-`coordinate_review_status` 預留值包含 `manually_reviewed` 與未來新增點位可用的 `pending_review`；本版本未實作 pending_review 的前端警示機制。現有日照88處與環保設施52處，共140處點位已完成整批人工座標查核；個別查核日期、人員、定位方法及量測精度尚未結構化紀錄。
+`coordinate_review_status` 預留值包含 `manually_reviewed` 與新增或異動點位使用的 `pending_review`；本版本由資料驗證腳本阻止未查核點位混入「全資料集已人工查核」宣稱。v1.3.1 基準資料為日照88處與環保設施52處，共140處，這些數量只代表該資料版本的回歸基準，不得作為正式程式常數。個別查核日期、人員、定位方法及量測精度尚未全面結構化紀錄。
 
 現有點位檔案中的部分座標品質文字為早期AI工具產製時的歷史殘留，不代表目前資料查核狀態。現有140處點位後續已完成全面人工座標查核，系統不使用舊註記進行風險計算或品質判定。未來新增點位應經人工查核後再更新其查核狀態。
 
@@ -137,3 +137,34 @@ python3 -m http.server 4173
 | `legacy_ai_coordinate_note` | string | 此欄位為早期AI產製資料時的歷史殘留，不代表目前人工查核結果，不得用於風險計算、篩選、警示或統計。 |
 
 水利署點位判定狀態：`direct_overlay`、`near_0_25m`、`near_25_50m`、`near_50_75m`、`near_75_100m`、`no_hit`、`no_data`。直接套疊需保留 `depth_type`、原始 `grid_code`（2–6）與畫面 `display_risk`（1–5）；`no_hit` 與 `no_data` 的 `hazard_level` / `display_risk` 為 `null`，不得顯示為低風險或 L1。`direct_overlay` 另提供 `boundary_distance_m`，表示點位位於勝出潛勢面內時到該勝出 feature 最近邊界的距離。
+
+## 點位資料動態集合規則
+
+- `POINT_REGISTRY.datasetId` 是資料集識別碼。唯一點位鍵固定為 `` `${dataset_id}:${String(feature_id)}` ``，數字 ID 一律轉為字串後組鍵。
+- `getActivePointFeatures()` 只代表目前畫面啟用圖層，供圖層、清單及目前顯示統計使用。
+- `getAllUniquePointFeatures()` 代表當前資料版本內全部不重複的正式 active 點位，供全資料母體、資料品質摘要及設施百分位母體使用。
+- 同一 GeoJSON 可供合計層與分類層共用。不得直接串接 `POINT_REGISTRY` 的所有項目計數。
+- `properties.status` 省略時視為 `active`；裁撤設施使用 `status: "retired"`。retired feature 保留供稽核，並從圖層、清單、統計及設施百分位母體排除。
+- `config/PointDatasetConfig.json` 記錄資料集、必填欄位、可見分類及合計層專用分類。新增非空白 `category` 時，必須加入可見的 `POINT_REGISTRY.filterCategory` 圖層，或明確列入 `aggregate_only_categories`。
+
+## 座標查核與異動規則
+
+1. 資料集宣稱 `coordinate_review_scope: all_points_in_dataset` 且 `coordinate_review_status: manually_reviewed` 時，`coordinate_review_count` 必須等於實際 feature 數量，包含已退休但仍留存的 feature。
+2. 新增且尚未完成查核的點位，在 feature 標示 `coordinate_review_status: pending_review`，資料集層級同步取消全數已查核宣稱。
+3. 既有點位座標異動時，feature 必須重設為 `pending_review`，或新增含 `reviewed_at`、`reviewed_by` 的 `coordinate_review_record`。
+4. `feature_id` 不得變更或重用。既有 feature 不得刪除；裁撤時改標 `status: retired`。
+5. `legacy_ai_coordinate_note`、座標小數位數、地址格式及舊 `exact`／`approx` 文字均不參與人工查核狀態判定。
+
+## 點位資料維護標準流程
+
+1. 在工作分支新增或更新 GeoJSON feature，不直接修改 `main`。
+2. 確認 `feature_id` 唯一、不可重用，並維持固定 `dataset_id`。
+3. 確認新 `category` 已有可見 registry 圖層，或已明列為合計層專用分類。
+4. 完成人工座標查核；尚未完成或座標剛異動時標示 `pending_review`。
+5. 執行 `node tools/validate_points.mjs`，檢查 GeoJSON、Point 座標、行政區、分類覆蓋、查核計數及 retired 排除。
+6. 正式點位資料版本更新且完成審查後，執行 `node tools/validate_points.mjs --update-baseline`，由工具產生新的 `dataset_version`、`point_count`、`category_counts`、`risk_baseline` 與 `generated_at`。不得手工修改基準數字。
+7. 執行 `node tools/regression_checks.mjs`，確認資料未變的點位在高溫原始值、絕對7級、GridID、WRA方法、勝出 feature、`grid_code`、`depth_type`、距離及全縣網格百分位均維持一致。
+8. 執行 `node tools/test_dynamic_point_addition.mjs`，確認記憶體內測試點位會使資料集、分類、鄉鎮、總數及風險分布增加1，並取得高溫與WRA判定。測試 fixture 不寫入正式資料，也不提交 Git。
+9. 檢查提交內容後，以 Minimal Commit 推送分支並建立 PR。`tools/output/` 報告、fixture、截圖、log、cache、binary、金鑰及 token 均不得進入提交。
+
+驗證器固定輸出 `tools/output/point_validation_report.json` 與 `tools/output/point_validation_report.md`，兩者含 `dataset_version` 與 `generated_at`，且已由 `.gitignore` 排除。PR 會透過 `.github/workflows/validate-points.yml` 重跑靜態數量掃描、資料驗證、逐點不變性及動態新增測試。
