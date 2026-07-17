@@ -1,0 +1,6344 @@
+{
+  "dataset_version": "points-5013584d17688a3c",
+  "generated_at": "2026-07-17T10:06:20.705Z",
+  "point_count": 140,
+  "category_counts": {
+    "daycare": 88,
+    "清潔隊部": 26,
+    "資源回收場": 26
+  },
+  "risk_baseline": {
+    "temperature_level_distribution": {
+      "L3": 121,
+      "L4": 19
+    },
+    "wra_status_distribution": {
+      "wra650_24h": {
+        "direct_overlay": 34,
+        "no_hit": 37,
+        "near_75_100m": 16,
+        "near_50_75m": 14,
+        "near_0_25m": 22,
+        "near_25_50m": 17
+      },
+      "wra350_6h": {
+        "direct_overlay": 15,
+        "near_0_25m": 18,
+        "no_hit": 67,
+        "near_75_100m": 11,
+        "near_25_50m": 16,
+        "near_50_75m": 13
+      },
+      "wra350_24h": {
+        "near_0_25m": 10,
+        "no_hit": 89,
+        "near_75_100m": 9,
+        "near_25_50m": 17,
+        "direct_overlay": 5,
+        "near_50_75m": 10
+      }
+    }
+  },
+  "points": [
+    {
+      "key": "daycare:1",
+      "dataset_id": "daycare",
+      "feature_id": "1",
+      "status": "active",
+      "coordinate_hash": "88c85f1fb7c9ec34fa634a4ad70d68431994ae7768e1e820d442b577951013ac",
+      "temperature": {
+        "grid_id": "GRID_00048",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 63.433946863,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "彰化市",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 18.98724431,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 18.991039943,
+          "boundary_distance_m": null,
+          "weight": 0.810089601
+        }
+      }
+    },
+    {
+      "key": "daycare:2",
+      "dataset_id": "daycare",
+      "feature_id": "2",
+      "status": "active",
+      "coordinate_hash": "aad1f80bb3c02f8de616564ac849dd238e07e3a6d91c43e22f818ed7c2633447",
+      "temperature": {
+        "grid_id": "GRID_00048",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 15.857585231,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "彰化市",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 15.535464634,
+          "boundary_distance_m": null,
+          "weight": 0.844645354
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:3",
+      "dataset_id": "daycare",
+      "feature_id": "3",
+      "status": "active",
+      "coordinate_hash": "4f1cfb8709a3e79545ef3bffdaba3c2d2005d34a9cab0304d3688e6b0bfbc50c",
+      "temperature": {
+        "grid_id": "GRID_00048",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:4",
+      "dataset_id": "daycare",
+      "feature_id": "4",
+      "status": "active",
+      "coordinate_hash": "8276a1a33a3d2efdd39737fb132bc0dd4eb2e5ca6b030c21757f3752bcf67717",
+      "temperature": {
+        "grid_id": "GRID_00048",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 82.653619232,
+          "boundary_distance_m": null,
+          "weight": 0.173463808
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": "彰化市",
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 82.634201823,
+          "boundary_distance_m": null,
+          "weight": 0.173657982
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 82.653619232,
+          "boundary_distance_m": null,
+          "weight": 0.173463808
+        }
+      }
+    },
+    {
+      "key": "daycare:5",
+      "dataset_id": "daycare",
+      "feature_id": "5",
+      "status": "active",
+      "coordinate_hash": "46f7ebf5b17087244a7edfd1113e3b582c757366e3fd38f07d0578c6cb7f2ac1",
+      "temperature": {
+        "grid_id": "GRID_00049",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 5.581800564,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "彰化市",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 46.105993763,
+          "boundary_distance_m": null,
+          "weight": 0.538940062
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 45.959047259,
+          "boundary_distance_m": null,
+          "weight": 0.540409527
+        }
+      }
+    },
+    {
+      "key": "daycare:6",
+      "dataset_id": "daycare",
+      "feature_id": "6",
+      "status": "active",
+      "coordinate_hash": "d3e9c501744875fbc9ce198b43a733d8de8e4d05e90d6e2ef05402acefd0caf2",
+      "temperature": {
+        "grid_id": "GRID_00056",
+        "raw_value": 54,
+        "absolute_level": 3,
+        "county_grid_percentile": 30.645161
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:7",
+      "dataset_id": "daycare",
+      "feature_id": "7",
+      "status": "active",
+      "coordinate_hash": "73c1ce68565860ef31c641b8fc1b648278269e719d5a8575bd2a6cccc449aaa5",
+      "temperature": {
+        "grid_id": "GRID_00039",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 59.331274296,
+          "boundary_distance_m": null,
+          "weight": 0.406687257
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": "彰化市",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 59.363897483,
+          "boundary_distance_m": null,
+          "weight": 0.406361025
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:8",
+      "dataset_id": "daycare",
+      "feature_id": "8",
+      "status": "active",
+      "coordinate_hash": "29020f74a48a21beac743d6ce3f3efb00ed3fee232312597b7a2be74175dfb00",
+      "temperature": {
+        "grid_id": "GRID_00049",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 12.816168007,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "彰化市",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 12.829499384,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 25.112083755,
+          "boundary_distance_m": null,
+          "weight": 0.748879162
+        }
+      }
+    },
+    {
+      "key": "daycare:9",
+      "dataset_id": "daycare",
+      "feature_id": "9",
+      "status": "active",
+      "coordinate_hash": "ed71d966ddc85ef5d745f171578bff144834f24ba99b51b119e62b0d0a2565b3",
+      "temperature": {
+        "grid_id": "GRID_00048",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:10",
+      "dataset_id": "daycare",
+      "feature_id": "10",
+      "status": "active",
+      "coordinate_hash": "88dc01fc05c73cb7694c954331046c6907189215ef487deacabe737a7812fb10",
+      "temperature": {
+        "grid_id": "GRID_00062",
+        "raw_value": 56,
+        "absolute_level": 3,
+        "county_grid_percentile": 46.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:11",
+      "dataset_id": "daycare",
+      "feature_id": "11",
+      "status": "active",
+      "coordinate_hash": "83a51b3e36d250a4e990aa3ee75043edfc8435dfe413103449e8fcf30c300ce3",
+      "temperature": {
+        "grid_id": "GRID_00040",
+        "raw_value": 64,
+        "absolute_level": 4,
+        "county_grid_percentile": 96.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 94.4679058,
+          "boundary_distance_m": null,
+          "weight": 0.055320942
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": "和美鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 94.471037357,
+          "boundary_distance_m": null,
+          "weight": 0.055289626
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:12",
+      "dataset_id": "daycare",
+      "feature_id": "12",
+      "status": "active",
+      "coordinate_hash": "f23a031cbba0a61ec543b3e0dbdf78947613cff8a49fae2f5bd08df3174c94aa",
+      "temperature": {
+        "grid_id": "GRID_00040",
+        "raw_value": 64,
+        "absolute_level": 4,
+        "county_grid_percentile": 96.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 5.857819715,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "和美鎮",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 5.885954553,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 42.591754426,
+          "boundary_distance_m": null,
+          "weight": 0.574082456
+        }
+      }
+    },
+    {
+      "key": "daycare:13",
+      "dataset_id": "daycare",
+      "feature_id": "13",
+      "status": "active",
+      "coordinate_hash": "964d651c88a5386324dadfdda1a92355006506fd2f4239f2018321225e43ccab",
+      "temperature": {
+        "grid_id": "GRID_00040",
+        "raw_value": 64,
+        "absolute_level": 4,
+        "county_grid_percentile": 96.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:14",
+      "dataset_id": "daycare",
+      "feature_id": "14",
+      "status": "active",
+      "coordinate_hash": "7b8f980ae1c351e7bc2955944e023956d0f18a51f736fdd7bbb0e3755e9c2429",
+      "temperature": {
+        "grid_id": "GRID_00040",
+        "raw_value": 64,
+        "absolute_level": 4,
+        "county_grid_percentile": 96.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 16.067665748,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "和美鎮",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 16.026769735,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 16.046361185,
+          "weight": 1
+        }
+      }
+    },
+    {
+      "key": "daycare:15",
+      "dataset_id": "daycare",
+      "feature_id": "15",
+      "status": "active",
+      "coordinate_hash": "be5d46559fcfe3e736bdc947643dcd04971ce35c28b4a16b6b83d2e32ccedfac",
+      "temperature": {
+        "grid_id": "GRID_00040",
+        "raw_value": 64,
+        "absolute_level": 4,
+        "county_grid_percentile": 96.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:16",
+      "dataset_id": "daycare",
+      "feature_id": "16",
+      "status": "active",
+      "coordinate_hash": "09d6c27bff421ab8e022c517be978bd2822307e61fd91c73884f11825ada1b50",
+      "temperature": {
+        "grid_id": "GRID_00040",
+        "raw_value": 64,
+        "absolute_level": 4,
+        "county_grid_percentile": 96.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 5.232019723,
+          "boundary_distance_m": null,
+          "weight": 0.947679803
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:17",
+      "dataset_id": "daycare",
+      "feature_id": "17",
+      "status": "active",
+      "coordinate_hash": "881c4d45cf7ca9b2df4ffb1da0c83095fdc0e1e4adf8124a35fef86b452434d9",
+      "temperature": {
+        "grid_id": "GRID_00041",
+        "raw_value": 57,
+        "absolute_level": 3,
+        "county_grid_percentile": 53.225806
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 2.403401164,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "伸港鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 2.379108249,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 43.802265707,
+          "boundary_distance_m": null,
+          "weight": 0.561977343
+        }
+      }
+    },
+    {
+      "key": "daycare:18",
+      "dataset_id": "daycare",
+      "feature_id": "18",
+      "status": "active",
+      "coordinate_hash": "204f57a1428903e027a1fcc20840652ad9e40c84c9331021d748dbbf4866dbba",
+      "temperature": {
+        "grid_id": "GRID_00041",
+        "raw_value": 57,
+        "absolute_level": 3,
+        "county_grid_percentile": 53.225806
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 62.377385378,
+          "boundary_distance_m": null,
+          "weight": 0.376226146
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": "伸港鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 62.315806655,
+          "boundary_distance_m": null,
+          "weight": 0.376841933
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 92.710726563,
+          "boundary_distance_m": null,
+          "weight": 0.072892734
+        }
+      }
+    },
+    {
+      "key": "daycare:19",
+      "dataset_id": "daycare",
+      "feature_id": "19",
+      "status": "active",
+      "coordinate_hash": "e6fa4697e605f2c68864426edee3aca25092cab65d68d88ae6dc2d3d495ba727",
+      "temperature": {
+        "grid_id": "GRID_00030",
+        "raw_value": 62,
+        "absolute_level": 4,
+        "county_grid_percentile": 91.935484
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 7.686918758,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:20",
+      "dataset_id": "daycare",
+      "feature_id": "20",
+      "status": "active",
+      "coordinate_hash": "e62f365279f81eb7e3f408efe659a1b20ca2355476a4775d51ae7a03f7653774",
+      "temperature": {
+        "grid_id": "GRID_00030",
+        "raw_value": 62,
+        "absolute_level": 4,
+        "county_grid_percentile": 91.935484
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 104.462555847,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:21",
+      "dataset_id": "daycare",
+      "feature_id": "21",
+      "status": "active",
+      "coordinate_hash": "47d923982a2d6657241f544a3f35096bf0743a3932bae04735709b8bb2c60a7f",
+      "temperature": {
+        "grid_id": "GRID_00030",
+        "raw_value": 62,
+        "absolute_level": 4,
+        "county_grid_percentile": 91.935484
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 0,
+          "boundary_distance_m": 76.762837301,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": "鹿港鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 69.263841632,
+          "boundary_distance_m": null,
+          "weight": 0.307361584
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:22",
+      "dataset_id": "daycare",
+      "feature_id": "22",
+      "status": "active",
+      "coordinate_hash": "eaa311101caffc1c785a6ada986dedfcafdb33d783f1ecde8ccc753e097734bf",
+      "temperature": {
+        "grid_id": "GRID_00030",
+        "raw_value": 62,
+        "absolute_level": 4,
+        "county_grid_percentile": 91.935484
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 0,
+          "boundary_distance_m": 2.605162666,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "鹿港鎮",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 2.583755597,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 47.88444785,
+          "boundary_distance_m": null,
+          "weight": 0.521155521
+        }
+      }
+    },
+    {
+      "key": "daycare:23",
+      "dataset_id": "daycare",
+      "feature_id": "23",
+      "status": "active",
+      "coordinate_hash": "1bc3973a04d2a58a90054b829cb9f4a6145ba815bb52dfeb2a22528a53cc11b5",
+      "temperature": {
+        "grid_id": "GRID_00047",
+        "raw_value": 54,
+        "absolute_level": 3,
+        "county_grid_percentile": 30.645161
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 0,
+          "boundary_distance_m": 8.758600942,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "花壇鄉",
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 0,
+          "boundary_distance_m": 8.793970463,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 8.758600942,
+          "weight": 1
+        }
+      }
+    },
+    {
+      "key": "daycare:24",
+      "dataset_id": "daycare",
+      "feature_id": "24",
+      "status": "active",
+      "coordinate_hash": "be886fd1d9d332c621ab5cf61b1a12c4c2f13fb8ff7eb67e610b96542f46498b",
+      "temperature": {
+        "grid_id": "GRID_00047",
+        "raw_value": 54,
+        "absolute_level": 3,
+        "county_grid_percentile": 30.645161
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:25",
+      "dataset_id": "daycare",
+      "feature_id": "25",
+      "status": "active",
+      "coordinate_hash": "b3c3994e9f8bfad4c663a5154f397aeba5b7a66c5f46c88e3d8d2e0fb4470414",
+      "temperature": {
+        "grid_id": "GRID_00047",
+        "raw_value": 54,
+        "absolute_level": 3,
+        "county_grid_percentile": 30.645161
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:26",
+      "dataset_id": "daycare",
+      "feature_id": "26",
+      "status": "active",
+      "coordinate_hash": "0e7bd9db4abc35fd5e99c094c42aec020f9fbd4f5e30fe349cf6028d36ea3834",
+      "temperature": {
+        "grid_id": "GRID_00047",
+        "raw_value": 54,
+        "absolute_level": 3,
+        "county_grid_percentile": 30.645161
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 16.023587888,
+          "boundary_distance_m": null,
+          "weight": 0.839764121
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "花壇鄉",
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 16.001443512,
+          "boundary_distance_m": null,
+          "weight": 0.839985565
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 16.023587888,
+          "boundary_distance_m": null,
+          "weight": 0.839764121
+        }
+      }
+    },
+    {
+      "key": "daycare:27",
+      "dataset_id": "daycare",
+      "feature_id": "27",
+      "status": "active",
+      "coordinate_hash": "5bda8d90a4e1288179b6eb0c94a169789dcca37b8d40902c5bdf0a61a745be65",
+      "temperature": {
+        "grid_id": "GRID_00047",
+        "raw_value": 54,
+        "absolute_level": 3,
+        "county_grid_percentile": 30.645161
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 60.578402934,
+          "boundary_distance_m": null,
+          "weight": 0.394215971
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": "大村鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 99.764453914,
+          "boundary_distance_m": null,
+          "weight": 0.002355461
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:28",
+      "dataset_id": "daycare",
+      "feature_id": "28",
+      "status": "active",
+      "coordinate_hash": "7f6e92103da11bd76259315854d5463a57df2082dab3541c14131fbc35b7c4e6",
+      "temperature": {
+        "grid_id": "GRID_00047",
+        "raw_value": 54,
+        "absolute_level": 3,
+        "county_grid_percentile": 30.645161
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:29",
+      "dataset_id": "daycare",
+      "feature_id": "29",
+      "status": "active",
+      "coordinate_hash": "eb48de3d3789f803843581aa52b92d859537973c0b8b382e1636ae0326e7d710",
+      "temperature": {
+        "grid_id": "GRID_00046",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 17.224797541,
+          "boundary_distance_m": null,
+          "weight": 0.827752025
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "員林市",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 17.242893112,
+          "boundary_distance_m": null,
+          "weight": 0.827571069
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:30",
+      "dataset_id": "daycare",
+      "feature_id": "30",
+      "status": "active",
+      "coordinate_hash": "1ba92bde23dbb4537a1e7c55e2110ee45e1a6dbd1741aef9c8d047f957afa451",
+      "temperature": {
+        "grid_id": "GRID_00054",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 88.56449391,
+          "boundary_distance_m": null,
+          "weight": 0.114355061
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:31",
+      "dataset_id": "daycare",
+      "feature_id": "31",
+      "status": "active",
+      "coordinate_hash": "0a73cb2a7b4ea1ebb76d64f87f56a643a9021e80f9ba54529527512d30bd0a24",
+      "temperature": {
+        "grid_id": "GRID_00054",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 15.105106878,
+          "boundary_distance_m": null,
+          "weight": 0.848948931
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "員林市",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 15.153834861,
+          "boundary_distance_m": null,
+          "weight": 0.848461651
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:32",
+      "dataset_id": "daycare",
+      "feature_id": "32",
+      "status": "active",
+      "coordinate_hash": "81d1e58ffd4e301cd34d6a1a69b59b0d4b3ff996fe0a8ef9f761ecd5e3943d15",
+      "temperature": {
+        "grid_id": "GRID_00054",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 24.374853416,
+          "boundary_distance_m": null,
+          "weight": 0.756251466
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "員林市",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 31.352162647,
+          "boundary_distance_m": null,
+          "weight": 0.686478374
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 64.357176817,
+          "boundary_distance_m": null,
+          "weight": 0.356428232
+        }
+      }
+    },
+    {
+      "key": "daycare:33",
+      "dataset_id": "daycare",
+      "feature_id": "33",
+      "status": "active",
+      "coordinate_hash": "26dd020a8e2d7b524810d5d1a3df0ed532ed9c866f899bf965a7fa4bc1692ab1",
+      "temperature": {
+        "grid_id": "GRID_00054",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:34",
+      "dataset_id": "daycare",
+      "feature_id": "34",
+      "status": "active",
+      "coordinate_hash": "b7de19576883067ed9739ca75136e7318c84376d7481169cf6a9af537c8277a1",
+      "temperature": {
+        "grid_id": "GRID_00046",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 10.753599232,
+          "boundary_distance_m": null,
+          "weight": 0.892464008
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "員林市",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 10.739153393,
+          "boundary_distance_m": null,
+          "weight": 0.892608466
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 88.546262194,
+          "boundary_distance_m": null,
+          "weight": 0.114537378
+        }
+      }
+    },
+    {
+      "key": "daycare:35",
+      "dataset_id": "daycare",
+      "feature_id": "35",
+      "status": "active",
+      "coordinate_hash": "dbb3d3d8d3ddd12f37dcea3be6daf055356e66c6affec9a114d03dc193eb1dd3",
+      "temperature": {
+        "grid_id": "GRID_00046",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 95.686170963,
+          "boundary_distance_m": null,
+          "weight": 0.04313829
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:36",
+      "dataset_id": "daycare",
+      "feature_id": "36",
+      "status": "active",
+      "coordinate_hash": "c7eb1ccbd2ea247bb4a1a2a2f2381c314377028fdba6368ec49e2431292a4e54",
+      "temperature": {
+        "grid_id": "GRID_00054",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 34.730981061,
+          "boundary_distance_m": null,
+          "weight": 0.652690189
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "員林市",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 34.72925491,
+          "boundary_distance_m": null,
+          "weight": 0.652707451
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 45.118316528,
+          "boundary_distance_m": null,
+          "weight": 0.548816835
+        }
+      }
+    },
+    {
+      "key": "daycare:37",
+      "dataset_id": "daycare",
+      "feature_id": "37",
+      "status": "active",
+      "coordinate_hash": "2dd4f85093f14b1330f69f3bc737c5e4d6ac93be618a3b4506df41deb0198917",
+      "temperature": {
+        "grid_id": "GRID_00046",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 56.802718875,
+          "boundary_distance_m": null,
+          "weight": 0.431972811
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:38",
+      "dataset_id": "daycare",
+      "feature_id": "38",
+      "status": "active",
+      "coordinate_hash": "7a0ac0d9365edb2f3783f1f3a2761848f05aa5cab1068e2d0a2554aa6d2c228f",
+      "temperature": {
+        "grid_id": "GRID_00053",
+        "raw_value": 50,
+        "absolute_level": 3,
+        "county_grid_percentile": 3.225806
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 0,
+          "boundary_distance_m": 4.01257476,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "社頭鄉",
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 0,
+          "boundary_distance_m": 4.019712654,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 4.01257476,
+          "weight": 1
+        }
+      }
+    },
+    {
+      "key": "daycare:39",
+      "dataset_id": "daycare",
+      "feature_id": "39",
+      "status": "active",
+      "coordinate_hash": "50d23ef8b5036830fe99886b058b958f921e205faeb93f3f3e61fd13965c7cb2",
+      "temperature": {
+        "grid_id": "GRID_00053",
+        "raw_value": 50,
+        "absolute_level": 3,
+        "county_grid_percentile": 3.225806
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 20.522915406,
+          "boundary_distance_m": null,
+          "weight": 0.794770846
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": "社頭鄉",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 50.141937704,
+          "boundary_distance_m": null,
+          "weight": 0.498580623
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 50.117882729,
+          "boundary_distance_m": null,
+          "weight": 0.498821173
+        }
+      }
+    },
+    {
+      "key": "daycare:40",
+      "dataset_id": "daycare",
+      "feature_id": "40",
+      "status": "active",
+      "coordinate_hash": "c23f619df3add14bc46e2708407bd215cb955d06dbdd685500fb372046ca6f03",
+      "temperature": {
+        "grid_id": "GRID_00053",
+        "raw_value": 50,
+        "absolute_level": 3,
+        "county_grid_percentile": 3.225806
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:41",
+      "dataset_id": "daycare",
+      "feature_id": "41",
+      "status": "active",
+      "coordinate_hash": "f4f58d14adf5f6f9022922f1b75b1a00dbeef29fa1daed37e720175208853497",
+      "temperature": {
+        "grid_id": "GRID_00053",
+        "raw_value": 50,
+        "absolute_level": 3,
+        "county_grid_percentile": 3.225806
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 94.412054782,
+          "boundary_distance_m": null,
+          "weight": 0.055879452
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:42",
+      "dataset_id": "daycare",
+      "feature_id": "42",
+      "status": "active",
+      "coordinate_hash": "5a54e88e617ace89c86fefd119d64fa631ad1b74e41bcc905426b99a5e15ad7a",
+      "temperature": {
+        "grid_id": "GRID_00046",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 14.470422855,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "埔心鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 14.479066418,
+          "boundary_distance_m": null,
+          "weight": 0.855209336
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 14.509820637,
+          "boundary_distance_m": null,
+          "weight": 0.854901794
+        }
+      }
+    },
+    {
+      "key": "daycare:43",
+      "dataset_id": "daycare",
+      "feature_id": "43",
+      "status": "active",
+      "coordinate_hash": "02896dbf23c33261003c82982063929801ba114b572ba395b1791237213175dd",
+      "temperature": {
+        "grid_id": "GRID_00046",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 76.434900652,
+          "boundary_distance_m": null,
+          "weight": 0.235650993
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": "埔心鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 76.410606271,
+          "boundary_distance_m": null,
+          "weight": 0.235893937
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:44",
+      "dataset_id": "daycare",
+      "feature_id": "44",
+      "status": "active",
+      "coordinate_hash": "403ab89bb31aad992f47999e5bdabaea797ef99ac1d32996ebf30d2ad9298a8d",
+      "temperature": {
+        "grid_id": "GRID_00037",
+        "raw_value": 56,
+        "absolute_level": 3,
+        "county_grid_percentile": 46.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 78.685581237,
+          "boundary_distance_m": null,
+          "weight": 0.213144188
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": "溪湖鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 78.648332193,
+          "boundary_distance_m": null,
+          "weight": 0.213516678
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:45",
+      "dataset_id": "daycare",
+      "feature_id": "45",
+      "status": "active",
+      "coordinate_hash": "4f3ab4d16d8c159c7fc7cb470e63f10df34b2699adf2d1a6ce2948e9941caa54",
+      "temperature": {
+        "grid_id": "GRID_00045",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 0,
+          "boundary_distance_m": 12.494369509,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "田尾鄉",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 12.507407502,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 12.494369509,
+          "weight": 1
+        }
+      }
+    },
+    {
+      "key": "daycare:46",
+      "dataset_id": "daycare",
+      "feature_id": "46",
+      "status": "active",
+      "coordinate_hash": "ccc7598a68d06b561efdb1fed1bf03d3e48562762d968776b300756deac746e2",
+      "temperature": {
+        "grid_id": "GRID_00045",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 18.265202993,
+          "boundary_distance_m": null,
+          "weight": 0.81734797
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "田尾鄉",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 40.582073475,
+          "boundary_distance_m": null,
+          "weight": 0.594179265
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 40.538678628,
+          "boundary_distance_m": null,
+          "weight": 0.594613214
+        }
+      }
+    },
+    {
+      "key": "daycare:47",
+      "dataset_id": "daycare",
+      "feature_id": "47",
+      "status": "active",
+      "coordinate_hash": "b2d3a246677bfccb613a62ccd3bdf0acf3a2bf089e4b5c063fc656c4457fb5f1",
+      "temperature": {
+        "grid_id": "GRID_00044",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 97.972733982,
+          "boundary_distance_m": null,
+          "weight": 0.02027266
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:48",
+      "dataset_id": "daycare",
+      "feature_id": "48",
+      "status": "active",
+      "coordinate_hash": "2662a4cbbcf45aa0dfce665f9ca4402fc27d514255a45b3cb0c6b5b33a815eef",
+      "temperature": {
+        "grid_id": "GRID_00035",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 74.22119387,
+          "boundary_distance_m": null,
+          "weight": 0.257788061
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": "北斗鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 74.247925253,
+          "boundary_distance_m": null,
+          "weight": 0.257520747
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:49",
+      "dataset_id": "daycare",
+      "feature_id": "49",
+      "status": "active",
+      "coordinate_hash": "b6c1f6eb1148f93b09b99ce0c6cfbdbe4d2e224cf9a2b3b372c3f4b90413d786",
+      "temperature": {
+        "grid_id": "GRID_00036",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 20.553123262,
+          "boundary_distance_m": null,
+          "weight": 0.794468767
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": "北斗鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 60.736119062,
+          "boundary_distance_m": null,
+          "weight": 0.392638809
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 60.740007403,
+          "boundary_distance_m": null,
+          "weight": 0.392599926
+        }
+      }
+    },
+    {
+      "key": "daycare:50",
+      "dataset_id": "daycare",
+      "feature_id": "50",
+      "status": "active",
+      "coordinate_hash": "9ae13cec34dec68b76ebac935b4f50a7e5a82205b9eeccd5729d2c626363caea",
+      "temperature": {
+        "grid_id": "GRID_00045",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 45.889702451,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "北斗鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 10.326451987,
+          "boundary_distance_m": null,
+          "weight": 0.89673548
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:51",
+      "dataset_id": "daycare",
+      "feature_id": "51",
+      "status": "active",
+      "coordinate_hash": "419bf6f66b014c5f8ca3ac63689b1e3f85f77855f6156113028806e86391f163",
+      "temperature": {
+        "grid_id": "GRID_00036",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 27.544596901,
+          "boundary_distance_m": null,
+          "weight": 0.724554031
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "北斗鎮",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 44.41919643,
+          "boundary_distance_m": null,
+          "weight": 0.555808036
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 44.420730685,
+          "boundary_distance_m": null,
+          "weight": 0.555792693
+        }
+      }
+    },
+    {
+      "key": "daycare:52",
+      "dataset_id": "daycare",
+      "feature_id": "52",
+      "status": "active",
+      "coordinate_hash": "007aca7d66f4d4f0cc021122f0e0ff2fb46a5ccbb0ec130adda72d0b51a483d4",
+      "temperature": {
+        "grid_id": "GRID_00035",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 71.390554462,
+          "boundary_distance_m": null,
+          "weight": 0.286094455
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": "北斗鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 71.378049741,
+          "boundary_distance_m": null,
+          "weight": 0.286219503
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:53",
+      "dataset_id": "daycare",
+      "feature_id": "53",
+      "status": "active",
+      "coordinate_hash": "c5959b2998925d98e0cc19c08be2eddf20f796d1265b336cdd03f30518f01f8e",
+      "temperature": {
+        "grid_id": "GRID_00052",
+        "raw_value": 55,
+        "absolute_level": 3,
+        "county_grid_percentile": 40.322581
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 0.435672679,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "田中鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 0.478055427,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 20.933864977,
+          "boundary_distance_m": null,
+          "weight": 0.79066135
+        }
+      }
+    },
+    {
+      "key": "daycare:54",
+      "dataset_id": "daycare",
+      "feature_id": "54",
+      "status": "active",
+      "coordinate_hash": "140f34852458ac16063e21529adf5344a18f5389ec9aae76bdbdddd7a7a7a5c0",
+      "temperature": {
+        "grid_id": "GRID_00052",
+        "raw_value": 55,
+        "absolute_level": 3,
+        "county_grid_percentile": 40.322581
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:55",
+      "dataset_id": "daycare",
+      "feature_id": "55",
+      "status": "active",
+      "coordinate_hash": "a5a49a7aff03560036fe968713bc8634b6dd8c9a07f26b54cdb0370d9e9702b7",
+      "temperature": {
+        "grid_id": "GRID_00052",
+        "raw_value": 55,
+        "absolute_level": 3,
+        "county_grid_percentile": 40.322581
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:56",
+      "dataset_id": "daycare",
+      "feature_id": "56",
+      "status": "active",
+      "coordinate_hash": "c6065ad338f3ef9cba378ee3fdf9d1adf07414e033b513e1352052b58ad22af3",
+      "temperature": {
+        "grid_id": "GRID_00052",
+        "raw_value": 55,
+        "absolute_level": 3,
+        "county_grid_percentile": 40.322581
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 32.943893553,
+          "boundary_distance_m": null,
+          "weight": 0.670561064
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "田中鎮",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 33.819514622,
+          "boundary_distance_m": null,
+          "weight": 0.661804854
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 47.049562074,
+          "boundary_distance_m": null,
+          "weight": 0.529504379
+        }
+      }
+    },
+    {
+      "key": "daycare:57",
+      "dataset_id": "daycare",
+      "feature_id": "57",
+      "status": "active",
+      "coordinate_hash": "298b5c255cd847a621bbc3216b76915f6524d9e4c6daebaee4c79aef7be3d009",
+      "temperature": {
+        "grid_id": "GRID_00028",
+        "raw_value": 56,
+        "absolute_level": 3,
+        "county_grid_percentile": 46.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:58",
+      "dataset_id": "daycare",
+      "feature_id": "58",
+      "status": "active",
+      "coordinate_hash": "72d117e9fa42c829299521c2a15673365ba420a35388e8b40aba06d577cf014e",
+      "temperature": {
+        "grid_id": "GRID_00018",
+        "raw_value": 60,
+        "absolute_level": 3,
+        "county_grid_percentile": 87.096774
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 58.590464504,
+          "boundary_distance_m": null,
+          "weight": 0.414095355
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:59",
+      "dataset_id": "daycare",
+      "feature_id": "59",
+      "status": "active",
+      "coordinate_hash": "0bbc8ca465e56c2c9605698da1bb0a84f1b18834d272dd50bd9896a1cbd4d480",
+      "temperature": {
+        "grid_id": "GRID_00028",
+        "raw_value": 56,
+        "absolute_level": 3,
+        "county_grid_percentile": 46.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:60",
+      "dataset_id": "daycare",
+      "feature_id": "60",
+      "status": "active",
+      "coordinate_hash": "8a6fe9e74f5cc0b27ad8571df66c15c104600079aeda7d79776cf1733cca0abc",
+      "temperature": {
+        "grid_id": "GRID_00012",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 38.030011572,
+          "boundary_distance_m": null,
+          "weight": 0.619699884
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:61",
+      "dataset_id": "daycare",
+      "feature_id": "61",
+      "status": "active",
+      "coordinate_hash": "3a4d33cec349dd389bc38f542a6f2c80e32df59a95539e992dbe648d68caa885",
+      "temperature": {
+        "grid_id": "GRID_00028",
+        "raw_value": 56,
+        "absolute_level": 3,
+        "county_grid_percentile": 46.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:62",
+      "dataset_id": "daycare",
+      "feature_id": "62",
+      "status": "active",
+      "coordinate_hash": "9937909ee717672a16128c1fc898de5aa231545a191a3cc121b365f88ad224f6",
+      "temperature": {
+        "grid_id": "GRID_00012",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 16.327926691,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "二林鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 16.363760151,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 97.404760446,
+          "boundary_distance_m": null,
+          "weight": 0.025952396
+        }
+      }
+    },
+    {
+      "key": "daycare:63",
+      "dataset_id": "daycare",
+      "feature_id": "63",
+      "status": "active",
+      "coordinate_hash": "3136616d3f6be85933d4d694795c6b2db0d40e1564518d224d4fc8a64459a69e",
+      "temperature": {
+        "grid_id": "GRID_00044",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 17.575222745,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:64",
+      "dataset_id": "daycare",
+      "feature_id": "64",
+      "status": "active",
+      "coordinate_hash": "35fcc0c01048b726bc5eca53eba12111137b8de44135dc245cf053968378611e",
+      "temperature": {
+        "grid_id": "GRID_00051",
+        "raw_value": 55,
+        "absolute_level": 3,
+        "county_grid_percentile": 40.322581
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 45.959651493,
+          "boundary_distance_m": null,
+          "weight": 0.540403485
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:65",
+      "dataset_id": "daycare",
+      "feature_id": "65",
+      "status": "active",
+      "coordinate_hash": "8ce2a2a70b61f5e9c19c13d49babbaa58bb54440651de44990de016eb2eece28",
+      "temperature": {
+        "grid_id": "GRID_00035",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:66",
+      "dataset_id": "daycare",
+      "feature_id": "66",
+      "status": "active",
+      "coordinate_hash": "c4c76d3059cfbec9c5c3a1dcbe76792bb9d42e7302759acf756dbf6723601aba",
+      "temperature": {
+        "grid_id": "GRID_00051",
+        "raw_value": 55,
+        "absolute_level": 3,
+        "county_grid_percentile": 40.322581
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 50.996733419,
+          "boundary_distance_m": null,
+          "weight": 0.490032666
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": "二水鄉",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 51.001356953,
+          "boundary_distance_m": null,
+          "weight": 0.48998643
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 50.996733419,
+          "boundary_distance_m": null,
+          "weight": 0.490032666
+        }
+      }
+    },
+    {
+      "key": "daycare:67",
+      "dataset_id": "daycare",
+      "feature_id": "67",
+      "status": "active",
+      "coordinate_hash": "b07b8e11f2b9b5da21de9507113dbac351a8ca31e17fc2cb6468b876a3a82c04",
+      "temperature": {
+        "grid_id": "GRID_00027",
+        "raw_value": 54,
+        "absolute_level": 3,
+        "county_grid_percentile": 30.645161
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:68",
+      "dataset_id": "daycare",
+      "feature_id": "68",
+      "status": "active",
+      "coordinate_hash": "a5f7de4a427157abaeb218cfaab2c024870e9d8ede57610cf13be60eceafdae8",
+      "temperature": {
+        "grid_id": "GRID_00026",
+        "raw_value": 61,
+        "absolute_level": 4,
+        "county_grid_percentile": 90.322581
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 7.314865408,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:69",
+      "dataset_id": "daycare",
+      "feature_id": "69",
+      "status": "active",
+      "coordinate_hash": "3aa8acb4faa6a99b6db37780ba4e23517a3ae9894792cfaa25de49604dd35746",
+      "temperature": {
+        "grid_id": "GRID_00012",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 26.588398402,
+          "boundary_distance_m": null,
+          "weight": 0.734116016
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 26.588398402,
+          "boundary_distance_m": null,
+          "weight": 0.734116016
+        }
+      }
+    },
+    {
+      "key": "daycare:70",
+      "dataset_id": "daycare",
+      "feature_id": "70",
+      "status": "active",
+      "coordinate_hash": "80a84d0ab9cdf4434c2088fa3cff39016b1ad0609fd656cd5db0535b37b6ebbc",
+      "temperature": {
+        "grid_id": "GRID_00007",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 3.507461041,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "芳苑鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 16.681241805,
+          "boundary_distance_m": null,
+          "weight": 0.833187582
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 16.695475197,
+          "boundary_distance_m": null,
+          "weight": 0.833045248
+        }
+      }
+    },
+    {
+      "key": "daycare:71",
+      "dataset_id": "daycare",
+      "feature_id": "71",
+      "status": "active",
+      "coordinate_hash": "bee8c3dc1e98fadf278e5de96be0be87b506acc72d4402da493a1da1dbfd69d4",
+      "temperature": {
+        "grid_id": "GRID_00038",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:72",
+      "dataset_id": "daycare",
+      "feature_id": "72",
+      "status": "active",
+      "coordinate_hash": "8c30a6c3cf897a087256f7fb17c399e209b50032e5505acabf47396880235731",
+      "temperature": {
+        "grid_id": "GRID_00039",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 89.796888565,
+          "boundary_distance_m": null,
+          "weight": 0.102031114
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:73",
+      "dataset_id": "daycare",
+      "feature_id": "73",
+      "status": "active",
+      "coordinate_hash": "354607a6d519a20eaede93b6b749a166c92ffb283aea7ab6397614c4fb01e69b",
+      "temperature": {
+        "grid_id": "GRID_00039",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 10.703906997,
+          "boundary_distance_m": null,
+          "weight": 0.89296093
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:74",
+      "dataset_id": "daycare",
+      "feature_id": "74",
+      "status": "active",
+      "coordinate_hash": "5cd94d33978fe80587defea0fc8c5a64f9be654754dad2e53713dd5acbe1192e",
+      "temperature": {
+        "grid_id": "GRID_00039",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 12.207773454,
+          "boundary_distance_m": null,
+          "weight": 0.877922265
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:75",
+      "dataset_id": "daycare",
+      "feature_id": "75",
+      "status": "active",
+      "coordinate_hash": "db73b97d731cf852e452d244cea795fd31b30ef225368c0189404209ddcb3f28",
+      "temperature": {
+        "grid_id": "GRID_00039",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 6.47603012,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "秀水鄉",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 14.971132903,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 41.992398554,
+          "boundary_distance_m": null,
+          "weight": 0.580076014
+        }
+      }
+    },
+    {
+      "key": "daycare:76",
+      "dataset_id": "daycare",
+      "feature_id": "76",
+      "status": "active",
+      "coordinate_hash": "deef58e52351c5c3d91a419844c503de44c656abe6b7b86b95186d9f97640f63",
+      "temperature": {
+        "grid_id": "GRID_00030",
+        "raw_value": 62,
+        "absolute_level": 4,
+        "county_grid_percentile": 91.935484
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 25.435072619,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": "福興鄉",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 66.008364949,
+          "boundary_distance_m": null,
+          "weight": 0.339916351
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 73.647215597,
+          "boundary_distance_m": null,
+          "weight": 0.263527844
+        }
+      }
+    },
+    {
+      "key": "daycare:77",
+      "dataset_id": "daycare",
+      "feature_id": "77",
+      "status": "active",
+      "coordinate_hash": "b831789485adc0e3c6442a8361312dba6d52f5e8f4f27b2be89d5198008df34c",
+      "temperature": {
+        "grid_id": "GRID_00030",
+        "raw_value": 62,
+        "absolute_level": 4,
+        "county_grid_percentile": 91.935484
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 1.039580319,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": "福興鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 96.511062261,
+          "boundary_distance_m": null,
+          "weight": 0.034889377
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:78",
+      "dataset_id": "daycare",
+      "feature_id": "78",
+      "status": "active",
+      "coordinate_hash": "4c27020cb38c0523fe0aba60030312f60efc1f861eff528c52a0c3edbfac8559",
+      "temperature": {
+        "grid_id": "GRID_00038",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 52.65391154,
+          "boundary_distance_m": null,
+          "weight": 0.473460885
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": "埔鹽鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 52.709364435,
+          "boundary_distance_m": null,
+          "weight": 0.472906356
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 94.441170654,
+          "boundary_distance_m": null,
+          "weight": 0.055588293
+        }
+      }
+    },
+    {
+      "key": "daycare:79",
+      "dataset_id": "daycare",
+      "feature_id": "79",
+      "status": "active",
+      "coordinate_hash": "b0e54076fcdfc4d84e6cbceba4ce1e4f95c7fa30747d8780935d17d6853189ee",
+      "temperature": {
+        "grid_id": "GRID_00029",
+        "raw_value": 53,
+        "absolute_level": 3,
+        "county_grid_percentile": 22.580645
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 77.007088688,
+          "boundary_distance_m": null,
+          "weight": 0.229929113
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:80",
+      "dataset_id": "daycare",
+      "feature_id": "80",
+      "status": "active",
+      "coordinate_hash": "d951281937c465fd27351c109d314f8ebcdaf4c96cb1ad436ca8a436de2601ce",
+      "temperature": {
+        "grid_id": "GRID_00006",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0.982740678,
+          "boundary_distance_m": null,
+          "weight": 0.990172593
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "大城鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 1.031521449,
+          "boundary_distance_m": null,
+          "weight": 0.989684786
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 85.444283586,
+          "boundary_distance_m": null,
+          "weight": 0.145557164
+        }
+      }
+    },
+    {
+      "key": "daycare:81",
+      "dataset_id": "daycare",
+      "feature_id": "81",
+      "status": "active",
+      "coordinate_hash": "51d44ff365e1b96047c9ad4fb0f2a8606999aeadaddef7ac87284c49e57978de",
+      "temperature": {
+        "grid_id": "GRID_00006",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 29.176133024,
+          "boundary_distance_m": null,
+          "weight": 0.70823867
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "大城鄉",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 29.191044279,
+          "boundary_distance_m": null,
+          "weight": 0.708089557
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 29.176133024,
+          "boundary_distance_m": null,
+          "weight": 0.70823867
+        }
+      }
+    },
+    {
+      "key": "daycare:82",
+      "dataset_id": "daycare",
+      "feature_id": "82",
+      "status": "active",
+      "coordinate_hash": "a78a256e68022e9107eba81919781274ea00b258917f0346e7d1cf6dc6d2e504",
+      "temperature": {
+        "grid_id": "GRID_00045",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 12.242093396,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "永靖鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 12.215138465,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:83",
+      "dataset_id": "daycare",
+      "feature_id": "83",
+      "status": "active",
+      "coordinate_hash": "dca64762f79ba24d0d267e93d0973d7cca495235ffcdedd1c2863ac3ad366376",
+      "temperature": {
+        "grid_id": "GRID_00036",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 74.417794073,
+          "boundary_distance_m": null,
+          "weight": 0.255822059
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:84",
+      "dataset_id": "daycare",
+      "feature_id": "84",
+      "status": "active",
+      "coordinate_hash": "840fd0b0e525ab047a027c461297976428bc429c56dd8e8a92ad1ea43cf68abf",
+      "temperature": {
+        "grid_id": "GRID_00037",
+        "raw_value": 56,
+        "absolute_level": 3,
+        "county_grid_percentile": 46.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:85",
+      "dataset_id": "daycare",
+      "feature_id": "85",
+      "status": "active",
+      "coordinate_hash": "db0f36b3e46d77ddb9b9c8c27dae9d480bb89f77fbe2aa95afe3d6e351ca7a7e",
+      "temperature": {
+        "grid_id": "GRID_00037",
+        "raw_value": 56,
+        "absolute_level": 3,
+        "county_grid_percentile": 46.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:86",
+      "dataset_id": "daycare",
+      "feature_id": "86",
+      "status": "active",
+      "coordinate_hash": "a1cdf3ebe89447a6c29c7e98ce26744a5df9258dad1f187807171d75cb28d4b6",
+      "temperature": {
+        "grid_id": "GRID_00046",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 24.373355505,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:87",
+      "dataset_id": "daycare",
+      "feature_id": "87",
+      "status": "active",
+      "coordinate_hash": "8210b8f4a2b32e272aa0e6bc52e3a478f791a62fc0961a9222a007c92fb98e99",
+      "temperature": {
+        "grid_id": "GRID_00032",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "daycare:88",
+      "dataset_id": "daycare",
+      "feature_id": "88",
+      "status": "active",
+      "coordinate_hash": "eea0ea8df07d1eaa3ea2b60063fa800b394ac911bea3f6d9d3798b638e34ddbe",
+      "temperature": {
+        "grid_id": "GRID_00026",
+        "raw_value": 61,
+        "absolute_level": 4,
+        "county_grid_percentile": 90.322581
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 40.439104613,
+          "boundary_distance_m": null,
+          "weight": 0.595608954
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "竹塘鄉",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 40.412691804,
+          "boundary_distance_m": null,
+          "weight": 0.595873082
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 50.28236802,
+          "boundary_distance_m": null,
+          "weight": 0.49717632
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_001",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_001",
+      "status": "active",
+      "coordinate_hash": "a9f1a812cb045aa1daad00d7af7372c6c065814e58ec2c12a9774f3409eefbb1",
+      "temperature": {
+        "grid_id": "GRID_00048",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 12.122063156,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "彰化市",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 3.857592837,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 52.206535893,
+          "boundary_distance_m": null,
+          "weight": 0.477934641
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_002",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_002",
+      "status": "active",
+      "coordinate_hash": "3e2dc32c1117833869f301c243555c73c6db52f8c317841df4f1870d925102cc",
+      "temperature": {
+        "grid_id": "GRID_00062",
+        "raw_value": 56,
+        "absolute_level": 3,
+        "county_grid_percentile": 46.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_003",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_003",
+      "status": "active",
+      "coordinate_hash": "cc421dbe260e06d967b4d6012513ffa926b3fb44fe81fe39b5a028fa01f481a4",
+      "temperature": {
+        "grid_id": "GRID_00048",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_004",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_004",
+      "status": "active",
+      "coordinate_hash": "c7e13ad9dfc819a928c62e2d3f5d59348fea13e3c04b8846a8a50016ea8b7c40",
+      "temperature": {
+        "grid_id": "GRID_00039",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 74.658594446,
+          "boundary_distance_m": null,
+          "weight": 0.253414056
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_005",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_005",
+      "status": "active",
+      "coordinate_hash": "3fc02cbe4ca6c8ce045513b343244d8c35fcf2b3b584d276c58c50a2917b81a3",
+      "temperature": {
+        "grid_id": "GRID_00021",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 16.750379762,
+          "boundary_distance_m": null,
+          "weight": 0.832496202
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "鹿港鎮",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 16.716875977,
+          "boundary_distance_m": null,
+          "weight": 0.83283124
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 16.750379762,
+          "boundary_distance_m": null,
+          "weight": 0.832496202
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_006",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_006",
+      "status": "active",
+      "coordinate_hash": "82b1cb74e30cd93dbcbca4207013df974b0a25ada1fe502ccb2530a30509efb0",
+      "temperature": {
+        "grid_id": "GRID_00021",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 72.344350936,
+          "boundary_distance_m": null,
+          "weight": 0.276556491
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": "福興鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 57.587153406,
+          "boundary_distance_m": null,
+          "weight": 0.424128466
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_007",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_007",
+      "status": "active",
+      "coordinate_hash": "645bd93f1bd4af557a5c79aa35bbff473dce5fce966ef07cbc3acfcd395d5dfe",
+      "temperature": {
+        "grid_id": "GRID_00031",
+        "raw_value": 61,
+        "absolute_level": 4,
+        "county_grid_percentile": 90.322581
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 13.268671484,
+          "boundary_distance_m": null,
+          "weight": 0.867313285
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_008",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_008",
+      "status": "active",
+      "coordinate_hash": "817f6a5f75331ab45991bbf48f7d8fa6637e932c60c449c1af6b53de2bc16195",
+      "temperature": {
+        "grid_id": "GRID_00040",
+        "raw_value": 64,
+        "absolute_level": 4,
+        "county_grid_percentile": 96.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_009",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_009",
+      "status": "active",
+      "coordinate_hash": "b19af139c4b8f9fd01a2609387e3f3f8b505f122963defb887cfcdd7ba2d0231",
+      "temperature": {
+        "grid_id": "GRID_00041",
+        "raw_value": 57,
+        "absolute_level": 3,
+        "county_grid_percentile": 53.225806
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 36.730115517,
+          "boundary_distance_m": null,
+          "weight": 0.632698845
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "伸港鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 36.775743764,
+          "boundary_distance_m": null,
+          "weight": 0.632242562
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_010",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_010",
+      "status": "active",
+      "coordinate_hash": "2678e23615ae27955224d5aa0850d4e4edc8c3339d02e0670232edac0d878fb7",
+      "temperature": {
+        "grid_id": "GRID_00054",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 78.516995675,
+          "boundary_distance_m": null,
+          "weight": 0.214830043
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": "員林市",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 96.751411247,
+          "boundary_distance_m": null,
+          "weight": 0.032485888
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_011",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_011",
+      "status": "active",
+      "coordinate_hash": "25e160a2caadfed4f71b51f8b57b7d3aee4008263a4c3c13ecc2c1e97df55461",
+      "temperature": {
+        "grid_id": "GRID_00053",
+        "raw_value": 50,
+        "absolute_level": 3,
+        "county_grid_percentile": 3.225806
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 2.063972444,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": "社頭鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 94.2662425,
+          "boundary_distance_m": null,
+          "weight": 0.057337575
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_012",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_012",
+      "status": "active",
+      "coordinate_hash": "bc12bb8c458d24d01654983751bd9f72015db21d7b196161e85a5c7bb7abc0ee",
+      "temperature": {
+        "grid_id": "GRID_00045",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 46.315089527,
+          "boundary_distance_m": null,
+          "weight": 0.536849105
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "永靖鄉",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 49.450635508,
+          "boundary_distance_m": null,
+          "weight": 0.505493645
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 49.503080853,
+          "boundary_distance_m": null,
+          "weight": 0.504969191
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_013",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_013",
+      "status": "active",
+      "coordinate_hash": "0f04e9b47b9d9194928ed7b252bf6e4bfe454e0da97aeb3c7c59d6b4142dd52f",
+      "temperature": {
+        "grid_id": "GRID_00046",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 7.116491504,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "埔心鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 7.101896038,
+          "boundary_distance_m": null,
+          "weight": 0.92898104
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 7.202616154,
+          "boundary_distance_m": null,
+          "weight": 0.927973838
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_014",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_014",
+      "status": "active",
+      "coordinate_hash": "dff6ec6df98bc041dbf1679a3ba0ebb4eace3324107b6866477903b7ddbd8866",
+      "temperature": {
+        "grid_id": "GRID_00037",
+        "raw_value": 56,
+        "absolute_level": 3,
+        "county_grid_percentile": 46.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 3.149833928,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "溪湖鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 37.861073312,
+          "boundary_distance_m": null,
+          "weight": 0.621389267
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 77.618859591,
+          "boundary_distance_m": null,
+          "weight": 0.223811404
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_015",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_015",
+      "status": "active",
+      "coordinate_hash": "75774addbb81d7fb4f16eda9de740ba940e67119146ebfcea8053e776ec3a43f",
+      "temperature": {
+        "grid_id": "GRID_00055",
+        "raw_value": 54,
+        "absolute_level": 3,
+        "county_grid_percentile": 30.645161
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 42.247931959,
+          "boundary_distance_m": null,
+          "weight": 0.57752068
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_016",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_016",
+      "status": "active",
+      "coordinate_hash": "7b9d5c3d2d5f2f0d66edeb6ed1496962e17aef689d1c946cf2afb5f2a7967bdd",
+      "temperature": {
+        "grid_id": "GRID_00029",
+        "raw_value": 53,
+        "absolute_level": 3,
+        "county_grid_percentile": 22.580645
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 5.818274438,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": "埔鹽鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 5.838585798,
+          "weight": 1
+        },
+        "wra350_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 0,
+          "boundary_distance_m": 5.818274438,
+          "weight": 1
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_017",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_017",
+      "status": "active",
+      "coordinate_hash": "e7e7fe175a0e94bc62ec182f5a38574cb84db9d8c5c4e2b50d9318d5e99e8969",
+      "temperature": {
+        "grid_id": "GRID_00044",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 98.210235307,
+          "boundary_distance_m": null,
+          "weight": 0.017897647
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": "田中鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 98.198292648,
+          "boundary_distance_m": null,
+          "weight": 0.018017074
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 98.210235307,
+          "boundary_distance_m": null,
+          "weight": 0.017897647
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_018",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_018",
+      "status": "active",
+      "coordinate_hash": "56cf46ca691232d69112839788a255fe0cf838cc3e945e8523809c246438a793",
+      "temperature": {
+        "grid_id": "GRID_00035",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 2.120905962,
+          "boundary_distance_m": null,
+          "weight": 0.97879094
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "北斗鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 2.13589664,
+          "boundary_distance_m": null,
+          "weight": 0.978641034
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_019",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_019",
+      "status": "active",
+      "coordinate_hash": "38d034083120d276031572c36c328911b743ba50e6eea5d694ef4acafdf092ca",
+      "temperature": {
+        "grid_id": "GRID_00036",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 30.239241941,
+          "boundary_distance_m": null,
+          "weight": 0.697607581
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "田尾鄉",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 30.262028152,
+          "boundary_distance_m": null,
+          "weight": 0.697379718
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 30.271808126,
+          "boundary_distance_m": null,
+          "weight": 0.697281919
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_020",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_020",
+      "status": "active",
+      "coordinate_hash": "283417dc199bf9cdbaa94d1618de4e4b65ebb79373b32d9b44b941dd0f95b27d",
+      "temperature": {
+        "grid_id": "GRID_00036",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 83.969528932,
+          "boundary_distance_m": null,
+          "weight": 0.160304711
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_021",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_021",
+      "status": "active",
+      "coordinate_hash": "9f1799a2da769d90315a0858ea42a8e11ca74756e48784144785c165f02a7266",
+      "temperature": {
+        "grid_id": "GRID_00035",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_022",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_022",
+      "status": "active",
+      "coordinate_hash": "bc6d45c1439d533cf43b573b38e8486baf02a6f7f5b396659d5865cabad257b8",
+      "temperature": {
+        "grid_id": "GRID_00026",
+        "raw_value": 61,
+        "absolute_level": 4,
+        "county_grid_percentile": 90.322581
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 49.443295592,
+          "boundary_distance_m": null,
+          "weight": 0.505567044
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "竹塘鄉",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 49.438505927,
+          "boundary_distance_m": null,
+          "weight": 0.505614941
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 49.443295592,
+          "boundary_distance_m": null,
+          "weight": 0.505567044
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_023",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_023",
+      "status": "active",
+      "coordinate_hash": "696c55b52d49147e2fbe2bc8aab5f4a2ebe8aa6e210feda539a66d7acdacec67",
+      "temperature": {
+        "grid_id": "GRID_00012",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 27.295619588,
+          "boundary_distance_m": null,
+          "weight": 0.727043804
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "二林鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 24.803023024,
+          "boundary_distance_m": null,
+          "weight": 0.75196977
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 24.760708825,
+          "boundary_distance_m": null,
+          "weight": 0.752392912
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_024",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_024",
+      "status": "active",
+      "coordinate_hash": "12618f2b94b8ffe22958e7d65a9fb1c10721a897f4ae4b00c7d3a19ccb247674",
+      "temperature": {
+        "grid_id": "GRID_00006",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_025",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_025",
+      "status": "active",
+      "coordinate_hash": "027bc7ffae28d4111bbed9c3dd523bbacdff452929f2201fe3a46b70eb9e6aae",
+      "temperature": {
+        "grid_id": "GRID_00007",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 44.5572605,
+          "boundary_distance_m": null,
+          "weight": 0.554427395
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "芳苑鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 31.998521778,
+          "boundary_distance_m": null,
+          "weight": 0.680014782
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 71.626994582,
+          "boundary_distance_m": null,
+          "weight": 0.283730054
+        }
+      }
+    },
+    {
+      "key": "env_facilities:CLEAN_026",
+      "dataset_id": "env_facilities",
+      "feature_id": "CLEAN_026",
+      "status": "active",
+      "coordinate_hash": "aa80cb4c7cf09b093ee7e600e56d4be221e15bae6b6d1ba263653b1afa3a2a4e",
+      "temperature": {
+        "grid_id": "GRID_00051",
+        "raw_value": 55,
+        "absolute_level": 3,
+        "county_grid_percentile": 40.322581
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 3.41456492,
+          "boundary_distance_m": null,
+          "weight": 0.965854351
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "二水鄉",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 3.401646322,
+          "boundary_distance_m": null,
+          "weight": 0.965983537
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 3.41456492,
+          "boundary_distance_m": null,
+          "weight": 0.965854351
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_001",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_001",
+      "status": "active",
+      "coordinate_hash": "43837a34e1f76492b15157881dd6db7a90d4bf03d72c4ea452be6db515a23cb6",
+      "temperature": {
+        "grid_id": "GRID_00052",
+        "raw_value": 55,
+        "absolute_level": 3,
+        "county_grid_percentile": 40.322581
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_002",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_002",
+      "status": "active",
+      "coordinate_hash": "06e1fa0448ea99032f2b3de99ecd243ae079948a53f6af75a509ad9d23a298b7",
+      "temperature": {
+        "grid_id": "GRID_00012",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 24.132574426,
+          "boundary_distance_m": null,
+          "weight": 0.758674256
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "二林鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 24.109025971,
+          "boundary_distance_m": null,
+          "weight": 0.75890974
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_003",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_003",
+      "status": "active",
+      "coordinate_hash": "099aa9494d6d8d9a1fd26b49a8d31a7d971791d6f289b020312279d98463b29f",
+      "temperature": {
+        "grid_id": "GRID_00047",
+        "raw_value": 54,
+        "absolute_level": 3,
+        "county_grid_percentile": 30.645161
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 4.147881305,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_004",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_004",
+      "status": "active",
+      "coordinate_hash": "12618f2b94b8ffe22958e7d65a9fb1c10721a897f4ae4b00c7d3a19ccb247674",
+      "temperature": {
+        "grid_id": "GRID_00006",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_005",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_005",
+      "status": "active",
+      "coordinate_hash": "56cf46ca691232d69112839788a255fe0cf838cc3e945e8523809c246438a793",
+      "temperature": {
+        "grid_id": "GRID_00035",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 2.120905962,
+          "boundary_distance_m": null,
+          "weight": 0.97879094
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "北斗鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 2.13589664,
+          "boundary_distance_m": null,
+          "weight": 0.978641034
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_006",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_006",
+      "status": "active",
+      "coordinate_hash": "debf3dd5b854168dfe676d9a3dd083b76bf16d4ca168e062c1af7506d10f2162",
+      "temperature": {
+        "grid_id": "GRID_00045",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 4,
+          "depth_type": "1-2",
+          "distance_m": 10.281907498,
+          "boundary_distance_m": null,
+          "weight": 0.897180925
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 47.071978943,
+          "boundary_distance_m": null,
+          "weight": 0.529280211
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_007",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_007",
+      "status": "active",
+      "coordinate_hash": "e7e7fe175a0e94bc62ec182f5a38574cb84db9d8c5c4e2b50d9318d5e99e8969",
+      "temperature": {
+        "grid_id": "GRID_00044",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 98.210235307,
+          "boundary_distance_m": null,
+          "weight": 0.017897647
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": "田中鎮",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 98.198292648,
+          "boundary_distance_m": null,
+          "weight": 0.018017074
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 98.210235307,
+          "boundary_distance_m": null,
+          "weight": 0.017897647
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_008",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_008",
+      "status": "active",
+      "coordinate_hash": "38d034083120d276031572c36c328911b743ba50e6eea5d694ef4acafdf092ca",
+      "temperature": {
+        "grid_id": "GRID_00036",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 30.239241941,
+          "boundary_distance_m": null,
+          "weight": 0.697607581
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "田尾鄉",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 30.262028152,
+          "boundary_distance_m": null,
+          "weight": 0.697379718
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 30.271808126,
+          "boundary_distance_m": null,
+          "weight": 0.697281919
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_009",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_009",
+      "status": "active",
+      "coordinate_hash": "702db72de06b731f43a54eed21afda1ff95fbdddea2c6699fb95c022c1afc9e3",
+      "temperature": {
+        "grid_id": "GRID_00026",
+        "raw_value": 61,
+        "absolute_level": 4,
+        "county_grid_percentile": 90.322581
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 5.019728199,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_010",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_010",
+      "status": "active",
+      "coordinate_hash": "db6b301a1073ba6595bea730a93c74a790e7bd94522549574efabfadc340352e",
+      "temperature": {
+        "grid_id": "GRID_00041",
+        "raw_value": 57,
+        "absolute_level": 3,
+        "county_grid_percentile": 53.225806
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 3.652087106,
+          "boundary_distance_m": null,
+          "weight": 0.963479129
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "伸港鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 3.676871608,
+          "boundary_distance_m": null,
+          "weight": 0.963231284
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_011",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_011",
+      "status": "active",
+      "coordinate_hash": "c7e13ad9dfc819a928c62e2d3f5d59348fea13e3c04b8846a8a50016ea8b7c40",
+      "temperature": {
+        "grid_id": "GRID_00039",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 74.658594446,
+          "boundary_distance_m": null,
+          "weight": 0.253414056
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_012",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_012",
+      "status": "active",
+      "coordinate_hash": "105a2a7ebc748b49b6303c1c2b585fe43896b18f582a2b58ac36ce557647be17",
+      "temperature": {
+        "grid_id": "GRID_00050",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "direct",
+          "status": "direct_overlay",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 0,
+          "boundary_distance_m": 19.35458788,
+          "weight": 1
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": "和美鎮",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 63.672730203,
+          "boundary_distance_m": null,
+          "weight": 0.363272698
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 63.730957122,
+          "boundary_distance_m": null,
+          "weight": 0.362690429
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_013",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_013",
+      "status": "active",
+      "coordinate_hash": "5c12d9c68a144d072badfceb081eab888af87ef8769bd57961ad3b22db4e7e0d",
+      "temperature": {
+        "grid_id": "GRID_00053",
+        "raw_value": 50,
+        "absolute_level": 3,
+        "county_grid_percentile": 3.225806
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_014",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_014",
+      "status": "active",
+      "coordinate_hash": "558ffd957b60674e64e5553aab3e5d1b784bad351626e72e27eb8aa9d5e4ba7f",
+      "temperature": {
+        "grid_id": "GRID_00062",
+        "raw_value": 56,
+        "absolute_level": 3,
+        "county_grid_percentile": 46.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_015",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_015",
+      "status": "active",
+      "coordinate_hash": "cc421dbe260e06d967b4d6012513ffa926b3fb44fe81fe39b5a028fa01f481a4",
+      "temperature": {
+        "grid_id": "GRID_00048",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_016",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_016",
+      "status": "active",
+      "coordinate_hash": "027bc7ffae28d4111bbed9c3dd523bbacdff452929f2201fe3a46b70eb9e6aae",
+      "temperature": {
+        "grid_id": "GRID_00007",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 44.5572605,
+          "boundary_distance_m": null,
+          "weight": 0.554427395
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_25_50m",
+          "winning_feature_id": "芳苑鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 31.998521778,
+          "boundary_distance_m": null,
+          "weight": 0.680014782
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 71.626994582,
+          "boundary_distance_m": null,
+          "weight": 0.283730054
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_017",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_017",
+      "status": "active",
+      "coordinate_hash": "2678e23615ae27955224d5aa0850d4e4edc8c3339d02e0670232edac0d878fb7",
+      "temperature": {
+        "grid_id": "GRID_00054",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 78.516995675,
+          "boundary_distance_m": null,
+          "weight": 0.214830043
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": "員林市",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 96.751411247,
+          "boundary_distance_m": null,
+          "weight": 0.032485888
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_018",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_018",
+      "status": "active",
+      "coordinate_hash": "18cd90e94a330e70b803cc1bdde3ebd7ff63e93f9ad3da8f0a0b2ab5d7bdb954",
+      "temperature": {
+        "grid_id": "GRID_00046",
+        "raw_value": 52,
+        "absolute_level": 3,
+        "county_grid_percentile": 11.290323
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_019",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_019",
+      "status": "active",
+      "coordinate_hash": "2918c8d3041c9e417a5f8f7d14447c1a90fa1666e967be76992b495a1ef8417b",
+      "temperature": {
+        "grid_id": "GRID_00038",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_020",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_020",
+      "status": "active",
+      "coordinate_hash": "283417dc199bf9cdbaa94d1618de4e4b65ebb79373b32d9b44b941dd0f95b27d",
+      "temperature": {
+        "grid_id": "GRID_00036",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_75_100m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 83.969528932,
+          "boundary_distance_m": null,
+          "weight": 0.160304711
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_021",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_021",
+      "status": "active",
+      "coordinate_hash": "3fc02cbe4ca6c8ce045513b343244d8c35fcf2b3b584d276c58c50a2917b81a3",
+      "temperature": {
+        "grid_id": "GRID_00021",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 16.750379762,
+          "boundary_distance_m": null,
+          "weight": 0.832496202
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": "鹿港鎮",
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 16.716875977,
+          "boundary_distance_m": null,
+          "weight": 0.83283124
+        },
+        "wra350_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 16.750379762,
+          "boundary_distance_m": null,
+          "weight": 0.832496202
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_022",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_022",
+      "status": "active",
+      "coordinate_hash": "a14e2de0fd7a7fc4de998bcfa7c946e8c44ebce971b86323456b94bf1712e5bb",
+      "temperature": {
+        "grid_id": "GRID_00035",
+        "raw_value": 51,
+        "absolute_level": 3,
+        "county_grid_percentile": 8.064516
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_023",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_023",
+      "status": "active",
+      "coordinate_hash": "209745e2e74fbf9f180e2fc4af67b21df1559f468acd8945ddc02be849eef88f",
+      "temperature": {
+        "grid_id": "GRID_00028",
+        "raw_value": 56,
+        "absolute_level": 3,
+        "county_grid_percentile": 46.774194
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_024",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_024",
+      "status": "active",
+      "coordinate_hash": "024a0669085542a8dc262e9d821e550f5dbc9fae264624b98d40c4f340f8652f",
+      "temperature": {
+        "grid_id": "GRID_00049",
+        "raw_value": 59,
+        "absolute_level": 3,
+        "county_grid_percentile": 85.483871
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_025",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_025",
+      "status": "active",
+      "coordinate_hash": "82b1cb74e30cd93dbcbca4207013df974b0a25ada1fe502ccb2530a30509efb0",
+      "temperature": {
+        "grid_id": "GRID_00021",
+        "raw_value": 58,
+        "absolute_level": 3,
+        "county_grid_percentile": 70.967742
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 72.344350936,
+          "boundary_distance_m": null,
+          "weight": 0.276556491
+        },
+        "wra350_6h": {
+          "method": "proximity",
+          "status": "near_50_75m",
+          "winning_feature_id": "福興鄉",
+          "grid_code": 2,
+          "depth_type": "0.3-0.5",
+          "distance_m": 57.587153406,
+          "boundary_distance_m": null,
+          "weight": 0.424128466
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    },
+    {
+      "key": "env_facilities:REC_026",
+      "dataset_id": "env_facilities",
+      "feature_id": "REC_026",
+      "status": "active",
+      "coordinate_hash": "645bd93f1bd4af557a5c79aa35bbff473dce5fce966ef07cbc3acfcd395d5dfe",
+      "temperature": {
+        "grid_id": "GRID_00031",
+        "raw_value": 61,
+        "absolute_level": 4,
+        "county_grid_percentile": 90.322581
+      },
+      "wra": {
+        "wra650_24h": {
+          "method": "proximity",
+          "status": "near_0_25m",
+          "winning_feature_id": null,
+          "grid_code": 3,
+          "depth_type": "0.5-1",
+          "distance_m": 13.268671484,
+          "boundary_distance_m": null,
+          "weight": 0.867313285
+        },
+        "wra350_6h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        },
+        "wra350_24h": {
+          "method": "no_match",
+          "status": "no_hit",
+          "winning_feature_id": null,
+          "grid_code": null,
+          "depth_type": null,
+          "distance_m": null,
+          "boundary_distance_m": null,
+          "weight": null
+        }
+      }
+    }
+  ]
+}

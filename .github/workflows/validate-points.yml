@@ -1,0 +1,46 @@
+name: Validate point datasets
+
+on:
+  pull_request:
+    paths:
+      - 'app.js'
+      - 'daycare_points.json'
+      - 'env_facilities.json'
+      - 'data/changhua_towns.json'
+      - 'data/climate_grids.geojson'
+      - 'data/wra/**'
+      - 'data/極端高溫持續指數/**'
+      - 'config/PointDatasetConfig.json'
+      - 'config/ColorScaleConfig.json'
+      - 'tools/**'
+      - 'tests/baselines/**'
+      - '.github/workflows/validate-points.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-points:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Reject permanent point-count constants
+        run: node tools/check_no_hardcoded_point_counts.mjs
+
+      - name: Validate point datasets and baseline
+        run: node tools/validate_points.mjs
+
+      - name: Verify per-point algorithm invariance
+        run: node tools/regression_checks.mjs
+
+      - name: Verify dynamic point addition
+        run: node tools/test_dynamic_point_addition.mjs
