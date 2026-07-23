@@ -1449,5 +1449,115 @@
     "depth": null,
     "distanceMeters": null,
     "featureId": null
+  },
+  {
+    "id": "DISWEL_001",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_002",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_003",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_004",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_005",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_006",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_007",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_008",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_009",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_010",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_011",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
   }
 ]

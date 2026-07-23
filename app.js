@@ -294,7 +294,7 @@ const caseColors = {
 
 const AGGREGATE_POINT_LAYER_ID = 'envFacilities';
 const SPLIT_ENV_POINT_LAYER_IDS = ['envHq', 'envRecycling'];
-const POINT_LAYER_GROUP_ORDER = ['環保設施', '日照中心'];
+const POINT_LAYER_GROUP_ORDER = ['環保設施', '日照中心', '身心障礙福利'];
 
 const POINT_REGISTRY = {
     daycare: {
@@ -341,6 +341,40 @@ const POINT_REGISTRY = {
             colorField: 'case_type',
             colorMap: caseColors,
             fallbackColor: '#94a3b8'
+        }
+    },
+    disabledWelfare: {
+        id: 'disabledWelfare',
+        label: '身心障礙福利機構',
+        shortLabel: '身障福利',
+        icon: 'fa-hands-holding-child',
+        file: 'disabled_welfare_facilities.json',
+        defaultVisible: false,
+        idField: 'id',
+        nameField: 'name',
+        townField: 'town',
+        addressField: 'address',
+        countLabel: '身障福利',
+        groupLabel: '身心障礙福利',
+        categoryFields: [
+            { field: 'category', tagClass: 'tag-service' },
+            { field: 'sub_type', tagClass: 'tag-case' }
+        ],
+        popupFields: [
+            { field: 'town', label: '所在鄉鎮' },
+            { field: 'category', label: '設施類別' },
+            { field: 'sub_type', label: '設施型態' },
+            { field: 'address', label: '機構地址' },
+            { field: 'source_crs', label: '原始座標系統', internalOnly: true }
+        ],
+        listFields: [
+            { field: 'sub_type', icon: 'fa-briefcase' },
+            { field: 'address', icon: 'fa-map-location-dot' },
+            { field: 'source_crs', icon: 'fa-circle-info', internalOnly: true }
+        ],
+        marker: {
+            color: '#8b5cf6',
+            fallbackColor: '#8b5cf6'
         }
     },
     envHq: {
