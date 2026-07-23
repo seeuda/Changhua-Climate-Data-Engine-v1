@@ -1501,5 +1501,123 @@
     "weight": 0.8673132851550986,
     "status": "near_0_25m",
     "featureId": null
+  },
+  {
+    "id": "DISWEL_001",
+    "dataset": "disabledWelfare",
+    "method": "proximity",
+    "gridCode": 2,
+    "depth": "0.3-0.5",
+    "distanceMeters": 47.230395262099904,
+    "weight": 0.5276960473790009,
+    "status": "near_25_50m",
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_002",
+    "dataset": "disabledWelfare",
+    "method": "proximity",
+    "gridCode": 2,
+    "depth": "0.3-0.5",
+    "distanceMeters": 22.37030864550406,
+    "weight": 0.7762969135449593,
+    "status": "near_0_25m",
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_003",
+    "dataset": "disabledWelfare",
+    "method": "proximity",
+    "gridCode": 2,
+    "depth": "0.3-0.5",
+    "distanceMeters": 23.70396634188295,
+    "weight": 0.7629603365811705,
+    "status": "near_0_25m",
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_004",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_005",
+    "dataset": "disabledWelfare",
+    "method": "direct",
+    "gridCode": 2,
+    "depth": "0.3-0.5",
+    "distanceMeters": 0,
+    "weight": 1,
+    "status": "direct_overlay",
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_006",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_007",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_008",
+    "dataset": "disabledWelfare",
+    "method": "proximity",
+    "gridCode": 3,
+    "depth": "0.5-1",
+    "distanceMeters": 31.07870293939284,
+    "weight": 0.6892129706060717,
+    "status": "near_25_50m",
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_009",
+    "dataset": "disabledWelfare",
+    "method": "direct",
+    "gridCode": 2,
+    "depth": "0.3-0.5",
+    "distanceMeters": 0,
+    "weight": 1,
+    "status": "direct_overlay",
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_010",
+    "dataset": "disabledWelfare",
+    "method": "proximity",
+    "gridCode": 2,
+    "depth": "0.3-0.5",
+    "distanceMeters": 46.610036578947266,
+    "weight": 0.5338996342105273,
+    "status": "near_25_50m",
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_011",
+    "dataset": "disabledWelfare",
+    "method": "direct",
+    "gridCode": 2,
+    "depth": "0.3-0.5",
+    "distanceMeters": 0,
+    "weight": 1,
+    "status": "direct_overlay",
+    "featureId": null
   }
 ]

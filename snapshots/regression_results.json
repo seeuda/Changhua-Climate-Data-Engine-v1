@@ -1,33 +1,33 @@
 {
   "R1": {
-    "total": 140,
+    "total": 151,
     "gridExceptions": 0,
     "townMismatch": 0
   },
   "R2": {
-    "direct_overlay": 34,
-    "near_total": 69,
-    "no_hit": 37
+    "direct_overlay": 37,
+    "near_total": 74,
+    "no_hit": 40
   },
   "R3": {
     "direct_overlay": 15,
-    "near_total": 58,
-    "no_hit": 67
+    "near_total": 64,
+    "no_hit": 72
   },
   "R4": {
     "direct_overlay": 5,
     "near_total": 46,
-    "no_hit": 89
+    "no_hit": 100
   },
   "R5": {
-    "near_0_25m": 22,
-    "near_25_50m": 17,
+    "near_0_25m": 24,
+    "near_25_50m": 20,
     "near_50_75m": 14,
     "near_75_100m": 16
   },
   "R6": {
-    "L3": 121,
-    "L4": 19
+    "L3": 130,
+    "L4": 21
   },
   "R10": {
     "daycare": {
@@ -46,6 +46,19 @@
       "coordinate_review_status": "manually_reviewed",
       "coordinate_review_scope": "all_points_in_dataset",
       "coordinate_review_count": 52
+    },
+    "disabledWelfare": {
+      "total": 11,
+      "categories": {
+        "身心障礙福利機構": 11
+      },
+      "source": "使用者提供場址清單",
+      "generated": "2026-07-23",
+      "source_coordinate_system": "TWD97 / TM2 zone 121 (EPSG:3826)",
+      "coordinate_transform": "converted_to_WGS84_lon_lat",
+      "coordinate_review_status": "source_coordinate_transformed",
+      "coordinate_review_scope": "all_points_in_dataset",
+      "coordinate_review_count": 11
     }
   },
   "R11": {
@@ -99,7 +112,7 @@
     }
   ],
   "R13": {
-    "nonMonotonicCount": 110
+    "nonMonotonicCount": 120
   },
   "R14": {
     "sameAsExpected": true

@@ -7,7 +7,12 @@ const grids=read('data/climate_grids.geojson');
 const towns=read('changhua_towns.json');
 const daycare=read('daycare_points.json');
 const env=read('env_facilities.json');
-const points=[...daycare.features.map(f=>({dataset:'daycare',feature:f})),...env.features.map(f=>({dataset:'env',feature:f}))];
+const disabledWelfare=read('disabled_welfare_facilities.json');
+const points=[
+  ...daycare.features.map(f=>({dataset:'daycare',feature:f})),
+  ...env.features.map(f=>({dataset:'env',feature:f})),
+  ...disabledWelfare.features.map(f=>({dataset:'disabledWelfare',feature:f}))
+];
 function coords(f){return f.geometry?.coordinates}
 function pip(x,y,ring){let inside=false; for(let i=0,j=ring.length-1;i<ring.length;j=i++){const xi=ring[i][0],yi=ring[i][1],xj=ring[j][0],yj=ring[j][1]; const intersect=((yi>y)!=(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi); if(intersect) inside=!inside;} return inside;}
 function inPoly(x,y,poly){if(!pip(x,y,poly[0])) return false; for(let i=1;i<poly.length;i++) if(pip(x,y,poly[i])) return false; return true;}
@@ -30,12 +35,12 @@ function gridForPoint(f){const [x,y]=coords(f); return grids.features.find(g=>in
 function townForPoint(f){const [x,y]=coords(f); return towns.features.find(t=>inMulti(x,y,t.geometry));}
 const results={};
 results.R1={total:points.length,gridExceptions:points.filter(p=>!gridForPoint(p.feature)).length,townMismatch:points.filter(p=>{const t=townForPoint(p.feature)?.properties?.town_name; return t && p.feature.properties.town && !String(p.feature.properties.town).includes(t)}).length};
-assert.equal(results.R1.total,140); assert.equal(results.R1.gridExceptions,0); results.R1.townMismatch = 0;
-for(const [rid,path,exp] of [['R2','data/wra/wra_flood_650mm_24h.json',{direct_overlay:34,near_total:69,no_hit:37}],['R3','data/wra/wra_flood_350mm_6h.json',{direct_overlay:15,near_total:58,no_hit:67}],['R4','data/wra/wra_flood_350mm_24h.json',{direct_overlay:5,near_total:46,no_hit:89}]]){const e=evalWra(path); fs.writeFileSync(`snapshots/${rid}_wra_points.json`,JSON.stringify(e,null,2)); const c={direct_overlay:e.filter(x=>x.status==='direct_overlay').length,near_total:e.filter(x=>x.method==='proximity').length,no_hit:e.filter(x=>x.status==='no_hit').length}; results[rid]=c; assert.deepStrictEqual(c,exp);} 
+assert.equal(results.R1.total,151); assert.equal(results.R1.gridExceptions,0); results.R1.townMismatch = 0;
+for(const [rid,path,exp] of [['R2','data/wra/wra_flood_650mm_24h.json',{direct_overlay:37,near_total:74,no_hit:40}],['R3','data/wra/wra_flood_350mm_6h.json',{direct_overlay:15,near_total:64,no_hit:72}],['R4','data/wra/wra_flood_350mm_24h.json',{direct_overlay:5,near_total:46,no_hit:100}]]){const e=evalWra(path); fs.writeFileSync(`snapshots/${rid}_wra_points.json`,JSON.stringify(e,null,2)); const c={direct_overlay:e.filter(x=>x.status==='direct_overlay').length,near_total:e.filter(x=>x.method==='proximity').length,no_hit:e.filter(x=>x.status==='no_hit').length}; results[rid]=c; assert.deepStrictEqual(c,exp);} 
 const r2=read('snapshots/R2_wra_points.json'); results.R5={near_0_25m:r2.filter(x=>x.status==='near_0_25m').length,near_25_50m:r2.filter(x=>x.status==='near_25_50m').length,near_50_75m:r2.filter(x=>x.status==='near_50_75m').length,near_75_100m:r2.filter(x=>x.status==='near_75_100m').length}; // Report the implemented fixed 25m bands; do not mutate WRA geometry to force fixture values.
 
-const vals585=read('data/極端高溫持續指數/ssp585/TaiESM1.json').values['2050']; const dist={}; for(const p of points){const gid=gridForPoint(p.feature).properties.GridID; const lvl=climateLevel('極端高溫持續指數',vals585[gid]); dist[`L${lvl}`]=(dist[`L${lvl}`]||0)+1;} results.R6=dist; assert.deepStrictEqual(dist,{L3:121,L4:19});
-results.R10={daycare:daycare.metadata,env:env.metadata}; assert.equal(daycare.metadata.coordinate_review_status,'manually_reviewed'); assert.equal(daycare.metadata.coordinate_review_count,88); assert.equal(env.metadata.coordinate_review_status,'manually_reviewed'); assert.equal(env.metadata.coordinate_review_count,52);
+const vals585=read('data/極端高溫持續指數/ssp585/TaiESM1.json').values['2050']; const dist={}; for(const p of points){const gid=gridForPoint(p.feature).properties.GridID; const lvl=climateLevel('極端高溫持續指數',vals585[gid]); dist[`L${lvl}`]=(dist[`L${lvl}`]||0)+1;} results.R6=dist; assert.deepStrictEqual(dist,{L3:130,L4:21});
+results.R10={daycare:daycare.metadata,env:env.metadata,disabledWelfare:disabledWelfare.metadata}; assert.equal(daycare.metadata.coordinate_review_status,'manually_reviewed'); assert.equal(daycare.metadata.coordinate_review_count,88); assert.equal(env.metadata.coordinate_review_status,'manually_reviewed'); assert.equal(env.metadata.coordinate_review_count,52); assert.equal(disabledWelfare.metadata.coordinate_review_status,'source_coordinate_transformed'); assert.equal(disabledWelfare.metadata.coordinate_review_count,11);
 const app=fs.readFileSync('app.js','utf8'); results.R11={uiMentions:[...app.matchAll(/field: 'note'|exact|approx-cadastral|approx/g)].length}; assert(!app.includes("field: 'note'"));
 const hist=read('data/極端高溫持續指數/historical/TaiESM1.json').values['2014']; const s2030=read('data/極端高溫持續指數/ssp585/TaiESM1.json').values['2030']; const names=['彰化市清潔隊','鹿港鎮清潔隊','線西鄉清潔隊','員林市清潔隊','芬園鄉清潔隊']; results.R12=names.map(n=>{const p=points.find(p=>p.feature.properties.name===n).feature; const gid=gridForPoint(p).properties.GridID; return {name:n,GridID:gid,v2014:hist[gid],l2014:climateLevel('極端高溫持續指數',hist[gid]),v2030:s2030[gid],l2030:climateLevel('極端高溫持續指數',s2030[gid]),breaks:config['極端高溫持續指數'].breaks.map(b=>`${s2030[gid]} <= ${b}`).join(' -> ')}});
 const monoScens=[['historical','2014'],['ssp126','2050'],['ssp245','2050'],['ssp585','2050']]; const vals=Object.fromEntries(monoScens.map(([sc,y])=>[`${sc}:${y}`,read(`data/極端高溫持續指數/${sc}/TaiESM1.json`).values[y]])); let non=0; for(const p of points){const gid=gridForPoint(p.feature).properties.GridID; const levels=monoScens.map(([sc,y])=>climateLevel('極端高溫持續指數',vals[`${sc}:${y}`][gid])); if(levels.some((v,i)=>i&&v<levels[i-1]))non++;} results.R13={nonMonotonicCount:non};

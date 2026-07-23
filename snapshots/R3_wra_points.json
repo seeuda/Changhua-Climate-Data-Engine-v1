@@ -1471,5 +1471,121 @@
     "depth": null,
     "distanceMeters": null,
     "featureId": null
+  },
+  {
+    "id": "DISWEL_001",
+    "dataset": "disabledWelfare",
+    "method": "proximity",
+    "gridCode": 2,
+    "depth": "0.3-0.5",
+    "distanceMeters": 53.58755155325834,
+    "weight": 0.4641244844674166,
+    "status": "near_50_75m",
+    "featureId": "彰化市"
+  },
+  {
+    "id": "DISWEL_002",
+    "dataset": "disabledWelfare",
+    "method": "proximity",
+    "gridCode": 2,
+    "depth": "0.3-0.5",
+    "distanceMeters": 75.95718867353926,
+    "weight": 0.24042811326460733,
+    "status": "near_75_100m",
+    "featureId": "彰化市"
+  },
+  {
+    "id": "DISWEL_003",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_004",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_005",
+    "dataset": "disabledWelfare",
+    "method": "proximity",
+    "gridCode": 2,
+    "depth": "0.3-0.5",
+    "distanceMeters": 34.86612634579651,
+    "weight": 0.6513387365420349,
+    "status": "near_25_50m",
+    "featureId": "和美鎮"
+  },
+  {
+    "id": "DISWEL_006",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_007",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_008",
+    "dataset": "disabledWelfare",
+    "method": "proximity",
+    "gridCode": 2,
+    "depth": "0.3-0.5",
+    "distanceMeters": 31.105388806399084,
+    "weight": 0.6889461119360092,
+    "status": "near_25_50m",
+    "featureId": "鹿港鎮"
+  },
+  {
+    "id": "DISWEL_009",
+    "dataset": "disabledWelfare",
+    "method": "proximity",
+    "gridCode": 2,
+    "depth": "0.3-0.5",
+    "distanceMeters": 2.5306444189697044,
+    "weight": 0.9746935558103029,
+    "status": "near_0_25m",
+    "featureId": "田尾鄉"
+  },
+  {
+    "id": "DISWEL_010",
+    "dataset": "disabledWelfare",
+    "method": "no_match",
+    "status": "no_hit",
+    "gridCode": null,
+    "depth": null,
+    "distanceMeters": null,
+    "featureId": null
+  },
+  {
+    "id": "DISWEL_011",
+    "dataset": "disabledWelfare",
+    "method": "proximity",
+    "gridCode": 4,
+    "depth": "1-2",
+    "distanceMeters": 10.799119902594843,
+    "weight": 0.8920088009740516,
+    "status": "near_0_25m",
+    "featureId": "田中鎮"
   }
 ]
