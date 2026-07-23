@@ -1,0 +1,247 @@
+{
+  "type": "FeatureCollection",
+  "name": "彰化縣身心障礙福利機構",
+  "metadata": {
+    "total": 11,
+    "categories": {
+      "身心障礙福利機構": 11
+    },
+    "source": "使用者提供場址清單",
+    "generated": "2026-07-23",
+    "source_coordinate_system": "TWD97 / TM2 zone 121 (EPSG:3826)",
+    "coordinate_transform": "converted_to_WGS84_lon_lat"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DISWEL_001",
+        "town": "彰化市",
+        "name": "財團法人天主教會臺中教區附設臺灣省私立慈愛教養院",
+        "category": "身心障礙福利機構",
+        "sub_type": "教養／啟智／服務機構",
+        "address": "彰化縣彰化市延平里006鄰大埔路６７６號",
+        "source_x": 203547.27,
+        "source_y": 2662685.16,
+        "source_crs": "TWD97 / TM2 zone 121 (EPSG:3826)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5431855,
+          24.0685027
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DISWEL_002",
+        "town": "彰化市",
+        "name": "財團法人彰化縣私立慈生仁愛院",
+        "category": "身心障礙福利機構",
+        "sub_type": "教養／啟智／服務機構",
+        "address": "彰化縣彰化市陽明里017鄰慈生街７２號",
+        "source_x": 204103.53,
+        "source_y": 2664521.94,
+        "source_crs": "TWD97 / TM2 zone 121 (EPSG:3826)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5485976,
+          24.0851036
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DISWEL_003",
+        "town": "二林鎮",
+        "name": "財團法人彰化縣私立基督教喜樂保育院",
+        "category": "身心障礙福利機構",
+        "sub_type": "教養／啟智／服務機構",
+        "address": "彰化縣二林鎮中西里008鄰二城路７號",
+        "source_x": 184848.715,
+        "source_y": 2642956.397,
+        "source_crs": "TWD97 / TM2 zone 121 (EPSG:3826)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.3601927,
+          23.8897115
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DISWEL_004",
+        "town": "彰化市",
+        "name": "財團法人彰化縣私立博愛服務中心",
+        "category": "身心障礙福利機構",
+        "sub_type": "教養／啟智／服務機構",
+        "address": "彰化縣彰化市華北里003鄰南郭路一段６０號",
+        "source_x": 203783.9,
+        "source_y": 2663380.27,
+        "source_crs": "TWD97 / TM2 zone 121 (EPSG:3826)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5454904,
+          24.0747859
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DISWEL_005",
+        "town": "和美鎮",
+        "name": "財團法人台灣兒童暨家庭扶助基金會附設彰化縣私立家扶發展學園",
+        "category": "身心障礙福利機構",
+        "sub_type": "教養／啟智／服務機構",
+        "address": "彰化縣和美鎮和東里023鄰彰美路五段１６０號",
+        "source_x": 199367.87,
+        "source_y": 2667105.31,
+        "source_crs": "TWD97 / TM2 zone 121 (EPSG:3826)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5019324,
+          24.1082846
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DISWEL_006",
+        "town": "彰化市",
+        "name": "財團法人天主教會台中教區附設彰化縣私立聖智啟智中心",
+        "category": "身心障礙福利機構",
+        "sub_type": "教養／啟智／服務機構",
+        "address": "彰化縣彰化市國聖里018鄰中山路三段５１２號",
+        "source_x": 205930.42,
+        "source_y": 2665054.59,
+        "source_crs": "TWD97 / TM2 zone 121 (EPSG:3826)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5665489,
+          24.089965
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DISWEL_007",
+        "town": "員林市",
+        "name": "財團法人天主教會台中教區附設彰化縣私立聖家啟智中心",
+        "category": "身心障礙福利機構",
+        "sub_type": "教養／啟智／服務機構",
+        "address": "彰化縣員林市光明里022鄰民生路５０號",
+        "source_x": 206739.98,
+        "source_y": 2650296.7,
+        "source_crs": "TWD97 / TM2 zone 121 (EPSG:3826)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5749496,
+          23.9567339
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DISWEL_008",
+        "town": "鹿港鎮",
+        "name": "財團法人天主教會台中教區附設彰化縣私立聖母聖心啟智中心",
+        "category": "身心障礙福利機構",
+        "sub_type": "教養／啟智／服務機構",
+        "address": "彰化縣鹿港鎮洋厝里001鄰鹿草路三段５１３巷４號",
+        "source_x": 194179.48,
+        "source_y": 2666189.05,
+        "source_crs": "TWD97 / TM2 zone 121 (EPSG:3826)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.4509313,
+          24.0998368
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DISWEL_009",
+        "town": "田尾鄉",
+        "name": "彰化縣政府委託慈恩基金會辦理彰化縣田尾身心障礙者教養家園",
+        "category": "身心障礙福利機構",
+        "sub_type": "教養／啟智／服務機構",
+        "address": "彰化縣田尾鄉北曾村003鄰福德巷３４３號",
+        "source_x": 202745.243,
+        "source_y": 2643302.523,
+        "source_crs": "TWD97 / TM2 zone 121 (EPSG:3826)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.5359261,
+          23.8934672
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DISWEL_010",
+        "town": "芳苑鄉",
+        "name": "財團法人台中市私立宏恩社會福利慈善基金會附設彰化縣私立喜願家園",
+        "category": "身心障礙福利機構",
+        "sub_type": "教養／啟智／服務機構",
+        "address": "彰化縣芳苑鄉漢寶村019鄰草漢北路２１號",
+        "source_x": 187585.14,
+        "source_y": 2656688.27,
+        "source_crs": "TWD97 / TM2 zone 121 (EPSG:3826)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.3864779,
+          24.0138076
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "DISWEL_011",
+        "town": "田中鎮",
+        "name": "財團法人彰化縣私立真善美社會福利慈善事業基金會附設靜鴻家園",
+        "category": "身心障礙福利機構",
+        "sub_type": "教養／啟智／服務機構",
+        "address": "彰化縣田中鎮香山里007鄰山脚路一段１號",
+        "source_x": 209801.74,
+        "source_y": 2636830.74,
+        "source_crs": "TWD97 / TM2 zone 121 (EPSG:3826)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.6054014,
+          23.8352236
+        ]
+      }
+    }
+  ]
+}
